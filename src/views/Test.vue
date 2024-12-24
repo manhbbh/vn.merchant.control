@@ -1,9 +1,9 @@
 <template>
-  <div class="text-center overflow-y-auto h-screen">
-    <main class="w-full flex flex-col gap-2 bg-gray-100 p-2 h-full text-black">
+  <div class="text-center overflow-y-auto sm:h-screen sm:overflow-hidden">
+    <main class="w-full flex flex-col gap-2 bg-gray-100 p-2 h-screen overflow-hidden text-black">
       <!-- phần trên -->
       <header
-        class="rounded-xl h-14 bg-white py-2 px-5 flex justify-between items-center"
+        class="rounded-xl  static top-0 sm:h-14 bg-white py-2 px-5 flex justify-between items-center flex-shrink-0"
       >
         <!-- logo and name -->
         <div class="flex gap-2 items-center justify-start">
@@ -15,10 +15,10 @@
 
       </header>
       <!-- Phần thân -->
-      <div class="flex-1 flex flex-row gap-2">
+      <div class="flex-1 flex  flex-col gap-2 overflow-y-auto sm:overflow-hidden sm:flex-row">
         <!-- Phần trái -->
         <nav
-          class="relative h-full flex-shrink-0 rounded-xl bg-white overflow-hidden w-82 flex flex-col mb-2 sm:mb-0"
+          class="relative h-100 sm:h-full flex-shrink-0  rounded-xl bg-white overflow-hidden  flex flex-col mb-2 md:w-82 sm:mb-0 sm:w-1/2 "
         >
           <!--  -->
           <ul class="pt-3 px-2 flex flex-col gap-1">
@@ -54,7 +54,7 @@
           </p>
         </nav>
         <!-- phần phải -->
-        <div class="flex-1 flex flex-col gap-2 h-full">         
+        <div class="flex-1 flex flex-col gap-2 md:overflow-y-auto sm:overflow-hidden ">         
           <Business v-if="is_business"></Business>
           <!--  -->
           <Application v-else></Application>

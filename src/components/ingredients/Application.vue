@@ -1,9 +1,9 @@
 <template>
-  <div class="py-3 px-4 bg-white rounded-lg  flex items-start flex-col">
+  <div class="py-3 px-4 bg-white rounded-lg overflow-y-auto gap-2 flex items-start flex-col">
     <!--  -->
-    <div class="flex h-13 items-start justify-between w-full">
+    <div class="hidden min-h-13 items-start justify-between w-full lg:flex">
       <!-- menu  -->
-      <ul class="flex flex-row gap-3">
+      <ul class="flex flex-row flex-wrap gap-3">
         <li
         :class="{'bg-slate-600 text-white':menu.active_menu === true}"
           v-for="menu in list_menu"
@@ -27,8 +27,8 @@
       </div>
     </div>
     <!--  -->
-    <ul class="grid grid-cols-4 gap-6 gap-y-5 w-full pb-8">
-      <li v-for="app in list_app " class="flex items-center gap-2 cursor-pointer">
+    <ul class="grid grid-cols-2 gap-6 gap-y-5 w-full pb-8 sm:grid-cols-1 lg:gap-6 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4">
+      <li v-for="app in list_app " class="flex items-center gap-2 cursor-pointer justify-center lg:justify-start ">
        <img :src="app.image_app" class="h-15 w-15 shadow-lg rounded-xl" alt="">
         <!--  -->
         <div class="flex flex-col gap-0.5 justify-start">
@@ -46,6 +46,8 @@
 import { ref } from "vue";
 /**Icon*/
 import IconArrow from "../icons/IconArrow.vue";
+import IconMenu from "../icons/IconMenu.vue";
+
 
 /**Image*/
 import warehouse from "@/assets/imgs/img_app/warehouse.png";

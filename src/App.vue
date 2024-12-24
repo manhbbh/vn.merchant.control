@@ -3,7 +3,7 @@
     <Network />
     <AdBlocker />
     <Loading v-if="commonStore.is_loading_full_screen" type="FULL" />
-    <div class="h-full overflow-hidden overflow-y-auto">
+    <div class="h-screen overflow-hidden overflow-y-auto">
       <router-view />
     </div>
   </div>
@@ -20,5 +20,5 @@ const commonStore = useCommonStore()
 </script>
 
 <style lang="scss">
-@import "@/assets/css/index.scss";
+@use "@/assets/css/index.scss";
 </style>

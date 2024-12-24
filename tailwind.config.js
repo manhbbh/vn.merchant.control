@@ -13,6 +13,7 @@ module.exports = {
         '43':'172px',
         '45':'200px',
         '15':'60px',
+        '100':'250px',
       },
       fontSize: {
         "xs+": "13px", // Thêm kích thước font 13px
