@@ -1,12 +1,12 @@
 <template>
-    <div class="py-3 px-4 bg-white rounded-lg flex items-start gap-3">
+    <div class="py-3 px-4 bg-white rounded-lg flex items-start gap-3 text-customDark">
       <!-- icon -->
       <IconTime class="w-5 h-5"></IconTime>
       <!--content  -->
       <div class="flex flex-col gap-2 w-full">
         <div class="flex-col mb-3">
-          <h4 class="flex h-5 mb-2.5 justify-start text-sm font-medium">
-            Thời gian làm việc
+          <h4 class="flex text-customDark h-5 mb-2.5 justify-start text-sm font-medium">
+            Thời gian làm việc chung
           </h4>
           <p class="flex h-5 justify-start text-sm text-gray-500">
             Khi tạo thêm Chi nhánh thì mặc định kế thừa cấu hình này. Ngoài ra,
@@ -62,7 +62,7 @@
             </div>
             <!-- select -->
             <label class="inline-flex items-center cursor-pointer">
-              <input type="checkbox" value="" class="sr-only peer" />
+              <input type="checkbox" value="" class="sr-only peer" checked />
               <div
                 class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-black"
               ></div>
@@ -74,7 +74,7 @@
         <div
           v-for="(day, index) in LIST_DAYS"
           :key="index"
-          class="flex flex-col text-sm border-b border-slate-200 items-center py-3 md:justify-between text-gray-900 md:flex-row"
+          class="flex flex-col text-sm border-b border-slate-200 items-center py-3 md:justify-between text-customDark md:flex-row last:border-none"
         >
           <div class="h-9 flex w-full items-center justify-between">
             <div class="sm: flex">
@@ -86,7 +86,6 @@
           <!--  -->
           <div class="h-9 flex gap-5 w-full items-center justify-end">
             <select
-            v-if="day.active"
               v-model="day.work_status"
               class="outline-none mr-0 h-9 w-30 flex-none rounded-md border px-3 py-1.5"
             >
@@ -235,6 +234,7 @@ const LIST_DAYS = [
       minute: 0,
     },
     title: "Chủ nhật",
+    work_status: "day_off",
   },
 ];
 

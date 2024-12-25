@@ -1,5 +1,5 @@
 <template>
-  <div class="py-3 px-4 bg-white rounded-lg flex items-start gap-3">
+  <div class="py-3 px-4 bg-white rounded-lg flex text-black items-start gap-3">
     <!-- icon -->
     <IconEmploye class="w-5 h-5"></IconEmploye>
     <!--content  -->
@@ -20,28 +20,28 @@
           class="bg-slate-200 h-7 text-sm font-semibold sticky top-0 text-customDarkBlue flex-shrink-0 z-10"
         >
           <tr class="h-7">
-            <th class="px-5 text-left font-semibold text-slate-800">#</th>
-            <th class="px-5 text-left font-semibold text-slate-800">
+            <th class="px-5 text-left font-semibold ">#</th>
+            <th class="px-5 text-left font-semibold ">
               Họ và tên
             </th>
-            <th class="px-5 text-left font-semibold text-slate-800">Email</th>
+            <th class="px-5 text-left font-semibold ">Email</th>
             <th
-              class="px-5 text-left font-semibold text-slate-800 hidden md:table-cell"
+              class="px-5 text-left font-semibold  hidden md:table-cell"
             >
               Chi nhánh đang hoạt động
             </th>
             <th
-              class="px-5 text-left font-semibold text-slate-800 hidden md:table-cell"
+              class="px-5 text-left font-semibold  hidden md:table-cell"
             >
               Ngày tạo
             </th>
             <th
-              class="px-5 text-left font-semibold text-slate-800 hidden md:table-cell"
+              class="px-5 text-left font-semibold  hidden md:table-cell"
             >
               Trạng thái
             </th>
             <th
-              class="px-5 text-left font-semibold text-slate-800 hidden md:table-cell"
+              class="px-5 text-left font-semibold  hidden md:table-cell"
             >
               Thao tác
             </th>
@@ -73,7 +73,7 @@
               class="text-left px-3 gap-2 py-2 text-customGray hidden md:flex text-15px"
             >
               <div
-                class="h-5 py-0.5 rounded bg-zinc-100 px-2 text-xs font-medium"
+                class="h-5 py-0.5 rounded bg-zinc-100 px-2 text-customDark text-xs font-medium"
                 v-for="branch in employee.branch_employee"
               >
                 {{ branch }}

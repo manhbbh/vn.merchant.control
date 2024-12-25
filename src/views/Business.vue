@@ -53,6 +53,8 @@
           <!-- danh sách chi nhánh  -->
           <ul v-if="hidden_business" class="flex flex-col gap-3 ml-8">
             <li
+            @click="detaiBranch(control.name_control)"
+             :class="{ 'bg-slate-100': name_baranch === control.name_control }"
               v-for="control in list_branch"
               class="flex items-center cursor-pointer gap-2 h-13 rounded-lg border border-slate-200 p-2"
             >
@@ -91,7 +93,7 @@
         >
           <BusinessSetting v-if="is_business"></BusinessSetting>
           <!--  -->
-          <BranchSetting v-else></BranchSetting>
+          <BranchSetting v-else :detaiBranch="is_branch"> </BranchSetting>
         </div>
       </div>
     </main>
@@ -110,16 +112,15 @@ import IconStar from "@/components/icons/IconStar.vue";
 /**ảnh */
 import Avatar from "@/assets/imgs/Avatar.png";
 
-
 /**Biến*/
 /**Biến kiểm tra hiện doanh nghiệp hay ứng dụng */
 const is_business = ref(true);
 /** Biến hiển thị danh sách chi nhánh*/
 const hidden_business = ref(false);
-/**Danh sách chi nhánh*/
+/**danh sách chi nhánh*/ 
 const list_branch = ref([
   {
-    name_control: "Trụ sở chính",
+    name_control: "Trụ sở chính 1",
     address_control: "Trụ sở chính",
     image_control: "",
     star_control: true,
@@ -161,15 +162,30 @@ const list_branch = ref([
     type_control: "main",
   },
 ]);
-/***/
+/**Biến chuyền prod sang cho component con*/ 
+const is_branch = ref(true);
+/**Biến xem bấm vào chi nhánh nào */
+const name_baranch = ref("");
+
+/**hàm bấm chọn cài đặt Chi nhánh*/ 
 function selectedBrach() {
   is_business.value = false;
   hidden_business.value = true;
+  name_baranch.value = ""
+  console.log("selectedBusiness",is_branch);
+  is_branch.value = true
 }
-/** hàm chọn chi nhánh*/
+/** hàm bấm chọn cài đặt Doanh nghiệp*/
 function selectedBusiness() {
   is_business.value = true;
   hidden_business.value = false;
+  name_baranch.value = ""
 }
+/**Hàm khi bấm vào một chi nhánh nào đó*/
+function detaiBranch(name: string) {
+  is_branch.value = false
+  name_baranch.value = name
+} 
+
 </script>
 <style scoped lang="scss"></style>

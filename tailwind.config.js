@@ -21,15 +21,14 @@ module.exports = {
         '15':'57px',
         '85':'340px',
         '30':'120px',
-        
-
-        
-
       },
       fontSize: {
-        "xs+": "13px", // Thêm kích thước font 13px
+        "xs+": "13px", 
         "xs-": "11.2px",
         "xxl":"30px"
+      },
+      colors: {
+        customDark: '#09090B', 
       },
     },
   },
