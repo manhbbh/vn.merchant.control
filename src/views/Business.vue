@@ -21,7 +21,7 @@
       >
         <!-- Phần trái -->
         <nav
-          class="relative px-2 gap-1 h-100 sm:h-full flex-shrink-0 rounded-xl bg-white overflow-hidden flex flex-col mb-2 md:w-82 sm:mb-0 sm:w-1/2"
+          class="relative px-2 gap-1  sm:h-full flex-shrink-0 rounded-xl bg-white overflow-hidden flex flex-col mb-2 md:w-82 sm:mb-0 sm:w-1/2"
         >
           <!--  -->
           <ul class="pt-3 flex flex-col gap-1">
@@ -51,7 +51,7 @@
             </li>
           </ul>
           <!-- danh sách chi nhánh  -->
-          <ul v-if="hidden_business" class="flex flex-col gap-3 ml-8">
+          <ul v-if="hidden_business" class="flex flex-col gap-3 ml-8 pb-2">
             <li
             @click="detaiBranch(control.name_control)"
              :class="{ 'bg-slate-100': name_baranch === control.name_control }"
@@ -78,14 +78,7 @@
                 </p>
               </div>
             </li>
-          </ul>
-
-          <!--  -->
-          <p
-            class="h-5 text-slate-500 bg-icon-info text-sm px-2 flex items-center justify-start absolute bottom-3"
-          >
-            Doanh nghiệp đã xóa
-          </p>
+          </ul>       
         </nav>
         <!-- phần phải -->
         <div
