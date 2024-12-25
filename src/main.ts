@@ -8,6 +8,8 @@ import {
   loadLanguage,
   loadRouter,
 } from "@/service/core";
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
 // * Import css
 import './style.css'
 import "@/assets/css/tailwind.css";
@@ -15,6 +17,8 @@ import "@/assets/css/tailwind.css";
 import type { CbError } from "@/service/interface";
 
 const APP = createApp(App);
+// * Sử dụng vue Date Picker
+APP.component('VueDatePicker', VueDatePicker);
 
 waterfall(
   [

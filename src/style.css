@@ -12,3 +12,8 @@
 .sr-only{
     position:relative !important;
 }
+.dp__input_wrap .dp__pointer {
+   border-radius: 6px;
+   height: 36px;
+   border: 1px solid #d1d5db;
+}
