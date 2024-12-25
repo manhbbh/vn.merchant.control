@@ -4,6 +4,8 @@
     <InforGeneral></InforGeneral>
     <!-- 2 -->
    <ListBrach></ListBrach>
+   <!--  -->
+  <Holiday></Holiday>
     <!-- 3 -->
     <ListEmployee></ListEmployee>
     <!-- 4 -->
@@ -18,6 +20,7 @@ import InforGeneral from "@/components/enterpriseSettings/InforGeneral.vue";
 import ListBrach from "@/components/enterpriseSettings/ListBrach.vue";
 import ListEmployee from "@/components/enterpriseSettings/ListEmployee.vue";
 import Timeworking from "@/components/enterpriseSettings/Timeworking.vue";
+import Holiday from "@/components/enterpriseSettings/Holiday.vue";
 
 </script>
 
