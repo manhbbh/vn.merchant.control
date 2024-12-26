@@ -32,6 +32,12 @@ module.exports = {
         '12.5':'55px',
         '7.5':'30px',
         '11.5':'50px',
+        '115.5':'462px',
+        '42':'130px',
+        '100.5':'252px',
+
+
+
         
 
        
@@ -57,6 +63,7 @@ module.exports = {
         customDark: '#09090B', 
         muted:'#71717A',
         error: '#DC2626',
+        primary: '#18181B',
       },
     },
   },

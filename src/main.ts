@@ -13,13 +13,14 @@ import '@vuepic/vue-datepicker/dist/main.css'
 // * Import css
 import './style.css'
 import "@/assets/css/tailwind.css";
-
+/**thư viện ant*/ 
+import Antd from 'ant-design-vue';  
 import type { CbError } from "@/service/interface";
-
 const APP = createApp(App);
+// *Sử dụng Ant Design Vue
+APP.use(Antd); 
 // * Sử dụng vue Date Picker
 APP.component('VueDatePicker', VueDatePicker);
-
 waterfall(
   [
     (cb: CbError) => loadEnv(cb),

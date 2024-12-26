@@ -4,20 +4,17 @@
     <InforGeneral></InforGeneral>
     <!-- 2 -->
     <ListBrach></ListBrach>
-
-    <ListEmployee></ListEmployee>
-
-    <BusinessPeriod></BusinessPeriod>
     <!-- 3 -->
-    <Holiday></Holiday>
+    <ListEmployee></ListEmployee>
     <!-- 4 -->
-    
-     <!--  -->
-    <WorkingForm></WorkingForm>
+    <BusinessPeriod></BusinessPeriod>
     <!-- 5 -->
- 
+    <Holiday></Holiday>
     <!-- 6 -->
+    <WorkingForm></WorkingForm>
+    <!-- 7 -->
     <Timeworking></Timeworking>
+    <!-- 8 -->
     <Background></Background>
   </div>
 </template>

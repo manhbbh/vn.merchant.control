@@ -55,11 +55,11 @@ import { ref } from "vue";
 
 /**ICon*/
 import IconPeriod from "@/components/icons/IconPeriod.vue";
-import IconTick from "../icons/IconTick.vue";
-import IconPause from "@/components/icons/IconPause.vue";
 /**Biến*/
 const date = ref(new Date());
+/**biến lưu ngày bắt đầu*/ 
 const day_start = ref('20');
+/**biến lưu tháng bắt đầu*/ 
 const month_start = ref('04/09');
 </script>
 

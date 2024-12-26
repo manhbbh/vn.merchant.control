@@ -22,7 +22,4 @@ import Timeworking from "@/components/enterpriseSettings/Timeworking.vue";
 const props = defineProps<{
   detaiBranch: boolean
 }>(); 
-/**Biến*/
-const is_branch = ref(true);
-
 </script>

@@ -17,3 +17,18 @@
    height: 36px;
    border: 1px solid #d1d5db;
 }
+.ant-modal-close{
+
+    display: none;
+}
+.ant-modal-content{
+    padding: 0px !important;
+}
+.iconHidden .dp__input_icons{
+    display: none;
+}
+.dp__pointer {
+    padding: 5px 10px !important;
+    display: flex;
+    align-items: center;
+}

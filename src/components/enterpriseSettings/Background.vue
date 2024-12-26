@@ -209,7 +209,7 @@ import { ref } from "vue";
 /**ICon*/
 import IconBackground from "@/components/icons/IconBackground.vue";
 import avarta from "@/assets/imgs/ImageWeb.png";
-import avartaAPP from "@/assets/imgs/ImageApp.png";
+
 /**Danh sách */
 const list_background = ref([
   {

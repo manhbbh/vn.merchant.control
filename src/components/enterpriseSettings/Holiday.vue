@@ -139,7 +139,6 @@ import IconTicks from "@/components/icons/IconTicks.vue";
 import avarta from "@/assets/imgs/Avatar.png";
 
 /**Biến*/
-/**Biến*/
 const date = ref(new Date());
 /**Danh sách */
 const list_holiday = ref([

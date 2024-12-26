@@ -117,13 +117,12 @@
 <script setup lang="ts">
 import { ref } from "vue";
 /**Icon*/
-import IconPause from "@/components/icons/IconPause.vue";
 import IconTicks from "@/components/icons/IconTicks.vue";
 /**img*/
 import avarta from "@/assets/imgs/Avatar.png";
 import IconPapers from "../icons/IconPapers.vue";
 
-/**Biến*/
+
 /**Biến*/
 const date = ref(new Date());
 /**Danh sách */
