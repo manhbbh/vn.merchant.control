@@ -24,9 +24,9 @@
 .ant-modal-content{
     padding: 0px !important;
 }
-.iconHidden .dp__input_icons{
+/* .iconHidden .dp__input_icons{
     display: none;
-}
+} */
 .dp__pointer {
     padding: 5px 10px !important;
     display: flex;

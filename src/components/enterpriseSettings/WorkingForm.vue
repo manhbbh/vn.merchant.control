@@ -95,7 +95,7 @@
             <!-- Thao tác -->
             <td class="text-center py-2 hidden md:table-cell">
                 <div class="flex gap-2.5">
-                <button class="h-5 w-14.5 text-xs font-medium text-white rounded-md bg-blue-700">Cài đặt</button>
+                <button @click="showModal" class="h-5 w-14.5 text-xs font-medium text-white rounded-md bg-blue-700">Cài đặt</button>
                 <div
                   class="h-5 inline-flex text-red-500 bg-red-50 font-medium text-xs rounded-md px-2 py-0.5 items-center justify-center"
                 >
@@ -112,12 +112,78 @@
     </div>
     <!--  -->
   </div>
+  <a-modal
+    centered
+    :style="{ width: '1290px' }"
+    v-model:open="open"
+    :auto-focus="false"
+    @ok="handleOk"
+    :footer="null"
+  >
+    <div class="flex flex-col w-full">
+      <header
+        class="flex items-center justify-between  h-10 px-6 py-2"
+      >
+        <h3 class="h-6 text-base font-semibold">Hình thức làm việc</h3>
+        <button @click="open = false" class="p-1 rounded-md  hover:bg-gray-300 hover:text-black">
+          <IconClose class="w-5 h-5"></IconClose>
+        </button>
+      </header>
+      <!--  -->
+      <main class="flex flex-col p-6 border-b border-t gap-2 border-gray-200">
+        <div class="flex items-center gap-4 py-2">
+          <label
+              for="shortName"
+              class="block text-sm font-medium text-gray-700 h-5 flex-shrink-0"
+            >
+              Tiêu đề 
+            </label>
+            <input
+              type="text"
+              id="shortName"
+              placeholder="Nhập tiêu đề"
+              class="h-9 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            />
+        </div>
+        <!--  -->
+        <div class="flex items-center justify-between ">
+          <div class="flex items-center gap-2">
+            <IconPapers class="w-5 h-5 flex-shrink-0"></IconPapers>
+            <p class="text-sm font-medium">Thời gian làm việc trong ngày</p>
+          </div>
+          <!-- select -->
+          <label class="hidden sm:inline-flex h-9 items-center cursor-pointer">
+            <input
+              type="checkbox"
+              value=""
+              class="sr-only peer"
+              v-model="active"
+            />
+            <div
+              class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-black"
+            ></div>
+          </label>
+
+        </div>
+
+       
+      </main>
+      <footer class="flex items-center justify-between px-6 py-3">
+        <button class="px-4 text-sm font-medium text-customDark py-2 bg-slate-200 rounded-md">Đóng</button>
+
+       <div class="flex gap-5"> <button class="px-4 py-2 text-sm text-customDark font-medium bg-slate-200 rounded-md ">Khôi phục mặc định</button>
+        <button class="px-4 py-2 text-sm text-white font-medium bg-blue-700 rounded-md ">Lưu</button>
+      </div>
+      </footer>
+    </div>
+  </a-modal>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
 /**Icon*/
 import IconTicks from "@/components/icons/IconTicks.vue";
+import IconPaper from "@/components/icons/IconPapers.vue";
 /**img*/
 import avarta from "@/assets/imgs/Avatar.png";
 import IconPapers from "../icons/IconPapers.vue";
@@ -146,9 +212,21 @@ const list_holiday = ref([
     delete_holiday: "Xóa",
   },
 ]);
-
+/**biến*/ 
+const active = ref(true);
 /**danh sách ngày*/
 const list_day = ref([1, 2, 3, 4, 5, 6, 7, "C"]);
+
+/**Biến mở đóng modal*/
+const open = ref(false);
+/**Hàm mở modal*/ 
+function showModal() {
+  open.value = true;
+}
+/**Hàm đóng modal*/ 
+function handleOk() {
+  open.value = false;
+}
 </script>
 
 <style lang="scss" scoped></style>
