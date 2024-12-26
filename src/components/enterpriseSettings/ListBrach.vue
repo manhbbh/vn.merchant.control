@@ -21,28 +21,28 @@
           class="bg-slate-200 h-7 text-sm font-semibold sticky top-0 text-customDarkBlue flex-shrink-0 z-10"
         >
           <tr class="h-7">
-            <th class="px-5 text-left font-semibold text-slate-800">#</th>
-            <th class="px-5 text-left font-semibold text-slate-800">
+            <th class="w-6 text-left font-semibold text-slate-800">#</th>
+            <th class=" text-left font-semibold text-slate-800">
               Tên viết tắt
             </th>
-            <th class="px-5 text-left font-semibold text-slate-800">Địa chỉ</th>
+            <th class=" text-left font-semibold text-slate-800">Địa chỉ</th>
             <th
-              class="px-5 text-left font-semibold text-slate-800 hidden md:table-cell"
+              class=" text-left font-semibold text-slate-800 hidden md:table-cell"
             >
               Ngày thành lập
             </th>
             <th
-              class="px-5 text-left font-semibold text-slate-800 hidden md:table-cell"
+              class=" text-left font-semibold text-slate-800 hidden md:table-cell"
             >
               Số nhân sự
             </th>
             <th
-              class="px-5 text-left font-semibold text-slate-800 hidden md:table-cell"
+              class=" text-left font-semibold text-slate-800 hidden md:table-cell"
             >
               Trạng thái
             </th>
             <th
-              class="px-5 text-left font-semibold text-slate-800 hidden md:table-cell"
+              class=" text-left font-semibold text-slate-800 hidden md:table-cell"
             >
               Thao tác
             </th>
@@ -52,38 +52,38 @@
           <tr
             v-for="(business, index) in list_business"
             :key="index"
-            class="hover:bg-slate-100 text-black h-9 cursor-pointer text-sm overflow-y-auto h-full"
+            class="hover:bg-slate-100 text-black  cursor-pointer text-sm overflow-y-auto h-full"
           >
             <!-- stt-->
-            <td class="py-2 text-left px-5 items-center space-x-4">
+            <td class="py-2 text-left  items-center space-x-4">
               <p>{{ index + 1 }}</p>
             </td>
             <!-- tên viết tắt -->
-            <td class="text-left px-5 py-2 items-center space-x-4">
+            <td class="text-left  py-2 items-center space-x-4">
               <p>{{ business.name_business }}</p>
             </td>
 
             <!-- địa chỉ -->
-            <td class="text-left px-5 py-2">
+            <td class="text-left  py-2">
               <p>{{ business.address_business }}</p>
             </td>
 
             <!-- ngày thành lập -->
             <td
-              class="text-left px-5 py-2 text-customGray hidden md:table-cell text-15px"
+              class="text-left  py-2 text-customGray hidden md:table-cell text-15px"
             >
               <p>{{ business.day_business }}</p>
             </td>
 
             <!-- số nhân sự -->
-            <td class="text-left px-5 py-2 hidden md:table-cell">
+            <td class="text-left  py-2 hidden md:table-cell">
               <p class="text-sm">
                 {{ business.number_business }}
               </p>
             </td>
 
             <!-- trạng thái -->
-            <td class="text-left px-5 py-2 hidden md:table-cell">
+            <td class="text-left  py-2 hidden md:table-cell">
               <p
                 class="text-sm"
                 :class="
@@ -98,7 +98,7 @@
               </p>
             </td>
             <!-- thao tác -->
-            <td class="text-left px-5 py-2 hidden md:table-cell">
+            <td class="text-left  py-2 hidden md:table-cell">
               <div
                 class="h-5 w-15 flex justify-center px-2 bg-slate-100 rounded-md py-0.5"
               >

@@ -3,25 +3,36 @@
   <div class="flex-1 flex flex-col gap-2 overflow-y-auto">
     <InforGeneral></InforGeneral>
     <!-- 2 -->
-   <ListBrach></ListBrach>
-   <!--  -->
-  <Holiday></Holiday>
-    <!-- 3 -->
+    <ListBrach></ListBrach>
+
     <ListEmployee></ListEmployee>
+
+    <BusinessPeriod></BusinessPeriod>
+    <!-- 3 -->
+    <Holiday></Holiday>
     <!-- 4 -->
-   <Timeworking></Timeworking>
+    
+     <!--  -->
+    <WorkingForm></WorkingForm>
+    <!-- 5 -->
+ 
+    <!-- 6 -->
+    <Timeworking></Timeworking>
+    <Background></Background>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
 /**Component*/
-import InforGeneral from "@/components/enterpriseSettings/InforGeneral.vue"; 
+import InforGeneral from "@/components/enterpriseSettings/InforGeneral.vue";
 import ListBrach from "@/components/enterpriseSettings/ListBrach.vue";
 import ListEmployee from "@/components/enterpriseSettings/ListEmployee.vue";
 import Timeworking from "@/components/enterpriseSettings/Timeworking.vue";
 import Holiday from "@/components/enterpriseSettings/Holiday.vue";
-
+import WorkingForm from "@/components/enterpriseSettings/WorkingForm.vue";
+import BusinessPeriod from "@/components/enterpriseSettings/BusinessPeriod.vue";
+import Background from "@/components/enterpriseSettings/Background.vue";
 </script>
 
 <style lang="scss" scoped></style>
