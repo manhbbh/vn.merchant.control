@@ -1,5 +1,7 @@
 <template>
- <div class="py-3 px-2 sm:px-4 bg-white rounded-lg flex text-black items-start gap-2 sm:gap-3">
+  <div
+    class="py-3 px-2 sm:px-4 bg-white rounded-lg flex text-black items-start gap-2 sm:gap-3"
+  >
     <!-- icon -->
     <IconBackground class="w-5 h-5 flex-shrink-0"></IconBackground>
     <!--content  -->
@@ -7,7 +9,9 @@
       <div class="flex h-9 items-start justify-between">
         <h4 class="flex justify-start text-sm font-medium">Hình nền</h4>
         <div class="flex items-center gap-2.5">
-          <p class="text-sm font-medium text-slate-500 h-9 px-2 sm:px-6 sm:py-2">
+          <p
+            class="text-sm font-medium text-slate-500 h-9 px-2 sm:px-6 sm:py-2"
+          >
             Khôi phục mặc định
           </p>
           <button
@@ -23,18 +27,18 @@
           <p class="text-left text-xs font-medium">Web PC</p>
 
           <table class="min-w-full bg-white flex-1 z-10">
-            <thead
-              class="bg-slate-200 h-7 text-semibold rounded-2xl text-xs "
-            >
-              <tr class=" rounded-lg">
+            <thead class="bg-slate-200 h-7 text-semibold rounded-2xl text-xs">
+              <tr class="rounded-lg">
                 <th class="px-2 w-8 text-left font-semibold">STT</th>
                 <th class="text-center w-20 sm:w-25 font-semibold">Ảnh</th>
-                <th class="text-left w-34 font-semibold hidden md:table-cell ">Người tạo</th>
-                <th class="text-center w-15 font-semibold ">
-                  Hiển thị
+                <th class="text-left w-34 font-semibold hidden md:table-cell">
+                  Người tạo
                 </th>
+                <th class="text-center w-15 font-semibold">Hiển thị</th>
                 <th class="text-center w-15 font-semibold">Xóa</th>
-                <th class="text-center w-15 font-semibold hidden md:table-cell  "></th>
+                <th
+                  class="text-center w-15 font-semibold hidden md:table-cell"
+                ></th>
               </tr>
             </thead>
             <!--  -->
@@ -51,7 +55,7 @@
                   </p>
                 </td>
                 <!-- ảnh -->
-                <td class=" w-31 sm:w-25">
+                <td class="w-31 sm:w-25">
                   <div
                     class="h-16 text-center flex justify-center items-center"
                   >
@@ -64,10 +68,8 @@
                 </td>
 
                 <!--tên -->
-                <td class="hidden md:flex">
-                  <p class="text-sm text-left">
-                    {{ holiday.name_create_holiday }}
-                  </p>
+                <td class="text-left hidden md:table-cell">
+                  <p>{{ holiday.name_create_holiday }}</p>
                 </td>
 
                 <!--  -->
@@ -76,7 +78,12 @@
                   <label
                     class="inline-flex h-16 items-center justify-center cursor-pointer"
                   >
-                    <input type="checkbox" value="" class="sr-only peer" v-model="holiday.hidden_image" />
+                    <input
+                      type="checkbox"
+                      value=""
+                      class="sr-only peer"
+                      v-model="holiday.hidden_image"
+                    />
                     <div
                       class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-black"
                     ></div>
@@ -91,9 +98,8 @@
                     {{ holiday.delete_holiday }}
                   </div>
                 </td>
-                <td class="hidden md:flex">
-                  
-                </td>
+
+                <td class="hidden md:flex"></td>
               </tr>
             </tbody>
           </table>
@@ -109,12 +115,14 @@
               <tr class="h-7">
                 <th class="px-2 w-8 text-left font-semibold">STT</th>
                 <th class="text-center w-20 sm:w-25 font-semibold">Ảnh</th>
-                <th class="text-left w-34 font-semibold hidden md:table-cell">Người tạo</th>
-                <th class="text-center w-15 font-semibold ">
-                  Hiển thị
+                <th class="text-left w-34 font-semibold hidden md:table-cell">
+                  Người tạo
                 </th>
+                <th class="text-center w-15 font-semibold">Hiển thị</th>
                 <th class="text-center w-15 font-semibold">Xóa</th>
-                <th class="text-center w-15 font-semibold hidden md:table-cell"></th>
+                <th
+                  class="text-center w-15 font-semibold hidden md:table-cell"
+                ></th>
               </tr>
             </thead>
             <!--  -->
@@ -144,10 +152,9 @@
                 </td>
 
                 <!--tên -->
-                <td class="hidden md:flex">
-                  <p class="text-sm text-left">
-                    {{ holiday.name_create_holiday }}
-                  </p>
+                <!--tên -->
+                <td class="text-left hidden md:table-cell">
+                  <p>{{ holiday.name_create_holiday }}</p>
                 </td>
 
                 <!--  -->
@@ -156,7 +163,12 @@
                   <label
                     class="inline-flex h-16 items-center justify-center cursor-pointer"
                   >
-                    <input type="checkbox" value="" class="sr-only peer" v-model="holiday.hidden_image" />
+                    <input
+                      type="checkbox"
+                      value=""
+                      class="sr-only peer"
+                      v-model="holiday.hidden_image"
+                    />
                     <div
                       class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-black"
                     ></div>
@@ -171,22 +183,24 @@
                     {{ holiday.delete_holiday }}
                   </div>
                 </td>
-                <td class="hidden md:flex">
-                 
-                </td>
+                <td class="hidden md:flex"></td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
       <!--  -->
-      <div class="flex flex-col py-2 ">
+      <div class="flex flex-col py-2">
         <div class="flex flex-col sm:h-9 gap-4 sm:flex-row">
-          <div class="flex items-center justify-between gap-4 ">
+          <div class="flex items-center justify-between gap-4">
             <p class="text-sm font-medium">Link</p>
-            <input type="text" class="w-67 h-9 border rounded-md px-2 border-slate-300 " placeholder="https://">
+            <input
+              type="text"
+              class="w-67 h-9 border rounded-md px-2 border-slate-300"
+              placeholder="https://"
+            />
           </div>
-          <div class="flex items-center gap-4 ">
+          <div class="flex items-center gap-4">
             <p class="text-sm font-medium flex-shrink-0">Loại hình nền</p>
             <select
               id="from-time"
@@ -194,15 +208,20 @@
             >
               <option value="22">Web PC</option>
               <option value="21">Mobie App</option>
-             
+
               <!-- Add more options as needed -->
             </select>
           </div>
-          <button class="px-4 py-2 flex justify-center items-center rounded-lg bg-green-500 text-white ">
+          <button
+            class="px-4 py-2 flex justify-center items-center rounded-lg bg-green-500 text-white"
+          >
             Lưu
           </button>
         </div>
-        <p class=" h-4 text-xs text-left text-slate-700 hidden sm:flex">Lưu ý: Kích thước ảnh Web PC (2560 x  1440), Mobile App (440 x 956), loại File (.png , .jpg). Sử dụng https://imgbb.com để upload ảnh.</p>
+        <p class="h-4 text-xs text-left text-slate-700 hidden sm:flex">
+          Lưu ý: Kích thước ảnh Web PC (2560 x 1440), Mobile App (440 x 956),
+          loại File (.png , .jpg). Sử dụng https://imgbb.com để upload ảnh.
+        </p>
       </div>
     </div>
     <!--  -->
