@@ -27,7 +27,7 @@
             <th class="w-50 text-left font-semibold hidden md:table-cell">
               Người tạo
             </th>
-            <th class="w-25 text-left font-semibold ">
+            <th class="w-25 text-center sm:text-left font-semibold ">
               Xóa
             </th>
             <th
@@ -84,7 +84,7 @@
             </td>
 
             <!-- xóa -->
-            <td class="text-left py-2 ">
+            <td class="text-center sm:text-left py-2 ">
               
               <div
                 class="h-5 inline-flex text-red-500 bg-red-50 font-medium text-xs rounded-md px-2 py-0.5 items-center justify-center"

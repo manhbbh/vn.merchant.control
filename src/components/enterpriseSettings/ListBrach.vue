@@ -24,7 +24,7 @@
           <tr class="h-7">
             <th class="w-6 text-left font-semibold text-slate-800">#</th>
             <th class="text-left font-semibold text-slate-800">Tên viết tắt</th>
-            <th class="text-left font-semibold text-slate-800">Địa chỉ</th>
+            <th class="sm:text-left font-semibold text-slate-800">Địa chỉ</th>
             <th
               class="text-left font-semibold text-slate-800 hidden md:table-cell"
             >

@@ -31,7 +31,7 @@
           <tr class="h-7">
             <th class="px-2 w-18 text-left font-semibold">ID|Ngày</th>
             <th class="w-30 text-left font-semibold">Tiêu đề</th>
-            <th class="w-25 text-center font-semibold">Số giờ làm / Tuần</th>
+            <th class="w-25 text-center font-semibold hidden md:table-cell">Số giờ làm / Tuần</th>
             <th class="w-25 text-left font-semibold hidden md:table-cell">
               Thời gian
             </th>
@@ -63,7 +63,7 @@
             </td>
 
             <!-- số giờ làm -->
-            <td class="text-center  font-medium py-2">
+            <td class="text-center hidden md:table-cell font-medium py-2">
               <p>{{ holiday.day_create_holiday }}</p>
             </td>
             <!-- Thời gian -->
