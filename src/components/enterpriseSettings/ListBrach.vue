@@ -130,10 +130,10 @@
         </button>
       </header>
       <!--  -->
-      <main class="flex flex-col p-6 border-b border-t gap-2.5 border-gray-200">
-        <div class="flex gap-2.5">
+      <main class="flex flex-col p-6 border-b  border-t gap-2.5 border-gray-200">
+        <div class="flex gap-2.5 sm:flex-row flex-col">
           <!-- Tên viết tắt -->
-          <div class="w-115.5 text-left h-16 space-y-1">
+          <div class="sm:w-115.5 text-left h-16 space-y-1">
             <label
               for="shortName"
               class="block text-sm font-medium text-gray-700 h-5.5"
@@ -147,7 +147,7 @@
               class="h-9 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
             />
           </div>
-          <!-- Tên viết tắt -->
+          <!-- Tngày thành lập-->
           <div class="flex-1 text-left h-16 relative space-y-1">
             <label
               for="shortName"
@@ -169,9 +169,9 @@
           </div>
         </div>
         <!--  -->
-        <div class="flex gap-2.5">
-          <!-- Tên viết tắt -->
-          <div class="w-100.5 text-left h-16 space-y-1">
+        <div class="flex gap-2.5 sm:flex-row flex-col">
+          <!-- Địa chỉ -->
+          <div class="sm:w-100.5 text-left h-16 space-y-1">
             <label
               for="shortName"
               class="block text-sm font-medium text-gray-700 h-5.5"
@@ -185,8 +185,8 @@
               class="h-9 w-full border border-gray-300 rounded-md px-4  py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
             />
           </div>
-          <!-- Tên viết tắt -->
-          <div class="w-42 text-left h-16 relative space-y-1">
+          <!-- Phường -->
+          <div class="sm:w-42 text-left h-16 relative space-y-1">
             <label
               for="shortName"
               class="block text-sm font-medium text-gray-700 h-5.5"
@@ -194,7 +194,7 @@
               Phường/Xã
             </label>
             <select
-              class="appearance-none h-9 text-slate-600 outline-none w-42 text-sm rounded-lg border border-slate-300 px-7 sm:px-3 py-1.5"
+              class="appearance-none h-9 text-slate-600 outline-none w-full sm:w-42 text-sm rounded-lg border border-slate-300 px-7 sm:px-3 py-1.5"
             >
               <option value="BotBanHang">---Chọn---</option>
               <option value="Retion">Retion</option>
@@ -204,8 +204,8 @@
               class="w-4 h-4 text-slate-600 absolute right-10 sm:right-2 top-1/2"
             ></IconArrow>
           </div>
-          <!-- Tên viết tắt -->
-          <div class="w-42 text-left h-16 relative space-y-1">
+          <!-- Quận -->
+          <div class="sm:w-42 text-left h-16 relative space-y-1">
             <label
               for="shortName"
               class="block text-sm font-medium text-gray-700 h-5.5"
@@ -213,7 +213,7 @@
               Quận/Huyện
             </label>
             <select
-              class="appearance-none h-9 text-slate-600 outline-none w-42 text-sm rounded-lg border border-slate-300 px-7 sm:px-3 py-1.5"
+              class="appearance-none h-9 text-slate-600 outline-none w-full sm:w-42 text-sm rounded-lg border border-slate-300 px-7 sm:px-3 py-1.5"
             >
               <option value="BotBanHang">---Chọn---</option>
               <option value="Retion">Retion</option>
@@ -223,8 +223,8 @@
               class="w-4 h-4 text-slate-600 absolute right-10 sm:right-2 top-1/2"
             ></IconArrow>
           </div>
-          <!-- Tên viết tắt -->
-          <div class="w-42 text-left h-16 relative space-y-1">
+          <!-- Thành phố -->
+          <div class="sm:w-42 text-left h-16 relative space-y-1">
             <label
               for="shortName"
               class="block text-sm font-medium text-gray-700 h-5.5"
@@ -232,7 +232,7 @@
               Tỉnh/Thành phố
             </label>
             <select
-              class="appearance-none h-9 text-slate-600 outline-none w-42 text-sm rounded-lg border border-slate-300 px-7 sm:px-3 py-1.5"
+              class="appearance-none h-9 text-slate-600 outline-none w-full sm:w-42 text-sm rounded-lg border border-slate-300 px-7 sm:px-3 py-1.5"
             >
               <option value="BotBanHang">---Chọn---</option>
               <option value="Retion">Retion</option>

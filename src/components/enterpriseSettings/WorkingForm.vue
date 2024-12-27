@@ -38,7 +38,7 @@
             <th class="w-30 text-left font-semibold hidden md:table-cell">
               Người tạo
             </th>
-            <th class="w-25 text-center font-semibold hidden md:table-cell">
+            <th class="w-25 text-center font-semibold ">
               Thao tác
             </th>
             <th class="w-25 text-left font-semibold hidden md:table-cell"></th>
@@ -63,7 +63,7 @@
             </td>
 
             <!-- số giờ làm -->
-            <td class="text-center font-medium py-2">
+            <td class="text-center  font-medium py-2">
               <p>{{ holiday.day_create_holiday }}</p>
             </td>
             <!-- Thời gian -->
@@ -107,8 +107,8 @@
             </td>
 
             <!-- Thao tác -->
-            <td class="text-center py-2 hidden md:table-cell">
-              <div class="flex gap-2.5 justify-center">
+            <td class="text-center py-2 ">
+              <div class="flex gap-1 sm:gap-2.5 justify-center">
                 <button
                   @click="showModal"
                   class="h-5 w-14.5 text-xs font-medium text-white rounded-md bg-blue-700"
