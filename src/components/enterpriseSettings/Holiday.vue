@@ -1,7 +1,7 @@
 <template>
-  <div class="py-3 px-4 bg-white rounded-lg flex text-black items-start gap-3">
+  <div class="py-3 px-2 sm:px-4 bg-white rounded-lg flex text-black items-start gap-2 sm:gap-3">
     <!-- icon -->
-    <IconCalendar class="w-5 h-5"></IconCalendar>
+    <IconCalendar class="w-5 h-5 flex-shrink-0"></IconCalendar>
     <!--content  -->
     <div class="flex flex-col gap-2.5 w-full">
       <div class="flex h-9 items-start justify-between">
@@ -27,7 +27,7 @@
             <th class="w-50 text-left font-semibold hidden md:table-cell">
               Người tạo
             </th>
-            <th class="w-25 text-left font-semibold hidden md:table-cell">
+            <th class="w-25 text-left font-semibold ">
               Xóa
             </th>
             <th
@@ -61,7 +61,7 @@
 
             <!-- Người tạo -->
             <td
-              class="text-left py-2 text-customGray flex-col flex text-15px"
+              class="text-left py-2 text-customGray flex-col text-15px hidden md:flex"
             >
               <div class="flex items-center gap-1 h-5">
                 <img
@@ -84,7 +84,7 @@
             </td>
 
             <!-- xóa -->
-            <td class="text-left py-2 hidden md:table-cell">
+            <td class="text-left py-2 ">
               
               <div
                 class="h-5 inline-flex text-red-500 bg-red-50 font-medium text-xs rounded-md px-2 py-0.5 items-center justify-center"
@@ -94,32 +94,32 @@
             </td>
             <!-- stt-->
             <td
-              class="py-2 text-left px-3 w-18 items-center justify-center"
+              class="py-2 text-left px-3 w-18 items-center justify-center hidden md:flex"
             ></td>
           </tr>
         </tbody>
       </table>
       <!--  -->
-      <div class="flex gap-4">
+      <div class="flex flex-col gap-4 sm:flex-row">
         <!-- Ngày thành lập-->
         <div class="flex text-left h-9 items-center gap-4">
           <label
             for="taxCode"
-            class="block text-sm font-medium texet-black px-1 "
+            class="block text-sm font-medium flex-shrink-0 texet-black px-1 "
           >
             Tiêu đề
           </label>
           <input class="border border-gray-300 px-3 rounded-md w-67 h-9 " placeholder="Nhập tiêu đề ngày nghỉ" type="text">
         </div>
         <!-- Ngày thành lập-->
-        <div class="flex text-lefth-9 items-center gap-4">
+        <div class="flex text-lefth-9 items-center gap-7 sm:gap-4">
           <label
             for="taxCode"
-            class="block text-sm font-medium text-gray-700 h-5.5"
+            class="block text-sm font-medium text-gray-700 px-1 h-5.5"
           >
             Ngày 
           </label>  
-          <VueDatePicker class="w-39 h-9" v-model="date"  placeholder="Chọn ngày" auto-apply :enable-time-picker="false" />
+          <VueDatePicker class=" iconHidden w-full sm:w-39 sm:h-9" v-model="date"  placeholder="Chọn ngày" auto-apply :enable-time-picker="false" />
         </div>
 
         <!--  -->

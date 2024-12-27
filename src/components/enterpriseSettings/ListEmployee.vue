@@ -1,5 +1,5 @@
 <template>
-  <div class="py-3 px-4 bg-white rounded-lg flex text-black items-start gap-3">
+  <div class="py-3 px-2 sm:px-4 bg-white rounded-lg flex text-black items-start gap-2 sm:gap-3">
     <!-- icon -->
     <IconEmploye class="w-5 h-5"></IconEmploye>
     <!--content  -->
@@ -7,11 +7,11 @@
       <div class="flex h-5 items-center justify-between mb-3">
         <h4 class="flex justify-start text-sm font-medium">Nhân sự công ty</h4>
         <div
-          class="flex items-center gap-2 bg-slate-100 py-1 px-2 h-5 cursor-pointer rounded-md"
+          class="flex items-center gap-2 bg-slate-100 py-3 px-3 h-5 cursor-pointer rounded-md"
         >
           <!-- icon -->
-          <IconAdd class="w-3 h-3"></IconAdd>
-          <p class="text-xs">Thêm nhân viên</p>
+          <IconAdd class="w-4 h-4"></IconAdd>
+          <p class="text-xs font-medium">Thêm chi nhánh</p>
         </div>
       </div>
       <!--  -->

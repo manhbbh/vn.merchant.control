@@ -1,13 +1,13 @@
 <template>
-  <div class="py-3 px-4 bg-white rounded-lg flex items-start gap-3">
+ <div class="py-3 px-2 sm:px-4 bg-white rounded-lg flex text-black items-start gap-2 sm:gap-3">
     <!-- icon -->
-    <IconBackground class="w-5 h-5"></IconBackground>
+    <IconBackground class="w-5 h-5 flex-shrink-0"></IconBackground>
     <!--content  -->
     <div class="flex-col flex-1">
       <div class="flex h-9 items-start justify-between">
         <h4 class="flex justify-start text-sm font-medium">Hình nền</h4>
         <div class="flex items-center gap-2.5">
-          <p class="text-sm font-medium text-slate-500 h-9 px-6 py-2">
+          <p class="text-sm font-medium text-slate-500 h-9 px-2 sm:px-6 sm:py-2">
             Khôi phục mặc định
           </p>
           <button
@@ -17,8 +17,8 @@
           </button>
         </div>
       </div>
-      <!-- phần các ô input  -->
-      <div class="flex gap-3">
+      <!-- hai bảng -->
+      <div class="flex flex-col gap-3 sm:flex-row">
         <div class="flex flex-1 gap-1 flex-col">
           <p class="text-left text-xs font-medium">Web PC</p>
 
@@ -28,13 +28,13 @@
             >
               <tr class=" rounded-lg">
                 <th class="px-2 w-8 text-left font-semibold">STT</th>
-                <th class="text-center w-25 font-semibold">Ảnh</th>
-                <th class="text-left w-34 font-semibold">Người tạo</th>
-                <th class="text-center w-15 font-semibold hidden md:table-cell">
+                <th class="text-center w-20 sm:w-25 font-semibold">Ảnh</th>
+                <th class="text-left w-34 font-semibold hidden md:table-cell ">Người tạo</th>
+                <th class="text-center w-15 font-semibold ">
                   Hiển thị
                 </th>
                 <th class="text-center w-15 font-semibold">Xóa</th>
-                <th class="text-center w-15 font-semibold"></th>
+                <th class="text-center w-15 font-semibold hidden md:table-cell  "></th>
               </tr>
             </thead>
             <!--  -->
@@ -51,7 +51,7 @@
                   </p>
                 </td>
                 <!-- ảnh -->
-                <td class="">
+                <td class=" w-31 sm:w-25">
                   <div
                     class="h-16 text-center flex justify-center items-center"
                   >
@@ -64,7 +64,7 @@
                 </td>
 
                 <!--tên -->
-                <td class="">
+                <td class="hidden md:flex">
                   <p class="text-sm text-left">
                     {{ holiday.name_create_holiday }}
                   </p>
@@ -90,6 +90,9 @@
                   >
                     {{ holiday.delete_holiday }}
                   </div>
+                </td>
+                <td class="hidden md:flex">
+                  
                 </td>
               </tr>
             </tbody>
@@ -105,13 +108,13 @@
             >
               <tr class="h-7">
                 <th class="px-2 w-8 text-left font-semibold">STT</th>
-                <th class="text-center w-25 font-semibold">Ảnh</th>
-                <th class="text-left w-34 font-semibold">Người tạo</th>
-                <th class="text-center w-15 font-semibold hidden md:table-cell">
+                <th class="text-center w-20 sm:w-25 font-semibold">Ảnh</th>
+                <th class="text-left w-34 font-semibold hidden md:table-cell">Người tạo</th>
+                <th class="text-center w-15 font-semibold ">
                   Hiển thị
                 </th>
                 <th class="text-center w-15 font-semibold">Xóa</th>
-                <th class="text-center w-15 font-semibold"></th>
+                <th class="text-center w-15 font-semibold hidden md:table-cell"></th>
               </tr>
             </thead>
             <!--  -->
@@ -128,7 +131,7 @@
                   </p>
                 </td>
                 <!-- ảnh -->
-                <td class="">
+                <td class="w-20">
                   <div
                     class="h-16 text-center flex justify-center items-center"
                   >
@@ -141,7 +144,7 @@
                 </td>
 
                 <!--tên -->
-                <td class="">
+                <td class="hidden md:flex">
                   <p class="text-sm text-left">
                     {{ holiday.name_create_holiday }}
                   </p>
@@ -168,6 +171,9 @@
                     {{ holiday.delete_holiday }}
                   </div>
                 </td>
+                <td class="hidden md:flex">
+                 
+                </td>
               </tr>
             </tbody>
           </table>
@@ -175,16 +181,16 @@
       </div>
       <!--  -->
       <div class="flex flex-col py-2 ">
-        <div class="flex h-9 gap-4 ">
-          <div class="flex items-center gap-4 ">
+        <div class="flex flex-col sm:h-9 gap-4 sm:flex-row">
+          <div class="flex items-center justify-between gap-4 ">
             <p class="text-sm font-medium">Link</p>
             <input type="text" class="w-67 h-9 border rounded-md px-2 border-slate-300 " placeholder="https://">
           </div>
           <div class="flex items-center gap-4 ">
-            <p class="text-sm font-medium">Loại hình nền</p>
+            <p class="text-sm font-medium flex-shrink-0">Loại hình nền</p>
             <select
               id="from-time"
-              class="mr-0 flex items-center h-9 w-30 rounded-md border px-3 py-2"
+              class="mr-0 flex items-center h-9 w-full sm:w-30 rounded-md border px-3 py-2"
             >
               <option value="22">Web PC</option>
               <option value="21">Mobie App</option>
@@ -196,7 +202,7 @@
             Lưu
           </button>
         </div>
-        <p class=" h-4 text-xs text-left text-slate-700">Lưu ý: Kích thước ảnh Web PC (2560 x  1440), Mobile App (440 x 956), loại File (.png , .jpg). Sử dụng https://imgbb.com để upload ảnh.</p>
+        <p class=" h-4 text-xs text-left text-slate-700 hidden sm:flex">Lưu ý: Kích thước ảnh Web PC (2560 x  1440), Mobile App (440 x 956), loại File (.png , .jpg). Sử dụng https://imgbb.com để upload ảnh.</p>
       </div>
     </div>
     <!--  -->

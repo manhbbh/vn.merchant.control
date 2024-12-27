@@ -16,6 +16,10 @@
     <Timeworking></Timeworking>
     <!-- 8 -->
     <Background></Background>
+    <!-- nút lưu -->
+    <div class="py-2 px-3  bg-white rounded-lg flex  items-center justify-end ">
+      <button class="h-9 text-sm font-medium bg-blue-700 px-4 py-2 flex justify-center items-center rounded-lg text-white">Lưu thiết lập</button>
+    </div>
   </div>
 </template>
 

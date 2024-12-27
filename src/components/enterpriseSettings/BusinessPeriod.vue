@@ -1,7 +1,7 @@
 <template>
-  <div class="py-3 px-4 bg-white rounded-lg flex items-start gap-3">
+ <div class="py-3 px-2 sm:px-4 bg-white rounded-lg flex text-black items-start gap-2 sm:gap-3">
     <!-- icon -->
-    <IconPeriod class="w-5 h-5"></IconPeriod>
+    <IconPeriod class="w-5 h-5 flex-shrink-0"></IconPeriod>
     <!--content  -->
     <div class="flex-col flex-1  ">
       <div class="flex flex-col items-start mb-3">
@@ -13,7 +13,7 @@
         </p>
       </div>
       <!-- phần các ô input  -->
-      <div class="flex gap-3 ">
+      <div class="flex flex-col gap-3 sm:flex-row">
         <div class="flex flex-col gap-1 text-sm items-start w-80 overflow-hidden ">
           <h3 class="text-sm font-medium">
             Tháng<span class="text-error"> *</span>

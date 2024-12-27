@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="py-3 px-4 bg-white rounded-lg flex items-start gap-1 sm:gap-3 text-customDark"
-  >
+ <div class="py-3 px-2 sm:px-4 bg-white rounded-lg flex text-black items-start gap-2 sm:gap-3">
     <!-- icon -->
     <IconTime class="w-5 h-5 flex-shrink-0"></IconTime>
     <!--content  -->
@@ -55,7 +53,7 @@
               <option value="AppOn">AppOn</option>
             </select>
             <IconArrow
-              class="w-4 h-4 text-slate-600 absolute right-10 sm:right-2 top-2.5"
+              class="w-4 h-4 text-slate-600 absolute right-12 sm:right-2 top-2.5"
             ></IconArrow>
           </div>
           <!--  -->

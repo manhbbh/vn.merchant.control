@@ -1,5 +1,5 @@
 <template>
-  <div class="py-3 px-4 bg-white rounded-lg flex items-start gap-3">
+ <div class="py-3 px-2 sm:px-4 bg-white rounded-lg flex text-black items-start gap-2 sm:gap-3">
     <!-- icon -->
     <IconInformation class="w-5 h-5"></IconInformation>
     <!--content  -->
