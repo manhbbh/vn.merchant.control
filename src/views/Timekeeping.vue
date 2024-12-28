@@ -10,7 +10,7 @@
         <!-- back và cài đặt chấm công -->
         <div class="flex gap-2.5 items-center h-7.5 justify-start">
           <IconBack class="h-5 w-5 flex-shrink-0"></IconBack>
-          <h2 class="text-lg font-medium">Cài đặt chấm công</h2>
+          <h2 class="text-lg font-medium hidden sm:flex">Cài đặt chấm công</h2>
         </div>
         <!-- copy nút lưu  -->
         <div class="flex gap-7 items-center justify-start h-10">

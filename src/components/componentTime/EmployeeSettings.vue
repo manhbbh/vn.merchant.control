@@ -3,50 +3,49 @@
     class="py-3 px-2 sm:px-4 border border-gray-200 rounded-lg flex text-black items-start gap-2 sm:gap-3"
   >
     <!-- icon -->
-    <IconEmployee class="w-5 h-5"></IconEmployee>
+    <IconEmployee class="w-5 h-5 flex-shrink-0"></IconEmployee>
     <!--content  -->
     <div class="flex-col flex-1 gap-3">
       <div class="flex h-5 items-center mb-3">
         <h4 class="flex justify-start text-sm font-medium">Nhân sự</h4>
       </div>
       <!-- phần các ô input  -->
-      <!--  -->
       <table
         class="min-w-full table-fixed border-none bg-white rounded-lg z-10"
       >
-        <thead
+      <thead
           class="bg-slate-200 h-7 text-xs font-semibold sticky top-0 text-customDarkBlue flex-shrink-0 z-10"
         >
-          <tr class="h-7">
-            <th class="w-18 text-center font-semibold">ID|Ngày</th>
-            <th class="w-40 text-left font-semibold">Nhân sự</th>
-            <th class="w-20 text-left font-semibold hidden md:table-cell">
+          <tr class="h-7 flex gap-x-12   items-center ">
+            <th class="w-18   text-center font-semibold">ID|Ngày</th>
+            <th class="w-50 text-left font-semibold ">Nhân sự</th>
+            <th class="w-50 text-left font-semibold hidden md:block ">
               Hình thức làm việc
             </th>
-            <th class="w-42 text-left font-semibold hidden md:table-cell">
+            <th class="w-42 text-left font-semibold hidden md:block">
               Lương P1
             </th>
-            <th class="w-50 text-left font-semibold hidden md:table-cell">
+            <th class="w-50 text-left font-semibold hidden md:block">
               Cập nhật lần cuối
             </th>
-            <th class="w-100 text-left font-semibold hidden md:table-cell"></th>
+           
           </tr>
         </thead>
-        <!--  -->
         <tbody>
           <tr
             v-for="(holiday, index) in list_employee"
             :key="index"
-            class=" last:border-0 text-black h-15 cursor-pointer text-sm border-b border-gray-200 overflow-y-auto"
+            class="flex items-center gap-x-12 text-black h-15 cursor-pointer text-sm border-b border-gray-200"
           >
-            <!-- stt-->
-            <td class="text-center items-start justify-center">
+            <!-- STT -->
+            <td class="w-18 text-center items-start justify-center ">
               <p class="flex px-4 text-blue-500 justify-center font-semibold">
                 {{ index + 1 }}
               </p>
             </td>
-            <!-- nhân sự -->
-            <td class="text-left py-2 text-customGray hidden md:table-cell">
+
+            <!-- Nhân sự -->
+            <td class="w-50 text-left py-2 text-customGray">
               <div class="flex items-center gap-1 h-5">
                 <img
                   class="h-4 w-4 rounded-full"
@@ -77,10 +76,10 @@
               </div>
             </td>
 
-            <!-- hình thức làm việc -->
-            <td class="text-center hidden md:table-cell font-medium py-2">
-              <!-- select -->
-              <div class="relative w-full flex justify-start sm:w-50">
+            <!-- Hình thức làm việc -->
+            <td class="w-50 text-left hidden md:block">
+               <!-- select -->
+               <div class="relative w-full flex justify-start sm:w-50">
                 <select
                 v-model="holiday.working_form"
                   class="appearance-none h-10 text-black outline-none sm:w-50 text-sm rounded-md border border-slate-300 px-7 sm:px-3 py-2"
@@ -97,27 +96,27 @@
               </div>
               <!--  -->
             </td>
-            <!-- Lương p1 -->
-            <td class="text-left font-medium py-2 hidden md:table-cell">
+
+            <!-- Lương P1 -->
+            <td class="w-42 text-left hidden md:block">
               <div
-                class="flex w-42 items-center border border-gray-300 h-9 py-2 rounded-md"
+                class="flex items-center border border-gray-300 h-9 py-2 rounded-md"
               >
                 <input
                   type="text"
-                  class="outline-none  text-customDark pl-3 w-25 text-sm"
-                  placeholder=""
+                  class="outline-none text-customDark pl-3 w-full text-sm"
                   v-model="holiday.wage_employee"
                 />
                 <div
-                  class="border-l w-8 border-gray-300 text-muted flex items-center justify-center h-9"
+                  class="border-l border-gray-300 text-muted flex items-center justify-center w-8 h-9"
                 >
                   đ
                 </div>
               </div>
             </td>
 
-            <!-- cập nhật lần cuối -->
-            <td class="text-left py-2 text-customGray hidden md:table-cell">
+            <!-- Cập nhật lần cuối -->
+            <td class="w-50 text-left py-2 text-customGray hidden md:block">
               <div class="flex items-center gap-1 h-5">
                 <img
                   class="h-4 w-4 rounded-full"
@@ -138,11 +137,12 @@
               </div>
             </td>
 
-            <!-- stt-->
-            <td class="text-left py-2 hidden md:table-cell"></td>
+          
           </tr>
         </tbody>
       </table>
+      <!--  -->
+     
     </div>
     <!--  -->
   </div>

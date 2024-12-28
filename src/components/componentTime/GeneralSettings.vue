@@ -29,7 +29,7 @@
         <!-- nội dung -->
          <div class="flex flex-col items-start gap-1.5 ">
           <p class="h-5 text-sm font-medium text-customDark"> Gửi thông báo </p>
-          <p class="h-5 text-sm text-muted"> Hệ thống tự động gửi thông báo chấm công qua Telegram.</p>
+          <p class="h-5 text-sm text-muted hidden sm:flex"> Hệ thống tự động gửi thông báo chấm công qua Telegram.</p>
 
          </div>
       </div>
