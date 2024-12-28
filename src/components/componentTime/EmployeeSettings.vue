@@ -417,10 +417,10 @@ const list_employee = ref([
     wage_employee: "5.100.000",
   },
 ]);
-/**biến*/
-const active = ref(true);
 /***Danh sách ngày*/ 
 const list_day = ref([1, 2, 3, 4, 5, 6, 7, "C"]);
+/**biến*/
+const active = ref(true);
 /**Biến*/
 const name_branch= ref("Toàn thời gian - Sales")
 /**danh sách thứ*/ 
