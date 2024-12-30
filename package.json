@@ -21,7 +21,7 @@
     "async": "^3.2.4",
     "autoprefixer": "^10.4.13",
     "axios": "^1.7.9",
-    "date-fns": "2.30.0",
+    "date-fns": "^4.1.0",
     "lodash": "^4.17.21",
     "pinia": "^2.0.28",
     "postcss": "^8.4.19",

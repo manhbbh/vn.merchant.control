@@ -83,7 +83,7 @@
             <!-- ngày tạo -->
             <td class="text-left px-3 py-2 hidden md:table-cell">
               <p class="text-sm" v-if="employee.createdAt">
-                {{ format(new Date(employee.createdAt), 'dd/MM/yyyy') }}
+                {{ format(employee.createdAt, 'dd/MM/yyyy') }}
               </p>
             </td>
 
