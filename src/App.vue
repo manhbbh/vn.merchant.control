@@ -45,10 +45,46 @@ onMounted(() => {
 /** lấy các dữ liệu thiết lập trừ thiết lập chung */
 async function getSettings() {
   try {
-    await getSetting({
+    const RES = await getSetting({
       body: {
         business_id: commonStore.business_id,
       },
+    })
+    // nếu không có dữ liệu thì thôi
+    if (!RES.data) return
+
+    console.log(RES.data)
+
+    RES.data?.forEach((item: any) => {
+      if (item.setting_type === 'monthly_business_period') {
+        commonStore.monthly_business_period = item
+        return
+      }
+
+      if (item.setting_type === 'year_business_period') {
+        commonStore.year_business_period = item
+        return
+      }
+
+      if (item.setting_type === 'holiday') {
+        commonStore.holidays = item
+        return
+      }
+
+      if (item.setting_type === 'form_of_work') {
+        commonStore.form_of_work = item
+        return
+      }
+
+      if (item.setting_type === 'background') {
+        commonStore.background = item
+        return
+      }
+
+      if (item.setting_type === 'working_time') {
+        commonStore.working_time = item
+        return
+      }
     })
   } catch (e) {
     $toast.error(e)
@@ -64,19 +100,25 @@ async function getBusinessInfos() {
       },
     })
 
-    if(!RES.data) return
-    
-    console.log(RES.data?.users);
-    
-
+    // nếu không có dữ liệu thì thôi
+    if (!RES.data) return
     // nếu có thông tin doanh nghiệp thì lưu lại
-    if(RES.data?.business) commonStore.business_data = RES.data?.business
+    if (RES.data?.business) commonStore.business_data = RES.data?.business
     // nếu có danh sách chi nhanh thì lưu lại
-    if(RES.data?.branches) commonStore.branches = RES.data?.branches
+    if (RES.data?.branches) commonStore.branches = RES.data?.branches
     // nếu có danh sách nhân viên thì lưu lại
-    if(RES.data?.users) commonStore.employees = RES.data?.users
-    
-
+    if (RES.data?.users) commonStore.users = RES.data?.users
+    // nếu có danh sách nhân sự thì lưu lại
+    if (RES.data?.employees)
+      commonStore.employees = RES.data?.employees?.reduce(
+        (acc: any, curr: any) => {
+          acc[curr.user_id] = curr
+          return acc
+        },
+        {}
+      )
+      console.log(commonStore.employees);
+      
   } catch (e) {
     $toast.error(e)
   }

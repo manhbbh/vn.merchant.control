@@ -44,7 +44,7 @@
             <!--  -->
             <tbody>
               <tr
-                v-for="(holiday, index) in list_background"
+                v-for="(holiday, index) in background?.setting_data?.pc"
                 :key="index"
                 class="text-black h-15 cursor-pointer text-sm border-b border-gray-200 overflow-y-auto"
               >
@@ -60,7 +60,7 @@
                     class="h-16 text-center flex justify-center items-center"
                   >
                     <img
-                      :src="holiday.avatar_employee"
+                      :src="holiday?.link || ''"
                       class="w-31 h-12.5 flex justify-center rounded"
                       alt=""
                     />
@@ -69,7 +69,7 @@
 
                 <!--tên -->
                 <td class="text-left hidden md:table-cell">
-                  <p>{{ holiday.name_create_holiday }}</p>
+                  <p>{{ getInfo(holiday?.created_by, 'name') }}</p>
                 </td>
 
                 <!--  -->
@@ -82,7 +82,7 @@
                       type="checkbox"
                       value=""
                       class="sr-only peer"
-                      v-model="holiday.hidden_image"
+                      v-model="holiday.active"
                     />
                     <div
                       class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-black"
@@ -95,7 +95,7 @@
                   <div
                     class="h-6 inline-flex text-red-500 bg-red-50 font-medium text-xs rounded-md px-2 py-0.5 items-center justify-center"
                   >
-                    {{ holiday.delete_holiday }}
+                    Xóa
                   </div>
                 </td>
 
@@ -128,7 +128,7 @@
             <!--  -->
             <tbody>
               <tr
-                v-for="(holiday, index) in list_background"
+                v-for="(holiday, index) in background?.setting_data?.mobile"
                 :key="index"
                 class="text-black h-15 cursor-pointer text-sm border-b border-gray-200 overflow-y-auto"
               >
@@ -144,7 +144,7 @@
                     class="h-16 text-center flex justify-center items-center"
                   >
                     <img
-                      :src="holiday.avatar_employee"
+                      :src="holiday.link"
                       class="w-7.5 h-11.5 flex overflow-hidden object-cover justify-center rounded"
                       alt=""
                     />
@@ -154,7 +154,7 @@
                 <!--tên -->
                 <!--tên -->
                 <td class="text-left hidden md:table-cell">
-                  <p>{{ holiday.name_create_holiday }}</p>
+                  <p>{{ getInfo(holiday?.created_by, 'name')  }}</p>
                 </td>
 
                 <!--  -->
@@ -167,7 +167,7 @@
                       type="checkbox"
                       value=""
                       class="sr-only peer"
-                      v-model="holiday.hidden_image"
+                      v-model="holiday.active"
                     />
                     <div
                       class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-black"
@@ -180,7 +180,7 @@
                   <div
                     class="h-6 inline-flex text-red-500 bg-red-50 font-medium text-xs rounded-md px-2 py-0.5 items-center justify-center"
                   >
-                    {{ holiday.delete_holiday }}
+                    Xóa
                   </div>
                 </td>
                 <td class="hidden md:flex"></td>
@@ -208,8 +208,6 @@
             >
               <option value="22">Web PC</option>
               <option value="21">Mobie App</option>
-
-              <!-- Add more options as needed -->
             </select>
           </div>
           <button
@@ -229,7 +227,11 @@
 </template>
 
 <script setup lang="ts">
+import { useCommonStore } from "@/stores";
+
+// * libraries
 import { ref } from "vue";
+import { storeToRefs } from "pinia";
 
 /**ICon*/
 import IconBackground from "@/components/icons/IconBackground.vue";
@@ -253,4 +255,20 @@ const list_background = ref([
     delete_holiday: "Xóa",
   },
 ]);
+
+// * store
+const commonStore = useCommonStore()
+const { background, employees } = storeToRefs(commonStore)
+
+function getInfo(id?: string, type?:string) {
+  if(!id) return
+
+  /** thông tin nhân viên */
+  const EMPLOYEE = employees.value?.[id]
+
+  if(type === 'name')
+    return `${EMPLOYEE?.first_name || ''} ${EMPLOYEE?.last_name || ''}`?.trim()
+
+  return EMPLOYEE?.avatar
+}
 </script>

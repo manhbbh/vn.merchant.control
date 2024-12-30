@@ -50,7 +50,7 @@
         <!--  -->
         <tbody>
           <tr
-            v-for="(employee, index) in Object.values(employees)"
+            v-for="(employee, index) in Object.values(users)"
             :key="index"
             class="hover:bg-slate-100 text-black h-9 cursor-pointer text-sm overflow-y-auto"
           >
@@ -139,6 +139,6 @@ import IconAdd from "@/components/icons/IconAdd.vue";
 
 // * store
 const commonStore = useCommonStore()
-const { employees } = storeToRefs(commonStore)
+const { users } = storeToRefs(commonStore)
 
 </script>

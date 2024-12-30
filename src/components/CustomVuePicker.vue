@@ -3,7 +3,8 @@
     v-model="time_picker"
     @update:model-value="props.handleDate"
     :enable-time-picker="false"
-    :format="'dd/MM/yyyy'"
+    :format="format || 'dd/MM/yyyy'"
+    :hide-input-icon="hidden_icon || false"
     auto-apply
     class="rounded-md datepicker"
 		:ui="{
@@ -25,6 +26,8 @@ const props = defineProps<{
   min_date?: Date
   clearable?: boolean
   readonly?: boolean
+  format?: string
+  hidden_icon?: boolean
 }>()
 
 /** ngày được chọn */
@@ -44,7 +47,10 @@ const time_picker = defineModel({
   }
 
   input {
-    border-radius: 6px;
+    font-size: 14px;
+  }
+
+  .dp__menu_inner{
     font-size: 14px;
   }
 }

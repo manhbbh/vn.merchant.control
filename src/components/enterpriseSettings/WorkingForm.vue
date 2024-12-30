@@ -18,6 +18,7 @@
           </p>
           <button
             class="h-9 w-18 text-sm font-medium text-white rounded-md bg-black"
+            @click="open = true"
           >
             Thêm
           </button>
@@ -47,7 +48,9 @@
         <!--  -->
         <tbody>
           <tr
-            v-for="(holiday, index) in list_holiday"
+            v-for="(holiday, index) in Object.keys(
+              form_of_work?.setting_data || {}
+            )"
             :key="index"
             class="hover:bg-slate-100 text-black h-15 cursor-pointer text-sm border-b border-gray-200 overflow-y-auto"
           >
@@ -59,27 +62,32 @@
             </td>
             <!-- Tiêu đề -->
             <td class="text-left py-2 items-center">
-              <p class="inline-flex">{{ holiday.title_holiday }}</p>
+              <p class="inline-flex">
+                {{ form_of_work?.setting_data?.[holiday]?.name }}
+              </p>
             </td>
 
             <!-- số giờ làm -->
             <td class="text-center hidden md:table-cell font-medium py-2">
-              <p>{{ holiday.day_create_holiday }}</p>
+              <p>{{ form_of_work?.setting_data?.[holiday]?.working_hours }}</p>
             </td>
             <!-- Thời gian -->
             <td class="text-left font-medium py-2 hidden md:table-cell">
               <!-- <p v-for="time in list_day">{{ time}}</p> -->
               <div class="flex gap-1">
                 <p
-                  v-for="time in list_day"
+                  v-for="(time, index) in form_of_work?.setting_data?.[holiday]
+                    ?.working_time"
                   :class="{
-                    'bg-green-500': time !== 7 && time !== 'C',
-                    'bg-orange-500': time === 7,
-                    'bg-slate-500': time === 'C',
+                    'bg-green-500':
+                      time?.work_status === 'full_time' && time?.active,
+                    'bg-orange-500':
+                      time?.work_status !== 'full_time' && time?.active,
+                    'bg-slate-500': !time?.active,
                   }"
                   class="w-2.5 text-ss text-white flex items-center justify-center h-2.5 rounded-full"
                 >
-                  {{ time }}
+                  {{ index < 6 ? index + 2 : 'C' }}
                 </p>
               </div>
             </td>
@@ -89,20 +97,37 @@
               <div class="flex items-center gap-1 h-5">
                 <img
                   class="h-4 w-4 rounded-full"
-                  :src="holiday.avatar_employee"
+                  :src="
+                    getInfo(
+                      form_of_work?.setting_data?.[holiday]?.created_by,
+                      'avatar'
+                    )
+                  "
                   alt=""
                 />
                 <!--  -->
                 <div class="flex gap-1 items-end justify-between">
                   <p class="text-sm">
-                    {{ holiday.name_create_holiday }}
+                    {{
+                      getInfo(
+                        form_of_work?.setting_data?.[holiday]?.created_by,
+                        'name'
+                      )
+                    }}
                   </p>
                   <IconTicks class="w-4 h-4"></IconTicks>
                 </div>
               </div>
               <!--  -->
               <div class="h5 flex ml-5 items-center justify-start">
-                <p>{{ holiday.time_create_holiday }}</p>
+                <p v-if="form_of_work?.setting_data?.[holiday]?.created_time">
+                  {{
+                    format(
+                      form_of_work?.setting_data?.[holiday]?.created_time as Date,
+                      'HH:mm - dd/MM/yyyy'
+                    )
+                  }}
+                </p>
               </div>
             </td>
 
@@ -118,7 +143,7 @@
                 <div
                   class="h-5 inline-flex text-red-500 bg-red-50 font-medium text-xs rounded-md px-2 py-0.5 items-center justify-center"
                 >
-                  {{ holiday.delete_holiday }}
+                  Xóa
                 </div>
               </div>
             </td>
@@ -224,13 +249,13 @@
             </div>
             <!--  -->
             <div
-              :class="{ 'gap-1': !day.active , 'gap-4': day.active  }"
-              class="h-9 text-sm text-black  flex flex-colflex-1 flex-shrink-0 items-center sm:flex-row sm:justify-end"
+              :class="{ 'gap-1': !day.active, 'gap-4': day.active }"
+              class="h-9 text-sm text-black flex flex-colflex-1 flex-shrink-0 items-center sm:flex-row sm:justify-end"
             >
-              <div  class="flex items-center flex-shrink-0 gap-4">
+              <div class="flex items-center flex-shrink-0 gap-4">
                 <!-- giờ làm -->
                 <p class="flex-shrink-0 hidden sm:flex">
-                  {{ day.active ? "Giờ làm" : "Ngày nghỉ" }}
+                  {{ day.active ? 'Giờ làm' : 'Ngày nghỉ' }}
                 </p>
                 <!-- cố định -->
                 <select
@@ -243,7 +268,10 @@
                 </select>
               </div>
               <!--từ  -->
-              <div v-if="day.status === 'permanent'" class="flex items-center flex-shrink-0 gap-4">
+              <div
+                v-if="day.status === 'permanent'"
+                class="flex items-center flex-shrink-0 gap-4"
+              >
                 <p
                   v-if="day.active && day.status === 'permanent'"
                   class="text-center flex-shrink-0"
@@ -265,7 +293,10 @@
                 </div>
               </div>
               <!--  -->
-              <div v-if="day.status === 'permanent'"  class="flex items-center flex-shrink-0 gap-4">
+              <div
+                v-if="day.status === 'permanent'"
+                class="flex items-center flex-shrink-0 gap-4"
+              >
                 <!--Nghỉ  -->
                 <p
                   v-if="day.active && day.status === 'permanent'"
@@ -287,7 +318,10 @@
                 </div>
               </div>
               <!--đến  -->
-              <div v-if="day.status === 'permanent'"  class="flex items-center flex-shrink-0 gap-4" >
+              <div
+                v-if="day.status === 'permanent'"
+                class="flex items-center flex-shrink-0 gap-4"
+              >
                 <p
                   v-if="day.active && day.status === 'permanent'"
                   class="text-center"
@@ -309,7 +343,7 @@
                 </div>
               </div>
               <!--  -->
-              <div  class="flex items-center flex-shrink-0 gap-4">
+              <div class="flex items-center flex-shrink-0 gap-4">
                 <!-- số giờ làm  -->
                 <p
                   v-if="day.active && day.status === 'permanent'"
@@ -363,7 +397,6 @@
             <!--  -->
           </div>
         </div>
-        
       </main>
       <!--  -->
       <footer class="flex items-center justify-between px-6 py-3">
@@ -392,18 +425,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref } from 'vue'
 /**Icon*/
-import IconTicks from "@/components/icons/IconTicks.vue";
-import IconPapers from "@/components/icons/IconPapers.vue";
-import IconNext from "@/components/icons/IconNext.vue";
+import IconTicks from '@/components/icons/IconTicks.vue'
+import IconPapers from '@/components/icons/IconPapers.vue'
+import IconNext from '@/components/icons/IconNext.vue'
 /**img*/
-import avarta from "@/assets/imgs/Avatar.png";
+import { useCommonStore } from '@/stores'
+import { storeToRefs } from 'pinia'
+import { format } from 'date-fns'
 
 /**Biến*/
-const date = ref(new Date());
+const date = ref(new Date())
 /**Biến*/
-/**danh sách thứ*/
 const LIST_DAYS = [
   {
     active: true,
@@ -506,41 +540,35 @@ const LIST_DAYS = [
     work_status: "day_off",
   },
 ];
-/**Danh sách */
-const list_holiday = ref([
-  {
-    day_holiday: "28/4",
-    title_holiday: "Toàn thời gian -Sales",
-    day_create_holiday: "40 giờ",
-    name_create_holiday: "Nguyễn Đình Tùng",
-    avatar_employee: avarta,
-    time_create_holiday: "10:00 - 12/4/2024",
-    delete_holiday: "Xóa",
-  },
-  {
-    day_holiday: "28/4",
-    title_holiday: "Toàn thời gian -Sales",
-    day_create_holiday: "40 giờ",
-    name_create_holiday: "Nguyễn Đình Tùng",
-    avatar_employee: avarta,
-    time_create_holiday: "10:00 - 12/4/2024",
-    delete_holiday: "Xóa",
-  },
-]);
+
+// * store
+const commonStore = useCommonStore()
+const { form_of_work, employees } = storeToRefs(commonStore)
+
 /**biến*/
-const active = ref(true);
-/**danh sách ngày*/
-const list_day = ref([1, 2, 3, 4, 5, 6, 7, "C"]);
+const active = ref(true)
 
 /**Biến mở đóng modal*/
-const open = ref(false);
+const open = ref(false)
 /**Hàm mở modal*/
 function showModal() {
-  open.value = true;
+  open.value = true
 }
 /**Hàm đóng modal*/
 function handleOk() {
-  open.value = false;
+  open.value = false
+}
+
+function getInfo(id?: string, type?: string) {
+  if (!id) return
+
+  /** thông tin nhân viên */
+  const EMPLOYEE = employees.value?.[id]
+
+  if (type === 'name')
+    return `${EMPLOYEE?.first_name || ''} ${EMPLOYEE?.last_name || ''}`?.trim()
+
+  return EMPLOYEE?.avatar
 }
 </script>
 
