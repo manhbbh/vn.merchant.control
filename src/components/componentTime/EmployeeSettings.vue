@@ -232,7 +232,8 @@
             </div>
             <!--  -->
             <div
-              class="h-9 text-sm text-black flex flex-col  gap-4 flex-1 flex-shrink-0  items-start sm:flex-row sm:justify-end"
+            :class="{ 'gap-1': !day.active , 'gap-4': day.active  }"
+              class="h-9 text-sm text-black flex flex-col  flex-1 flex-shrink-0  items-center sm:flex-row sm:justify-end"
             >
               <div class="flex items-center flex-shrink-0 gap-4">
                 <!-- giờ làm -->
@@ -251,7 +252,7 @@
               </div>
               <!--  -->
               <!--từ  -->
-              <div class="flex  items-center flex-shrink-0 gap-4  ">
+              <div v-if="day.status === 'permanent'"  class="flex  items-center flex-shrink-0 gap-4  ">
                 <p
                   v-if="day.active && day.status === 'permanent'"
                   class="text-center flex-shrink-0"
@@ -275,7 +276,7 @@
 
               <!--  -->
 
-              <div class="flex items-center flex-shrink-0 gap-4">
+              <div v-if="day.status === 'permanent'"  class="flex items-center flex-shrink-0 gap-4">
                 <!--Nghỉ  -->
                 <p
                   v-if="day.active && day.status === 'permanent'"
@@ -299,7 +300,7 @@
               <!--  -->
 
               <!--đến  -->
-              <div class="flex items-center flex-shrink-0 gap-4">
+              <div v-if="day.status === 'permanent'"  class="flex items-center flex-shrink-0 gap-4">
                 <p
                   v-if="day.active && day.status === 'permanent'"
                   class="text-center"
@@ -323,8 +324,17 @@
               <!--  -->
               <div class="flex items-center flex-shrink-0 gap-4">
                 <!-- số giờ làm  -->
-                <p v-if="day.active" class="text-center flex-shrink-0">
+                <p
+                  v-if="day.active && day.status === 'permanent'"
+                  class="text-center flex-shrink-0"
+                >
                   Số giờ làm
+                </p>
+                <p
+                  v-if="day.active && day.status === 'not_fixed'"
+                  class="text-center flex-shrink-0"
+                >
+                  Chọn số giờ làm
                 </p>
                 <!-- icon -->
                 <IconNext
@@ -389,6 +399,7 @@ import IconEmployee from "@/components/icons/iconMenu/IconEmployee.vue";
 import IconTicks from "@/components/icons/IconTicks.vue";
 import IconArrow from "@/components/icons/IconArrow.vue";
 import IconPapers from "@/components/icons/IconPapers.vue";
+import IconNext from "@/components/icons/IconNext.vue";
 
 /**img*/
 import avarta from "@/assets/imgs/Avatar.png";

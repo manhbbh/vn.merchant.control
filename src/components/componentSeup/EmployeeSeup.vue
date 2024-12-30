@@ -1,6 +1,6 @@
 <template>
   <div
-    class="py-3 px-2 sm:px-4 border border-gray-200 rounded-lg flex text-black items-start gap-2 sm:gap-3"
+    class="py-3 px-2 sm:px-4  border border-gray-200 rounded-lg flex text-black items-start gap-2 sm:gap-3"
   >
     <!-- icon -->
     <IconEmployee class="w-5 h-5 flex-shrink-0"></IconEmployee>
@@ -16,24 +16,19 @@
         <thead
           class="bg-slate-200 h-7 text-xs font-semibold sticky top-0 text-customDarkBlue flex-shrink-0 z-10"
         >
-          <tr class="h-7 flex gap-x-12 items-center">
+          <tr class="h-7 flex gap-x-4 items-center">
             <th class="w-18 text-center font-semibold">ID|Ngày</th>
-            <th class="w-50 text-left font-semibold">Nhân sự</th>
-            <th class="w-50 text-left font-semibold hidden md:block">
+            <th class="w-45 text-left font-semibold">Nhân sự</th>
+            <th class="w-50 text-left font-semibold hidden md:block ">
               Hình thức làm việc
             </th>
             <th class="w-42 text-left font-semibold hidden md:block">
               Lương P2
             </th>
-            <th class="w-25 text-left font-semibold hidden md:block">
-              Chủ động
-            </th>
-            <th class="w-25 text-left font-semibold hidden md:block">
-              Bị động
-            </th>
-            <th class="w-50 text-left font-semibold hidden md:block">
-              Cập nhật lần cuối
-            </th>
+            <th class="w-25 sm:w-25 text-left font-semibold  hidden md:block" >Chủ động</th>
+            <th class="w-25 sm:w-25 text-left font-semibold hidden md:block ">Chủ động</th>
+            <th class="w-50  text-left font-semibold hidden md:block ">Cập nhật lần cuối</th>
+
           </tr>
         </thead>
         <tbody>
@@ -41,7 +36,7 @@
             @click="showModal"
             v-for="(holiday, index) in list_employee"
             :key="index"
-            class="flex items-center gap-x-12 text-black h-15 cursor-pointer text-sm border-b border-gray-200"
+            class="flex items-center gap-x-4 text-black h-15 cursor-pointer text-sm border-b border-gray-200"
           >
             <!-- STT -->
             <td class="w-18 text-center items-start justify-center">
@@ -50,9 +45,9 @@
               </p>
             </td>
 
-            <!-- Nhân sự -->
-            <td class="w-50 text-left py-2 text-customGray">
-              <div class="flex items-center gap-1 h-5">
+            <!-- nhân sự -->
+            <td class="w-45  text-left py-2 text-customGray"> 
+              <div class="flex w-full items-center gap-1 h-5">
                 <img
                   class="h-4 w-4 rounded-full"
                   :src="holiday.avatar_employee"
@@ -84,8 +79,8 @@
 
             <!-- Hình thức làm việc -->
             <td class="w-50 text-left hidden md:block">
-              <!-- select -->
-              <div class="relative w-full flex justify-start sm:w-50">
+           <!-- select -->
+           <div class="relative w-full flex justify-start sm:w-50">
                 <select
                   v-model="holiday.working_form"
                   class="appearance-none h-10 text-black outline-none sm:w-50 text-sm rounded-md border border-slate-300 px-7 sm:px-3 py-2"
@@ -120,7 +115,7 @@
                 </div>
               </div>
             </td>
-            <!-- chủ động -->
+            <!-- Lương P1 -->
             <td class="w-25 text-left hidden md:block">
               <div
                 class="flex items-center border border-gray-300 h-9 py-2 rounded-md"
@@ -137,7 +132,7 @@
                 </div>
               </div>
             </td>
-            <!-- bị động -->
+            <!-- bị đọng -->
             <td class="w-25 text-left hidden md:block">
               <div
                 class="flex bg-slate-100 items-center border border-gray-300 h-9 py-2 rounded-md"
@@ -155,8 +150,8 @@
               </div>
             </td>
 
-            <!-- Cập nhật lần cuối -->
-            <td class="w-50 text-left py-2 text-customGray hidden md:block">
+            <!-- xóa -->
+            <td class="w-50  text-left py-2 text-customGray  hidden md:block ">
               <div class="flex items-center gap-1 h-5">
                 <!--  -->
                 <div class="flex gap-1 items-center justify-between">
@@ -278,7 +273,7 @@
             </div>
             <!--  -->
             <div
-              class="h-9 text-sm text-black flex flex-col gap-4 flex-1 flex-shrink-0 items-start sm:flex-row sm:justify-end"
+              class="h-9 text-sm text-black flex flex-col gap-4 flex-1 flex-shrink-0 items-ceter sm:flex-row sm:justify-end"
             >
               <!-- tổng số giờ làm  -->
               <div class="flex items-center flex-shrink-0 gap-4">
@@ -306,7 +301,7 @@
               <div class="flex items-center flex-shrink-0 gap-4">
                 <!-- giờ làm -->
                 <p v-if="day.active" class="flex-shrink-0 hidden sm:flex">
-                 Chủ động (20%)
+                  Chủ động (20%)
                 </p>
                 <!-- cố định -->
                 <select
@@ -318,7 +313,6 @@
                   <option value="not_fixed">3 giò</option>
                 </select>
               </div>
-              <!--  -->
 
               <!-- tổng số giờ làm  -->
               <div class="flex items-center flex-shrink-0 gap-4">
@@ -342,9 +336,12 @@
                   </select>
                 </div>
               </div>
-              <p v-if="!day.active" class="flex-shrink-0 hidden sm:flex ">
-                Ngày nghỉ
+
+             <div class="flex items-center flex-shrink-0 gap-4">
+                <p v-if="!day.active" class="flex-shrink-0 hidden sm:flex">
+                  Ngày nghỉ
                 </p>
+             </div>
               <!-- select -->
               <label
                 class="hidden sm:inline-flex h-9 items-center cursor-pointer"

@@ -25,7 +25,7 @@
             <li
             @click="is_business = true"
             :class="{'bg-slate-100':is_business}"
-              class=" flex items-center gap-2 h-13 rounded-lg p-2"
+              class=" flex items-center gap-2 cursor-pointer h-13 rounded-lg p-2"
             >
               <div
                 class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center"
@@ -37,7 +37,7 @@
             <li
             @click="is_business = false"
             :class="{'bg-slate-100':!is_business}"
-             class="flex items-center gap-2 h-13 rounded-lg p-2">
+             class="flex items-center gap-2 cursor-pointer h-13 rounded-lg p-2">
               <div
                 class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center"
               >
