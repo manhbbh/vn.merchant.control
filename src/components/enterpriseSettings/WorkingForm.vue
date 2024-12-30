@@ -31,16 +31,16 @@
           <tr class="h-7">
             <th class="px-2 w-18 text-left font-semibold">ID|Ngày</th>
             <th class="w-30 text-left font-semibold">Tiêu đề</th>
-            <th class="w-25 text-center font-semibold hidden md:table-cell">Số giờ làm / Tuần</th>
+            <th class="w-25 text-center font-semibold hidden md:table-cell">
+              Số giờ làm / Tuần
+            </th>
             <th class="w-25 text-left font-semibold hidden md:table-cell">
               Thời gian
             </th>
             <th class="w-30 text-left font-semibold hidden md:table-cell">
               Người tạo
             </th>
-            <th class="w-25 text-center font-semibold ">
-              Thao tác
-            </th>
+            <th class="w-25 text-center font-semibold">Thao tác</th>
             <th class="w-25 text-left font-semibold hidden md:table-cell"></th>
           </tr>
         </thead>
@@ -107,7 +107,7 @@
             </td>
 
             <!-- Thao tác -->
-            <td class="text-center py-2 ">
+            <td class="text-center py-2">
               <div class="flex gap-1 sm:gap-2.5 justify-center">
                 <button
                   @click="showModal"
@@ -185,7 +185,7 @@
           </label>
         </div>
         <!-- Vòng lặp qua mảng -->
-        <div class="pl-8 overflow-hidden ">
+        <div class="pl-8 overflow-hidden">
           <div
             v-for="(day, index) in LIST_DAYS"
             :key="index"
@@ -224,9 +224,10 @@
             </div>
             <!--  -->
             <div
-              class="h-9 text-sm text-black flex flex-col  gap-4 flex-1 flex-shrink-0  items-start sm:flex-row sm:justify-end"
+              :class="{ 'gap-1': !day.active , 'gap-4': day.active  }"
+              class="h-9 text-sm text-black  flex flex-colflex-1 flex-shrink-0 items-center sm:flex-row sm:justify-end"
             >
-              <div class="flex items-center flex-shrink-0 gap-4">
+              <div  class="flex items-center flex-shrink-0 gap-4">
                 <!-- giờ làm -->
                 <p class="flex-shrink-0 hidden sm:flex">
                   {{ day.active ? "Giờ làm" : "Ngày nghỉ" }}
@@ -235,15 +236,14 @@
                 <select
                   v-if="day.active"
                   v-model="day.status"
-                  class="outline-none mr-0 h-9  w-34  flex-none hidden sm:flex rounded-md border px-3 py-1.5"
+                  class="outline-none mr-0 h-9 w-34 flex-none hidden sm:flex rounded-md border px-3 py-1.5"
                 >
                   <option value="permanent">Cố định</option>
                   <option value="not_fixed">Không cố định</option>
                 </select>
               </div>
-              <!--  -->
               <!--từ  -->
-              <div class="flex  items-center flex-shrink-0 gap-4  ">
+              <div v-if="day.status === 'permanent'" class="flex items-center flex-shrink-0 gap-4">
                 <p
                   v-if="day.active && day.status === 'permanent'"
                   class="text-center flex-shrink-0"
@@ -264,10 +264,8 @@
                   </select>
                 </div>
               </div>
-
               <!--  -->
-
-              <div class="flex items-center flex-shrink-0 gap-4">
+              <div v-if="day.status === 'permanent'"  class="flex items-center flex-shrink-0 gap-4">
                 <!--Nghỉ  -->
                 <p
                   v-if="day.active && day.status === 'permanent'"
@@ -288,10 +286,8 @@
                   </select>
                 </div>
               </div>
-              <!--  -->
-
               <!--đến  -->
-              <div class="flex items-center flex-shrink-0 gap-4">
+              <div v-if="day.status === 'permanent'"  class="flex items-center flex-shrink-0 gap-4" >
                 <p
                   v-if="day.active && day.status === 'permanent'"
                   class="text-center"
@@ -313,11 +309,21 @@
                 </div>
               </div>
               <!--  -->
-              <div class="flex items-center flex-shrink-0 gap-4">
+              <div  class="flex items-center flex-shrink-0 gap-4">
                 <!-- số giờ làm  -->
-                <p v-if="day.active" class="text-center flex-shrink-0">
+                <p
+                  v-if="day.active && day.status === 'permanent'"
+                  class="text-center flex-shrink-0"
+                >
                   Số giờ làm
                 </p>
+                <p
+                  v-if="day.active && day.status === 'not_fixed'"
+                  class="text-center flex-shrink-0"
+                >
+                  Chọn số giờ làm
+                </p>
+
                 <!-- icon -->
                 <IconNext
                   v-if="day.active"
@@ -357,11 +363,12 @@
             <!--  -->
           </div>
         </div>
+        
       </main>
       <!--  -->
       <footer class="flex items-center justify-between px-6 py-3">
         <button
-        @click="handleOk"
+          @click="handleOk"
           class="px-4 text-sm font-medium text-customDark py-2 bg-slate-200 rounded-md"
         >
           Đóng
@@ -396,7 +403,7 @@ import avarta from "@/assets/imgs/Avatar.png";
 /**Biến*/
 const date = ref(new Date());
 /**Biến*/
-/**danh sách thứ*/ 
+/**danh sách thứ*/
 const LIST_DAYS = [
   {
     active: true,
