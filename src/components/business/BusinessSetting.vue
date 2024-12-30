@@ -17,7 +17,7 @@
     <!-- 8 -->
     <Background></Background>
     <!-- nút lưu -->
-    <div class="py-2 px-3  bg-white rounded-lg flex  items-center justify-end ">
+    <div class="py-2 px-3 sticky bottom-0 bg-white rounded-lg flex  items-center justify-end z-30">
       <button class="h-9 text-sm font-medium bg-blue-700 px-4 py-2 flex justify-center items-center rounded-lg text-white">Lưu thiết lập</button>
     </div>
   </div>
@@ -34,6 +34,9 @@ import Holiday from "@/components/enterpriseSettings/Holiday.vue";
 import WorkingForm from "@/components/enterpriseSettings/WorkingForm.vue";
 import BusinessPeriod from "@/components/enterpriseSettings/BusinessPeriod.vue";
 import Background from "@/components/enterpriseSettings/Background.vue";
+
+
+
+
 </script>
 
-<style lang="scss" scoped></style>

@@ -254,5 +254,3 @@ const list_background = ref([
   },
 ]);
 </script>
-
-<style lang="scss" scoped></style>

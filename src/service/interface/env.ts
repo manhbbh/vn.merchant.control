@@ -8,5 +8,7 @@ export interface Env {
     host: {
         /**máy chủ test */
         test: string
+        /**máy chủ merchant */
+        merchant: string
     }
 }

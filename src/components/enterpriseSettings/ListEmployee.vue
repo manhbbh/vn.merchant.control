@@ -50,7 +50,7 @@
         <!--  -->
         <tbody>
           <tr
-            v-for="(employee, index) in employee_business"
+            v-for="(employee, index) in Object.values(employees)"
             :key="index"
             class="hover:bg-slate-100 text-black h-9 cursor-pointer text-sm overflow-y-auto"
           >
@@ -60,12 +60,12 @@
             </td>
             <!-- tên viết tắt -->
             <td class="text-left px-3 py-2 items-center space-x-4">
-              <p>{{ employee.name_employee }}</p>
+              <p>{{ employee.first_name || "" }} {{ employee.last_name || "" }}</p>
             </td>
 
             <!-- địa chỉ -->
             <td class="text-left px-3 py-2">
-              <p>{{ employee.email_employee }}</p>
+              <p>{{ '' }}</p>
             </td>
 
             <!-- chi nhánh đang hoạt đông -->
@@ -74,16 +74,16 @@
             >
               <div
                 class="h-5 py-0.5 rounded bg-zinc-100 px-2 text-customDark text-xs font-medium"
-                v-for="branch in employee.branch_employee"
+                v-for="branch in employee.branches"
               >
-                {{ branch }}
+                {{ branch?.name }}
               </div>
             </td>
 
             <!-- ngày tạo -->
             <td class="text-left px-3 py-2 hidden md:table-cell">
-              <p class="text-sm">
-                {{ employee.day_employee }}
+              <p class="text-sm" v-if="employee.createdAt">
+                {{ format(new Date(employee.createdAt), 'dd/MM/yyyy') }}
               </p>
             </td>
 
@@ -92,11 +92,11 @@
               <p
                 class="text-sm"
                 :class="
-                  employee.status_business ? 'text-green-500' : 'text-red-500'
+                  employee?.active ? 'text-green-500' : 'text-red-500'
                 "
               >
                 {{
-                  employee.status_business
+                  employee?.active
                     ? "Đang hoạt động"
                     : "Không hoạt động"
                 }}
@@ -106,13 +106,13 @@
             <td class="text-left px-2 py-0.5 hidden md:table-cell">
               <div
                 :class="{
-                  'bg-green-500': employee.operation_business === 'Kích hoạt',
-                  'bg-red-500': employee.operation_business === 'Tạm ngừng',
+                  'bg-green-500': employee?.active,
+                  'bg-red-500': !employee.active,
                 }"
                 class="h-5 inline-flex items-center px-2 text-white rounded-md py-0.5"
               >
                 <p class="text-xs flex items-center font-medium">
-                  {{ employee.operation_business }}
+                  {{ employee.active ? "Kích hoạt" : "Tạm dừng" }}
                 </p>
               </div>
             </td>
@@ -125,54 +125,20 @@
 </template>
 
 <script setup lang="ts">
+import { useCommonStore } from "@/stores";
+
+// * libraries
 import { ref } from "vue";
+import { storeToRefs } from "pinia";
+import { format } from "date-fns";
+
 /**Icon*/
 import IconEmploye from "@/components/icons/IconEmploye.vue";
 import IconAdd from "@/components/icons/IconAdd.vue";
 /**Biến*/
-/**Danh sách */
-const employee_business = ref([
-  {
-    name_employee: "Nguyễn Văn A",
-    email_employee: "a@bbh.com",
-    branch_employee: ["BU Hà Nội", "BU Hà Đông", "BU Hồ Chí Minh"],
-    day_employee: "10/10/2024",
-    status_business: true,
-    operation_business: "Tạm ngừng",
-  },
-  {
-    name_employee: "Nguyễn Văn B",
-    email_employee: "a@bbh.com",
-    branch_employee: ["BU Hà Nội", "BU Hà Đông", "BU Hồ Chí Minh"],
-    day_employee: "10/10/2024",
-    status_business: false,
-    operation_business: "Kích hoạt",
-  },
-  {
-    name_employee: "Nguyễn Văn A",
-    email_employee: "a@bbh.com",
-    branch_employee: ["BU Hà Nội", "BU Hà Đông", "BU Hồ Chí Minh"],
-    day_employee: "10/10/2024",
-    status_business: true,
-    operation_business: "Tạm ngừng",
-  },
-  {
-    name_employee: "Nguyễn Văn B",
-    email_employee: "a@bbh.com",
-    branch_employee: ["BU Hà Nội", "BU Hà Đông", "BU Hồ Chí Minh"],
-    day_employee: "10/10/2024",
-    status_business: false,
-    operation_business: "Kích hoạt",
-  },
-  {
-    name_employee: "Nguyễn Văn A",
-    email_employee: "a@bbh.com",
-    branch_employee: ["BU Hà Nội", "BU Hà Đông", "BU Hồ Chí Minh"],
-    day_employee: "10/10/2024",
-    status_business: true,
-    operation_business: "Tạm ngừng",
-  },
-]);
-</script>
 
-<style lang="scss" scoped></style>
+// * store
+const commonStore = useCommonStore()
+const { employees } = storeToRefs(commonStore)
+
+</script>

@@ -7,11 +7,11 @@ import TimekeepingSetup from '@/views/TimekeepingSetup.vue'
 
 
 export const routes = [
-  { path: '/', redirect: '/test' },
+  { path: '/', redirect: '/business' },
   { path: '/test', component: Test },
   { path: '/business', component: Business },
-  { path: '/Timekeeping', component: Timekeeping },
-  { path: '/TimekeepingSetup', component: TimekeepingSetup },
+  // { path: '/Timekeeping', component: Timekeeping },
+  // { path: '/TimekeepingSetup', component: TimekeepingSetup },
 
 
 ]

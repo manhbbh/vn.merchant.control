@@ -1,5 +1,7 @@
 <template>
- <div class="py-3 px-2 sm:px-4 bg-white rounded-lg flex text-black items-start gap-2 sm:gap-3">
+  <div
+    class="py-3 px-2 sm:px-4 bg-white rounded-lg flex text-black items-start gap-2 sm:gap-3"
+  >
     <!-- icon -->
     <IconInformation class="w-5 h-5"></IconInformation>
     <!--content  -->
@@ -18,10 +20,11 @@
             Tên viết tắt
           </label>
           <input
+            v-model="business_data.short_name"
             type="text"
             id="shortName"
             placeholder="Nhập tên viết tắt"
-            class="h-9 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            class="w-full border border-gray-300 rounded-md px-3 py-2 outline-none"
           />
         </div>
         <!-- Tên đầy đủ Doanh nghiệp -->
@@ -33,10 +36,11 @@
             Tên đầy đủ Doanh nghiệp
           </label>
           <input
+            v-model="business_data.name"
             type="text"
             id="fullName"
             placeholder="Nhập tên đầy đủ"
-            class="h-9 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            class="w-full border border-gray-300 rounded-md px-3 py-2 outline-none"
           />
         </div>
         <!-- Mã số thuế -->
@@ -48,10 +52,11 @@
             Mã số thuế
           </label>
           <input
+            v-model="business_data.tax_code"
             type="text"
             id="taxCode"
             placeholder="Nhập mã số thuế"
-            class="h-9 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            class="w-full border border-gray-300 rounded-md px-3 py-2 outline-none"
           />
         </div>
         <!-- Ngày thành lập-->
@@ -62,12 +67,13 @@
           >
             Ngày thành lập
           </label>
-          <VueDatePicker
-            auto-apply
-            v-model="date"
-            placeholder="Chọn ngày thành lập"
-            :action-row="{ showNow: true }"
-            now-button-label="Current"
+          <CustomVuePicker
+            v-model="business_data.establish_date"
+            placeholder="Chọn ngày"
+            :handle-date="() => {}"
+            :teleport="true"
+            class="border border-gray-300"
+            :input_class="'leading-normal border-none'"
           />
         </div>
         <!-- Địa chỉ -->
@@ -79,10 +85,11 @@
             Địa chỉ
           </label>
           <input
+            v-model="business_data.address"
             type="text"
             id="taxCode"
             placeholder="Nhập địa chỉ Doanh nghiệp"
-            class="h-9 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            class="w-full border border-gray-300 rounded-md px-3 py-2 outline-none"
           />
         </div>
         <!-- Trạng thái-->
@@ -93,9 +100,21 @@
           >
             Trạng thái
           </label>
-          <div class="flex items-center h-9 text-green-600 gap-2">
-            <IconTick class="h-5 w-5"></IconTick>
-            <p class="text-sm">Đang hoạt động</p>
+          <div
+            class="flex items-center py-2 text-green-600 gap-2"
+            :class="{
+              'text-green-600': !business_data.archive,
+              'text-red-500': business_data.archive,
+            }"
+          >
+          <template v-if="!business_data.archive">
+              <IconTick class="h-5 w-5"></IconTick>
+              <p class="text-sm">Đang hoạt động</p>
+            </template>
+            <template v-else>
+              <IconPause class="h-5 w-5"></IconPause>
+              <p class="text-sm">Tạm dừng hoạt động</p>
+            </template>
           </div>
         </div>
         <!-- Thao tác-->
@@ -104,14 +123,25 @@
             for="taxCode"
             class="block text-sm font-medium text-gray-700 h-5.5"
           >
-            Trạng thái
+            Thao tác
           </label>
-          <div
-            class="flex items-center bg-red-100 h-9 px-2.5 py-2 text-red-500 gap-2 border border-red-500 rounded-md"
+          <button
+            class="flex items-center px-2.5 py-2 gap-2 border rounded-md hover:brightness-95"
+            :class="{
+              'bg-green-100 text-green-600  border-green-500': business_data.archive,
+              'bg-red-100 text-red-500 border-red-500': !business_data.archive
+            }"
+            @click="business_data.archive = !business_data.archive"
           >
-            <IconPause class="h-5 w-5"></IconPause>
-            <p class="text-sm">Tạm dừng hoạt động</p>
-          </div>
+            <template v-if="business_data.archive">
+              <IconTick class="h-5 w-5"></IconTick>
+              <p class="text-sm">Đang hoạt động</p>
+            </template>
+            <template v-else>
+              <IconPause class="h-5 w-5"></IconPause>
+              <p class="text-sm">Tạm dừng hoạt động</p>
+            </template>
+          </button>
         </div>
       </div>
     </div>
@@ -120,14 +150,24 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { useCommonStore } from '@/stores'
+
+// * libraries
+import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
+
+// * components
+import CustomVuePicker from '@/components/CustomVuePicker.vue'
 
 /**ICon*/
-import IconInformation from "@/components/icons/IconInformation.vue";
-import IconTick from "../icons/IconTick.vue";
-import IconPause from "@/components/icons/IconPause.vue";
-/**Biến*/
-const date = ref(new Date());
-</script>
+import IconTick from '@/components/icons/IconTick.vue'
+import IconPause from '@/components/icons/IconPause.vue'
+import IconInformation from '@/components/icons/IconInformation.vue'
 
-<style lang="scss" scoped></style>
+// * store
+const commonStore = useCommonStore()
+
+const { business_data } = storeToRefs(commonStore)
+
+/**Biến*/
+</script>

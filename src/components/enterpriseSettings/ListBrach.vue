@@ -1,5 +1,7 @@
 <template>
- <div class="py-3 px-2 sm:px-4 bg-white rounded-lg flex text-black items-start gap-2 sm:gap-3">
+  <div
+    class="py-3 px-2 sm:px-4 bg-white rounded-lg flex text-black items-start gap-2 sm:gap-3"
+  >
     <!-- icon -->
     <IconHome class="w-5 h-5"></IconHome>
     <!--content  -->
@@ -49,9 +51,9 @@
         </thead>
         <tbody>
           <tr
-            v-for="(business, index) in list_business"
+            v-for="(branch, index) in branches"
             :key="index"
-            class="hover:bg-slate-100 text-black cursor-pointer text-sm overflow-y-auto h-full"
+            class="hover:bg-slate-100 text-black text-sm overflow-y-auto h-full"
           >
             <!-- stt-->
             <td class="py-2 text-left items-center space-x-4">
@@ -59,25 +61,25 @@
             </td>
             <!-- tên viết tắt -->
             <td class="text-left py-2 items-center space-x-4">
-              <p>{{ business.name_business }}</p>
+              <p>{{ branch?.name || '' }}</p>
             </td>
 
             <!-- địa chỉ -->
             <td class="text-left py-2">
-              <p>{{ business.address_business }}</p>
+              <p>{{  }}</p>
             </td>
 
             <!-- ngày thành lập -->
             <td
               class="text-left py-2 text-customGray hidden md:table-cell text-15px"
             >
-              <p>{{ business.day_business }}</p>
+              <p>{{  }}</p>
             </td>
 
             <!-- số nhân sự -->
             <td class="text-left py-2 hidden md:table-cell">
               <p class="text-sm">
-                {{ business.number_business }}
+                {{ branch?.total_users }}
               </p>
             </td>
 
@@ -86,25 +88,25 @@
               <p
                 class="text-sm"
                 :class="
-                  business.status_business ? 'text-green-500' : 'text-red-500'
+                  !branch.archive ? 'text-green-500' : 'text-red-500'
                 "
               >
                 {{
-                  business.status_business
-                    ? "Đang hoạt động"
-                    : "Không hoạt động"
+                  !branch.archive
+                    ? 'Đang hoạt động'
+                    : 'Không hoạt động'
                 }}
               </p>
             </td>
             <!-- thao tác -->
             <td class="text-left py-2 hidden md:table-cell">
-              <div
+              <button
                 class="h-5 w-15 flex justify-center px-2 bg-slate-100 rounded-md py-0.5"
               >
-                <p class="text-xs font-medium">
-                  {{ business.operation_business }}
-                </p>
-              </div>
+                <span class="text-xs font-medium">
+                  Cài đặt
+                </span>
+              </button>
             </td>
           </tr>
         </tbody>
@@ -121,16 +123,17 @@
     :footer="null"
   >
     <div class="flex flex-col w-full">
-      <header
-        class="flex items-center justify-between  h-10 px-6 py-2"
-      >
-        <h3 class="h-6 text-base font-semibold">Thêm chi nhánh </h3>
-        <button @click="open = false" class="p-1 rounded-md  hover:bg-gray-300 hover:text-black">
+      <header class="flex items-center justify-between h-10 px-6 py-2">
+        <h3 class="h-6 text-base font-semibold">Thêm chi nhánh</h3>
+        <button
+          @click="open = false"
+          class="p-1 rounded-md hover:bg-gray-300 hover:text-black"
+        >
           <IconClose class="w-5 h-5"></IconClose>
         </button>
       </header>
       <!--  -->
-      <main class="flex flex-col p-6 border-b  border-t gap-2.5 border-gray-200">
+      <main class="flex flex-col p-6 border-b border-t gap-2.5 border-gray-200">
         <div class="flex gap-2.5 sm:flex-row flex-col">
           <!-- Tên viết tắt -->
           <div class="sm:w-115.5 text-left h-16 space-y-1">
@@ -182,7 +185,7 @@
               type="text"
               id="shortName"
               placeholder="Nhập địa chỉ"
-              class="h-9 w-full border border-gray-300 rounded-md px-4  py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              class="h-9 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
             />
           </div>
           <!-- Phường -->
@@ -245,58 +248,49 @@
         </div>
       </main>
       <footer class="flex items-center justify-between px-6 py-3">
-        <button class="px-4 text-sm font-medium text-customDark py-2 border rounded-md border-slate-300">Hủy</button>
-        <button class="px-4 py-2 text-sm text-white font-medium bg-primary rounded-md ">Tạo chi nhánh</button>
+        <button
+          class="px-4 text-sm font-medium text-customDark py-2 border rounded-md border-slate-300"
+        >
+          Hủy
+        </button>
+        <button
+          class="px-4 py-2 text-sm text-white font-medium bg-primary rounded-md"
+        >
+          Tạo chi nhánh
+        </button>
       </footer>
     </div>
   </a-modal>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { useCommonStore } from '@/stores'
+
+// * libraries
+import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
+
 /**Icon*/
-import IconHome from "@/components/icons/IconHome.vue";
-import IconAdd from "@/components/icons/IconAdd.vue";
-import IconClose from "@/components/icons/IconClose.vue";
-import IconArrow from "@/components/icons/IconArrow.vue";
-/**Danh sách */
-const list_business = ref([
-  {
-    name_business: "Viettel",
-    address_business: "19 Tố Hữu, Hà Đông,Hà Nội,Việt Nam ",
-    day_business: "01/01/2023",
-    number_business: "100",
-    status_business: true,
-    operation_business: "Cài đặt",
-  },
-  {
-    name_business: "Viettel",
-    address_business: "Trụ sở chính",
-    day_business: "01/01/2023",
-    number_business: "100",
-    status_business: true,
-    operation_business: "Cài đặt",
-  },
-  {
-    name_business: "Viettel",
-    address_business: "Trụ sở chính",
-    day_business: "01/01/2023",
-    number_business: "100",
-    status_business: true,
-    operation_business: "Cài đặt",
-  },
-]);
+import IconHome from '@/components/icons/IconHome.vue'
+import IconAdd from '@/components/icons/IconAdd.vue'
+import IconClose from '@/components/icons/IconClose.vue'
+import IconArrow from '@/components/icons/IconArrow.vue'
+
+// * store
+const commonStore = useCommonStore()
+const { branches } = storeToRefs(commonStore)
+
 /**Biến*/
-const date = ref(new Date());
+const date = ref(new Date())
 /**Biến mở đóng modal*/
-const open = ref(false);
-/**Hàm mở modal*/ 
+const open = ref(false)
+/**Hàm mở modal*/
 function showModal() {
-  open.value = true;
+  open.value = true
 }
-/**Hàm đóng modal*/ 
+/**Hàm đóng modal*/
 function handleOk() {
-  open.value = false;
+  open.value = false
 }
 </script>
 

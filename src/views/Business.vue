@@ -54,7 +54,7 @@
           <ul v-if="hidden_business" class="flex flex-col gap-3 ml-8 pb-2">
             <li
             @click="detaiBranch(control.name_control)"
-             :class="{ 'bg-slate-100': name_baranch === control.name_control }"
+              :class="{ 'bg-slate-100': name_baranch === control.name_control }"
               v-for="control in list_branch"
               class="flex items-center cursor-pointer gap-2 h-13 rounded-lg border border-slate-200 p-2"
             >

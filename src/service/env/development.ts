@@ -9,7 +9,8 @@ const ENV: Env = {
         prefix: 'buddha_'
     },
     host: {
-        test: 'http://localhost:1355'
+        test: 'http://localhost:1355',
+        merchant:'https://api.merchant.vn/v1',
     }
 }
 
