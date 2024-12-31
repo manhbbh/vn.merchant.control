@@ -68,6 +68,18 @@ async function apiProductRequest({
   }
 }
 
+/** lấy thông tin người dùng hiện tại */
+export async function getUserInfo(params: InputRequestApi) {
+  try {
+    return await apiMerchantRequest({
+      ...params,
+      end_point: 'apps/info/profile',
+    })
+  } catch (e) {
+    throw e
+  }
+}
+
 // * Thiết lập doanh nghiệp
 /** lấy danh sách thiết lập */
 export async function getSetting(params: InputRequestApi) {

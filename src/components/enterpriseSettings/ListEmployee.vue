@@ -6,13 +6,12 @@
     <div class="flex flex-col gap-2 w-full">
       <div class="flex h-5 items-center justify-between mb-3">
         <h4 class="flex justify-start text-sm font-medium">Nhân sự công ty</h4>
-        <div
+        <!-- <div
           class="flex items-center gap-2 bg-slate-100 py-3 px-3 h-5 cursor-pointer rounded-md"
         >
-          <!-- icon -->
           <IconAdd class="w-4 h-4"></IconAdd>
           <p class="text-xs font-medium">Thêm nhân sự</p>
-        </div>
+        </div> -->
       </div>
       <!--  -->
       <table class="min-w-full border-none bg-white rounded-lg z-10">

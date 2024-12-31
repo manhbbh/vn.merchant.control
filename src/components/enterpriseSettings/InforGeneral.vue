@@ -107,7 +107,7 @@
               'text-red-500': business_data.archive,
             }"
           >
-          <template v-if="!business_data.archive">
+            <template v-if="!business_data.archive">
               <IconTick class="h-5 w-5"></IconTick>
               <p class="text-sm">Đang hoạt động</p>
             </template>
@@ -128,10 +128,21 @@
           <button
             class="flex items-center px-2.5 py-2 gap-2 border rounded-md hover:brightness-95"
             :class="{
-              'bg-green-100 text-green-600  border-green-500': business_data.archive,
-              'bg-red-100 text-red-500 border-red-500': !business_data.archive
+              'bg-green-100 text-green-600  border-green-500':
+                business_data.archive,
+              'bg-red-100 text-red-500 border-red-500': !business_data.archive,
             }"
-            @click="business_data.archive = !business_data.archive"
+            @click="
+              confirm(
+                'warning',
+                'Xác nhận thay đổi trạng thái?',
+                '',
+                (is_cancel: boolean) => {
+                  if (is_cancel) return
+                  business_data.archive = !business_data.archive
+                }
+              )
+            "
           >
             <template v-if="business_data.archive">
               <IconTick class="h-5 w-5"></IconTick>
@@ -163,6 +174,7 @@ import CustomVuePicker from '@/components/CustomVuePicker.vue'
 import IconTick from '@/components/icons/IconTick.vue'
 import IconPause from '@/components/icons/IconPause.vue'
 import IconInformation from '@/components/icons/IconInformation.vue'
+import { confirm } from '@/service/helper/alert'
 
 // * store
 const commonStore = useCommonStore()

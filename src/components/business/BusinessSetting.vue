@@ -153,7 +153,8 @@ async function saveBusinessInfo() {
   try {
     await businessUpdate({
       body: {
-        ...business_data.value
+        ...business_data.value,
+        id: business_data.value?._id
       },
     })
   } catch (e) {

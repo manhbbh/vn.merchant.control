@@ -11,11 +11,12 @@
           Hình thức làm việc
         </h4>
         <div class="flex items-center gap-1 sm:gap-2.5">
-          <p
+          <button
             class="text-sm font-medium text-slate-500 h-9 px-0 sm:px-6 sm:py-2"
+            @click="reset()"
           >
             Khôi phục mặc định
-          </p>
+          </button>
           <button
             class="h-9 w-18 text-sm font-medium text-white rounded-md bg-black"
             @click="open = true"
@@ -142,6 +143,7 @@
                 </button>
                 <div
                   class="h-5 inline-flex text-red-500 bg-red-50 font-medium text-xs rounded-md px-2 py-0.5 items-center justify-center"
+                  @click="handleDelete()"
                 >
                   Xóa
                 </div>
@@ -426,6 +428,8 @@
 
 <script setup lang="ts">
 import { useCommonStore } from '@/stores'
+import { confirm } from '@/service/helper/alert'
+import { setting } from '@/service/constant/setting_default'
 
 // * libraries
 import { ref } from 'vue'
@@ -440,8 +444,7 @@ import IconNext from '@/components/icons/IconNext.vue'
 import IconTicks from '@/components/icons/IconTicks.vue'
 import IconPapers from '@/components/icons/IconPapers.vue'
 
-/**Biến*/
-const date = ref(new Date())
+
 /**Biến*/
 const LIST_DAYS = [
   {
@@ -548,13 +551,26 @@ const LIST_DAYS = [
 
 // * store
 const commonStore = useCommonStore()
-const { form_of_work, employees } = storeToRefs(commonStore)
+const { form_of_work, employees, user } = storeToRefs(commonStore)
 
 /**biến*/
 const active = ref(true)
 
 /**Biến mở đóng modal*/
 const open = ref(false)
+
+/** loại modal mở ra */
+const type_model = ref<'create'|'update'>('create')
+
+/** dữ liệu của hình thức làm việc đang chọn */
+const form_of_work_value = ref({
+  name: '',
+  working_hours: 0,
+  setting_data: {},
+  created_by: user.value?._id,
+  created_time: new Date(),
+})
+
 /**Hàm mở modal*/
 function showModal() {
   open.value = true
@@ -564,6 +580,7 @@ function handleOk() {
   open.value = false
 }
 
+/** Lấy thông tin nhân viên */
 function getInfo(id?: string, type?: string) {
   if (!id) return
 
@@ -575,6 +592,28 @@ function getInfo(id?: string, type?: string) {
 
   return EMPLOYEE?.avatar
 }
-</script>
 
-<style lang="scss" scoped></style>
+/** xóa hình thức làm việc */
+function handleDelete() {
+  confirm('warning', 'Xác nhận hình thức làm việc này?', '', (is_cancel: boolean) => {
+    if (is_cancel) return
+  })
+}
+
+/** khôi phục mặc định */
+function reset() {
+  confirm('warning', 'Xác nhận khôi phục mặc định?', '', (is_cancel: boolean) => {
+    if (is_cancel) return
+
+    form_of_work.value.setting_data = {}
+    for (const key in setting.form_of_work) {
+      form_of_work.value.setting_data[key] = {
+        ...setting.form_of_work[key],
+        created_by: user.value?._id,
+        created_time: new Date()
+      }
+    }
+  })
+}
+
+</script>

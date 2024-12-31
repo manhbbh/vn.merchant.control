@@ -9,13 +9,15 @@
       <div class="flex h-9 items-start justify-between">
         <h4 class="flex justify-start text-sm font-medium">Hình nền</h4>
         <div class="flex items-center gap-2.5">
-          <p
+          <button
             class="text-sm font-medium text-slate-500 h-9 px-2 sm:px-6 sm:py-2"
+            @click="reset()"
           >
             Khôi phục mặc định
-          </p>
+          </button>
           <button
             class="h-9 w-18 text-sm font-medium text-white rounded-md bg-black"
+            @click="is_show_add = true"
           >
             Thêm
           </button>
@@ -25,178 +27,167 @@
       <div class="flex flex-col gap-3 sm:flex-row">
         <div class="flex flex-1 gap-1 flex-col">
           <p class="text-left text-xs font-medium">Web PC</p>
+          <div>
+            <table class="min-w-full h-fit bg-white flex-1 z-10">
+              <thead class="bg-slate-200 h-7 text-semibold rounded-2xl text-xs">
+                <tr class="rounded-lg">
+                  <th class="px-2 w-8 text-left font-semibold">STT</th>
+                  <th class="text-center w-20 sm:w-25 font-semibold">Ảnh</th>
+                  <th class="text-left w-34 font-semibold hidden md:table-cell">
+                    Người tạo
+                  </th>
+                  <th class="text-center w-15 font-semibold">Hiển thị</th>
+                  <th class="text-center w-15 font-semibold">Xóa</th>
+                  <th
+                    class="text-center w-15 font-semibold hidden md:table-cell"
+                  ></th>
+                </tr>
+              </thead>
+              <!--  -->
+              <tbody>
+                <tr
+                  v-for="(holiday, index) in background?.setting_data?.pc"
+                  :key="index"
+                  class="text-black h-15 cursor-pointer text-sm border-b border-gray-200 overflow-y-auto"
+                >
+                  <!-- stt-->
+                  <td class="">
+                    <p class="flex w-8 px-4 text-blue-500 font-semibold">
+                      {{ index + 1 }}
+                    </p>
+                  </td>
+                  <!-- ảnh -->
+                  <td class="w-31 sm:w-25">
+                    <div
+                      class="h-16 text-center flex justify-center items-center"
+                    >
+                      <img
+                        :src="holiday?.link || ''"
+                        class="w-31 h-12.5 flex justify-center rounded"
+                        alt=""
+                        loading="lazy"
+                      />
+                    </div>
+                  </td>
 
-          <table class="min-w-full bg-white flex-1 z-10">
-            <thead class="bg-slate-200 h-7 text-semibold rounded-2xl text-xs">
-              <tr class="rounded-lg">
-                <th class="px-2 w-8 text-left font-semibold">STT</th>
-                <th class="text-center w-20 sm:w-25 font-semibold">Ảnh</th>
-                <th class="text-left w-34 font-semibold hidden md:table-cell">
-                  Người tạo
-                </th>
-                <th class="text-center w-15 font-semibold">Hiển thị</th>
-                <th class="text-center w-15 font-semibold">Xóa</th>
-                <th
-                  class="text-center w-15 font-semibold hidden md:table-cell"
-                ></th>
-              </tr>
-            </thead>
-            <!--  -->
-            <tbody>
-              <tr
-                v-for="(holiday, index) in background?.setting_data?.pc"
-                :key="index"
-                class="text-black h-15 cursor-pointer text-sm border-b border-gray-200 overflow-y-auto"
-              >
-                <!-- stt-->
-                <td class="">
-                  <p class="flex w-8 px-4 text-blue-500 font-semibold">
-                    {{ index + 1 }}
-                  </p>
-                </td>
-                <!-- ảnh -->
-                <td class="w-31 sm:w-25">
-                  <div
-                    class="h-16 text-center flex justify-center items-center"
-                  >
-                    <img
-                      :src="holiday?.link || ''"
-                      class="w-31 h-12.5 flex justify-center rounded"
-                      alt=""
-                    />
-                  </div>
-                </td>
+                  <!--tên -->
+                  <td class="text-left hidden md:table-cell">
+                    <p>{{ getInfo(holiday?.created_by, 'name') }}</p>
+                  </td>
 
-                <!--tên -->
-                <td class="text-left hidden md:table-cell">
-                  <p>{{ getInfo(holiday?.created_by, 'name') }}</p>
-                </td>
-
-                <!--  -->
-                <td class="">
-                  <!-- select -->
-                  <label
-                    class="inline-flex h-16 items-center justify-center cursor-pointer"
-                  >
-                    <input
-                      type="checkbox"
-                      value=""
-                      class="sr-only peer"
+                  <!--  -->
+                  <td class="">
+                    <!-- select -->
+                    <Toggle 
                       v-model="holiday.active"
                     />
+                  </td>
+
+                  <!-- xóa -->
+                  <td class="">
                     <div
-                      class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-black"
-                    ></div>
-                  </label>
-                </td>
+                      class="h-6 inline-flex text-red-500 bg-red-50 font-medium text-xs rounded-md px-2 py-0.5 items-center justify-center"
+                      @click="handleDelete(index,'pc')"
+                    >
+                      Xóa
+                    </div>
+                  </td>
 
-                <!-- xóa -->
-                <td class="">
-                  <div
-                    class="h-6 inline-flex text-red-500 bg-red-50 font-medium text-xs rounded-md px-2 py-0.5 items-center justify-center"
-                  >
-                    Xóa
-                  </div>
-                </td>
-
-                <td class="hidden md:flex"></td>
-              </tr>
-            </tbody>
-          </table>
+                  <td class="hidden md:flex"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
         <!--  -->
         <div class="flex flex-1 gap-1 flex-col">
           <p class="text-left text-xs font-medium">Mobie App</p>
-
-          <table class="min-w-full border-none bg-white flex-1 rounded-lg z-10">
-            <thead
-              class="bg-slate-200 h-7 text-xs font-semibold sticky top-0 text-customDarkBlue flex-shrink-0 z-10"
-            >
-              <tr class="h-7">
-                <th class="px-2 w-8 text-left font-semibold">STT</th>
-                <th class="text-center w-20 sm:w-25 font-semibold">Ảnh</th>
-                <th class="text-left w-34 font-semibold hidden md:table-cell">
-                  Người tạo
-                </th>
-                <th class="text-center w-15 font-semibold">Hiển thị</th>
-                <th class="text-center w-15 font-semibold">Xóa</th>
-                <th
-                  class="text-center w-15 font-semibold hidden md:table-cell"
-                ></th>
-              </tr>
-            </thead>
-            <!--  -->
-            <tbody>
-              <tr
-                v-for="(holiday, index) in background?.setting_data?.mobile"
-                :key="index"
-                class="text-black h-15 cursor-pointer text-sm border-b border-gray-200 overflow-y-auto"
+          <div>
+            <table class="min-w-full h-fit border-none bg-white flex-1 rounded-lg z-10">
+              <thead
+                class="bg-slate-200 h-7 text-xs font-semibold sticky top-0 text-customDarkBlue flex-shrink-0 z-10"
               >
-                <!-- stt-->
-                <td class="">
-                  <p class="flex w-8 px-4 text-blue-500 font-semibold">
-                    {{ index + 1 }}
-                  </p>
-                </td>
-                <!-- ảnh -->
-                <td class="w-20">
-                  <div
-                    class="h-16 text-center flex justify-center items-center"
-                  >
-                    <img
-                      :src="holiday.link"
-                      class="w-7.5 h-11.5 flex overflow-hidden object-cover justify-center rounded"
-                      alt=""
-                    />
-                  </div>
-                </td>
+                <tr class="h-7">
+                  <th class="px-2 w-8 text-left font-semibold">STT</th>
+                  <th class="text-center w-20 sm:w-25 font-semibold">Ảnh</th>
+                  <th class="text-left w-34 font-semibold hidden md:table-cell">
+                    Người tạo
+                  </th>
+                  <th class="text-center w-15 font-semibold">Hiển thị</th>
+                  <th class="text-center w-15 font-semibold">Xóa</th>
+                  <th
+                    class="text-center w-15 font-semibold hidden md:table-cell"
+                  ></th>
+                </tr>
+              </thead>
+              <!--  -->
+              <tbody>
+                <tr
+                  v-for="(holiday, index) in background?.setting_data?.mobile"
+                  :key="index"
+                  class="text-black h-15 cursor-pointer text-sm border-b border-gray-200 overflow-y-auto"
+                >
+                  <!-- stt-->
+                  <td class="">
+                    <p class="flex w-8 px-4 text-blue-500 font-semibold">
+                      {{ index + 1 }}
+                    </p>
+                  </td>
+                  <!-- ảnh -->
+                  <td class="w-20">
+                    <div
+                      class="h-16 text-center flex justify-center items-center"
+                    >
+                      <img
+                        :src="holiday?.link"
+                        class="w-7.5 h-11.5 flex overflow-hidden object-cover justify-center rounded"
+                        alt=""
+                        loading="lazy"
+                      />
+                    </div>
+                  </td>
 
-                <!--tên -->
-                <!--tên -->
-                <td class="text-left hidden md:table-cell">
-                  <p>{{ getInfo(holiday?.created_by, 'name')  }}</p>
-                </td>
+                  <!--tên -->
+                  <!--tên -->
+                  <td class="text-left hidden md:table-cell">
+                    <p>{{ getInfo(holiday?.created_by, 'name')  }}</p>
+                  </td>
 
-                <!--  -->
-                <td class="">
-                  <!-- select -->
-                  <label
-                    class="inline-flex h-16 items-center justify-center cursor-pointer"
-                  >
-                    <input
-                      type="checkbox"
-                      value=""
-                      class="sr-only peer"
+                  <!--  -->
+                  <td class="">
+                    <!-- select -->
+                    <Toggle 
                       v-model="holiday.active"
                     />
-                    <div
-                      class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-black"
-                    ></div>
-                  </label>
-                </td>
+                  </td>
 
-                <!-- xóa -->
-                <td class="">
-                  <div
-                    class="h-6 inline-flex text-red-500 bg-red-50 font-medium text-xs rounded-md px-2 py-0.5 items-center justify-center"
-                  >
-                    Xóa
-                  </div>
-                </td>
-                <td class="hidden md:flex"></td>
-              </tr>
-            </tbody>
-          </table>
+                  <!-- xóa -->
+                  <td class="">
+                    <div
+                      class="h-6 inline-flex text-red-500 bg-red-50 font-medium text-xs rounded-md px-2 py-0.5 items-center justify-center"
+                      @click="handleDelete(index,'mobile')"
+                    >
+                      Xóa
+                    </div>
+                  </td>
+                  <td class="hidden md:flex"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
       <!--  -->
-      <div class="flex flex-col py-2">
+      <div class="flex flex-col py-2"
+        v-if="is_show_add"
+      >
         <div class="flex flex-col sm:h-9 gap-4 sm:flex-row">
           <div class="flex items-center justify-between gap-4">
             <p class="text-sm font-medium">Link</p>
             <input
+              v-model="form_add.link"
               type="text"
-              class="w-67 h-9 border rounded-md px-2 border-slate-300"
+              class="w-67 h-9 border rounded-md px-2 border-slate-300 outline-none"
               placeholder="https://"
             />
           </div>
@@ -204,14 +195,16 @@
             <p class="text-sm font-medium flex-shrink-0">Loại hình nền</p>
             <select
               id="from-time"
+              v-model="form_add.type"
               class="mr-0 flex items-center h-9 w-full sm:w-30 rounded-md border px-3 py-2"
             >
-              <option value="22">Web PC</option>
-              <option value="21">Mobie App</option>
+              <option value="pc">Web PC</option>
+              <option value="mobile">Mobie App</option>
             </select>
           </div>
           <button
             class="px-4 py-2 flex justify-center items-center rounded-lg bg-green-500 text-white"
+            @click="handleAdd()"
           >
             Lưu
           </button>
@@ -228,6 +221,7 @@
 
 <script setup lang="ts">
 import { useCommonStore } from "@/stores";
+import { confirm } from "@/service/helper/alert";
 
 // * libraries
 import { ref } from "vue";
@@ -235,31 +229,25 @@ import { storeToRefs } from "pinia";
 
 /**ICon*/
 import IconBackground from "@/components/icons/IconBackground.vue";
-import avarta from "@/assets/imgs/ImageWeb.png";
-
-/**Danh sách */
-const list_background = ref([
-  {
-    name_create_holiday: "Nguyễn Đình Tùng",
-    avatar_employee: avarta,
-    delete_holiday: "Xóa",
-    hidden_image: true,
-  },
-  {
-    day_holiday: "28/4",
-    title_holiday: "Quốc khánh Việt Nam",
-    day_create_holiday: "2/9",
-    name_create_holiday: "Nguyễn Đình Tùng",
-    avatar_employee: avarta,
-    time_create_holiday: "10:00 - 12/4/2024",
-    delete_holiday: "Xóa",
-  },
-]);
+import Toggle from "../Toggle.vue";
 
 // * store
 const commonStore = useCommonStore()
-const { background, employees } = storeToRefs(commonStore)
+const { background, employees, user } = storeToRefs(commonStore)
 
+/** ẩn hiệm form thêm */
+const is_show_add = ref(false)
+
+/** form thêm mới background */
+const form_add = ref<{
+  link: string,
+  type: 'pc' | 'mobile'
+}>({
+  link: '',
+  type: 'pc'
+})
+
+/** lấy thông tin nhân viên */
 function getInfo(id?: string, type?:string) {
   if(!id) return
 
@@ -271,4 +259,81 @@ function getInfo(id?: string, type?:string) {
 
   return EMPLOYEE?.avatar
 }
+
+/** thêm background */
+function handleAdd() {
+  // nếu không có dữ liệu thì thôi
+  if(!background.value.setting_data) return
+
+  // nếu thêm pc
+  if(form_add.value.type === 'pc'){
+    background.value.setting_data = {
+      ...background.value.setting_data,
+      pc: [ 
+        ...background.value.setting_data?.pc || [], 
+        {
+          link: form_add.value.link,
+          active: false,
+          created_by: user.value?._id
+        }
+      ]
+    }
+  }
+
+  // nếu thêm mobile
+  if(form_add.value.type === 'mobile'){
+    background.value.setting_data = {
+      ...background.value.setting_data,
+      mobile: [ 
+        ...background.value.setting_data?.mobile || [], 
+        {
+          link: form_add.value.link,
+          active: false,
+          created_by: user.value?._id
+        }
+      ]
+    }
+  }
+
+  form_add.value = {
+    link: '',
+    type: 'pc'
+  }
+
+  is_show_add.value = false
+}
+
+/** xử lý xóa ngày lễ */
+function handleDelete(index:number, type: 'pc' | 'mobile') {
+  confirm('warning', 'Xác nhận xóa nghỉ lễ?', '', (is_cancel: boolean) => {
+    if(is_cancel) return
+
+    // nếu không có dữ liệu thì thôi
+    if(!background.value.setting_data) return
+
+    // nếu là xóa pc
+    if(type === 'pc'){
+      background.value.setting_data?.pc?.splice(index, 1)
+    }
+
+    // nếu là xóa mobile
+    if(type === 'mobile'){
+      background.value.setting_data?.mobile?.splice(index, 1)
+    }
+    
+  })
+  
+}
+
+/** khôi phục mặc định */
+function reset(){
+  confirm('warning', 'Xác nhận khôi phục mặc định?', '', (is_cancel: boolean) => {
+    if(is_cancel) return
+    background.value.setting_data = {
+      pc: [],
+      mobile: []
+    }
+  })
+}
+
 </script>

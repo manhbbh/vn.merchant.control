@@ -23,6 +23,9 @@ export const useCommonStore = defineStore('common_store', () => {
   /** id của business */
   const business_id = ref('')
 
+  /** dữ liệu nhân viên hiện tại */
+  const user = ref<{ _id?: string; first_name?: string; last_name?: string }>({})
+
   /** danh sách nhân viên */
   const users = ref<{ [key: string]: EmployeeData }>({})
 
@@ -57,6 +60,7 @@ export const useCommonStore = defineStore('common_store', () => {
     user_token,
     business_id,
     is_loading_full_screen,
+    user,
     users,
     employees,
     branches,

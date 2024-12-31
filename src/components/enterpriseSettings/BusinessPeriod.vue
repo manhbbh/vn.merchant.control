@@ -34,25 +34,45 @@
                 v-model="monthly_business_period.setting_data.start"
                 class="outline-none appearance-none text-center"
               >
-                <option v-for="i in 31" :value="i" class="px-2">{{ i }}</option>
+                <option v-for="i in 28" :value="i" class="px-2">{{ i }}</option>
               </select>
             </div>
           </div>
-          <!--  -->
-          <div
-            class="flex items-center border border-gray-300 h-9 py-2 rounded-md"
-          >
-            <p class="text-muted w-28">Ngày kết thúc</p>
+          <div class="flex">
             <div
-              class="border-l w-12 border-gray-300 flex items-center justify-center h-9"
+              class="flex items-center border border-gray-300 rounded-md"
             >
-              <select
-                v-model="monthly_business_period.setting_data.end"
-                class="outline-none appearance-none text-center"
+              <p class="text-muted w-28">Ngày kết thúc</p>
+              <div
+                class="border-l w-12 rounded-e-md border-gray-300 flex items-center justify-center py-2"
+                :class="{
+                  'bg-slate-100':
+                    monthly_business_period.setting_data.end === 32,
+                }"
               >
-                <option v-for="i in 31" :value="i" class="px-2">{{ i }}</option>
-              </select>
+                <select
+                  v-model="monthly_business_period.setting_data.end"
+                  class="outline-none appearance-none text-center bg-transparent"
+                >
+                  <option v-for="i in 31" :value="i" class="px-2">
+                    {{ i }}
+                  </option>
+                </select>
+              </div>
             </div>
+            <Toggle
+              :title="'Cuối tháng'"
+              :model-value="monthly_business_period.setting_data.end === 32"
+              @update:model-value="
+                (modelValue) => {
+                  // nếu không có data thì thôi
+                  if (!monthly_business_period.setting_data) return
+
+                  if (modelValue) monthly_business_period.setting_data.end = 32
+                  else monthly_business_period.setting_data.end = 28
+                }
+              "
+            />
           </div>
         </div>
         <div class="flex flex-col gap-1 items-start w-80">
@@ -135,6 +155,7 @@ import CustomVuePicker from '@/components/CustomVuePicker.vue'
 /**ICon*/
 import IconPeriod from '@/components/icons/IconPeriod.vue'
 import { endOfYear, startOfYear } from 'date-fns'
+import Toggle from '../Toggle.vue'
 
 // * store
 const commonStore = useCommonStore()

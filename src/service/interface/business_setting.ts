@@ -29,6 +29,20 @@ export interface WorkingTimeSetting {
   }
   /** Số giờ làm việc 1 ngày */
   working_hours?: number
+
+  /** thời gian nghỉ */
+  rest?: {
+    from?: {
+      hour?: number
+      minute?: number
+    }
+    to?: {
+      hour?: number
+      minute?: number
+    }
+  }
+  /** số giờ nghỉ */
+  rest_hours?: number
 }
 
 /** dữ liệu cài đặt cơ bản */
@@ -75,7 +89,7 @@ export interface HolidaySettingData {
     /** Người tạo */
     created_by?: string
     /** Ngày tạo */
-    created_time?: Date
+    created_time?: Date | string
   }
 }
 
@@ -105,7 +119,7 @@ export interface FormOfWorkData {
     /** Người tạo */
     created_by?: string
     /** Thời gian tạo */
-    created_time?: Date
+    created_time?: Date | string
   }
 }
 
@@ -126,6 +140,7 @@ interface WorkingTimeDay {
     /** Phút check-out */
     minute?: number
   }
+  
   /** Trạng thái hoạt động của ngày (true: làm việc, false: nghỉ) */
   active?: boolean
 }
@@ -143,6 +158,26 @@ export interface WorkingTimeSettingData {
   organization_working_time?: OrganizationWorkingTime
   /** Múi giờ của tổ chức (ví dụ: "+7") */
   time_zone?: string
+}
+
+/** dữ liệu thiết lập background */
+export interface BackgroundSettingData {
+  pc?: {
+    /** link ảnh */
+    link?: string
+    /** người tạo */
+    created_by?: string
+    /** trạng thái */
+    active?: boolean
+  }[]
+  mobile?: {
+    /** link ảnh */
+    link?: string
+    /** người tạo */
+    created_by?: string
+    /** trạng thái */
+    active?: boolean
+  }[]
 }
 
 /** Chu kỳ kinh doanh theo tháng */
@@ -197,28 +232,7 @@ export interface WorkingTimeSetting extends PrimarySettingData {
 
 /** thiết lập background */
 export interface BackgroundSetting extends PrimarySettingData {
-  setting_data?: {
-    pc: [
-      {
-        /** link ảnh */
-        link: string
-        /** người tạo */
-        created_by: string
-        /** trạng thái */
-        active: boolean
-      }
-    ]
-    mobile: [
-      {
-        /** link ảnh */
-        link: string
-        /** người tạo */
-        created_by: string
-        /** trạng thái */
-        active: boolean
-      }
-    ]
-  }
+  setting_data?: BackgroundSettingData
 }
 
 /** dữ liệu chi nhánh */

@@ -9,9 +9,11 @@
       <div class="flex h-9 items-start justify-between">
         <h4 class="flex justify-start text-sm font-medium">Nghỉ lễ</h4>
         <div class="flex items-center gap-2.5">
-          <p class="text-sm font-medium text-slate-500 h-9 px-6 py-2">
+          <button class="text-sm font-medium text-slate-500 h-9 px-6 py-2"
+            @click="reset()"
+          >
             Khôi phục mặc định
-          </p>
+          </button>
           <button
             class="h-9 w-18 text-sm font-medium text-white rounded-md bg-black"
             @click="is_show_add = true"
@@ -110,6 +112,7 @@
             <td class="text-center sm:text-left py-2">
               <div
                 class="h-5 inline-flex text-red-500 bg-red-50 font-medium text-xs rounded-md px-2 py-0.5 items-center justify-center"
+                @click="handleDelete(holiday)"
               >
                 Xóa
               </div>
@@ -134,6 +137,7 @@
             Tiêu đề
           </label>
           <input
+            v-model="add_form.title"
             class="border border-gray-300 px-3 rounded-md w-67 h-9"
             placeholder="Nhập tiêu đề ngày nghỉ"
             type="text"
@@ -148,7 +152,7 @@
             Ngày
           </label>
           <CustomVuePicker 
-            v-model="date"
+            v-model="add_form.date"
             placeholder="Chọn ngày"
             :handle-date="() => {}"
             :input_class="'!border-transparent'"
@@ -159,6 +163,7 @@
         <!--  -->
         <button
           class="h-9 bg-green-600 text-sm font-medium text-white rounded-md px-4 py-2"
+          @click="handleAdd"
         >
           Lưu
         </button>
@@ -170,6 +175,8 @@
 
 <script setup lang="ts">
 import { useCommonStore } from '@/stores'
+import { confirm } from '@/service/helper/alert'
+import { setting } from '@/service/constant/setting_default'
 
 // * libraries
 import { ref } from 'vue'
@@ -178,26 +185,27 @@ import { storeToRefs } from 'pinia'
 
 // * components
 import Avatar from '@/components/avartar/Avatar.vue'
+import CustomVuePicker from '@/components/CustomVuePicker.vue'
 
 /**Icon*/
 import IconTicks from '@/components/icons/IconTicks.vue'
 import IconCalendar from '@/components/icons/IconCalendar.vue'
-import CustomVuePicker from '../CustomVuePicker.vue'
 
 // * store
 const commonStore = useCommonStore()
-const { holidays, employees } = storeToRefs(commonStore)
+const { holidays, employees, user } = storeToRefs(commonStore)
 
 /**Biến*/
-const date = ref(new Date())
-
+/** ẩn hiện modal thêm nhân viên */
 const is_show_add = ref(false)
 
+/** form thêm mới ngày lễ */
 const add_form = ref({
   title: '',
-  date: ''
+  date: new Date()
 })
 
+/** lấy thông tin nhân viên */
 function getInfo(id?: string, type?: string) {
   if (!id) return
 
@@ -210,5 +218,71 @@ function getInfo(id?: string, type?: string) {
 
   // còn lại trả về ảnh đại diện
   return EMPLOYEE?.avatar
+}
+
+/** xử lý thêm ngày lễ */
+function handleAdd() {
+  /** đổi ngày sang dạng chuỗi lưu làm key */
+  const DATE_STR = format(add_form.value.date, 'dd/MM')
+
+  // nếu không có ngày thì thôi
+  if(!DATE_STR) return
+
+  // thêm vào ngày lễ
+  holidays.value = {
+    ...holidays.value,
+    setting_data: {
+      ...holidays.value?.setting_data,
+      [DATE_STR]: {
+        name: add_form.value.title,
+        created_time: add_form.value.date,
+        created_by: user.value?._id,
+      }
+    }
+  }
+
+  // reset form
+  add_form.value = {
+    title: '',
+    date: new Date()
+  }
+
+  // đóng form
+  is_show_add.value = false
+}
+
+/** xử lý xóa ngày lễ */
+function handleDelete(date: string) {
+  confirm('warning', 'Xác nhận xóa nghỉ lễ?', '', (is_cancel: boolean) => {
+    // nếu hủy thì thôi
+    if(is_cancel) return
+
+    // xóa
+    delete holidays.value?.setting_data?.[date]
+  })
+  
+}
+
+/** khôi phục mặc định */
+function reset(){
+  confirm('warning', 'Xác nhận khôi phục mặc định?', '', (is_cancel: boolean) => {
+    // nếu hủy thì thôi
+    if(is_cancel) return
+
+    /** ngày hôm này */
+    const TODAY = new Date()
+
+    // xóa hết dữ liệu
+    holidays.value.setting_data = {}
+
+    // lấy dữ liệu trong default
+    for(const key in setting.holiday){
+      holidays.value.setting_data[key] = {
+        ...setting.holiday[key],
+        created_by: user.value?._id,
+        created_time: TODAY
+      }
+    }
+  })
 }
 </script>

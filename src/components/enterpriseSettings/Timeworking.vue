@@ -5,8 +5,11 @@
     <!-- icon -->
     <IconTime class="w-5 h-5 flex-shrink-0"></IconTime>
     <!--content  -->
-    <div class="flex flex-col gap-2 w-full overflow-hidden">
-      <!-- 1 -->
+    <div
+      class="flex flex-col gap-2 w-full overflow-hidden"
+      v-if="working_time.setting_data"
+    >
+      <!-- tiêu đề -->
       <div class="flex-col mb-3 sm:">
         <h4
           class="flex text-customDark h-5 mb-2.5 justify-start text-sm font-medium"
@@ -18,7 +21,7 @@
           thể thiết lập tùy biến theo từng Chi nhánh.
         </p>
       </div>
-      <!--2  -->
+      <!-- Múi giờ -->
       <div
         class="flex flex-col items-start justify-start gap-2 mb-2 sm:h-10 sm:flex-row"
       >
@@ -47,12 +50,11 @@
           <div class="relative w-full flex justify-start sm:w-85">
             <select
               class="appearance-none h-9 text-slate-600 outline-none sm:w-85 text-sm rounded-lg border border-slate-300 px-7 sm:px-3 py-1.5"
+              v-model="working_time.setting_data.time_zone"
             >
-              <option value="BotBanHang">
-                (GMT +7:00) Hanoi, Bangkok, Jakarta
-              </option>
-              <option value="Retion">Retion</option>
-              <option value="AppOn">AppOn</option>
+              <template v-for="item in TIME_ZONES">
+                <option :value="item">{{ item }}</option>
+              </template>
             </select>
             <IconArrow
               class="w-4 h-4 text-slate-600 absolute right-12 sm:right-2 top-2.5"
@@ -61,7 +63,7 @@
           <!--  -->
         </div>
       </div>
-      <!-- 3 -->
+      <!-- Thời gian làm việc -->
       <div class="h-10 flex items-start gap-2 pt-2">
         <IconPapers class="h-5 w-5"></IconPapers>
         <!--  -->
@@ -76,12 +78,10 @@
             </p>
           </div>
           <!-- select -->
-          <label class="inline-flex items-center cursor-pointer">
-            <input type="checkbox" value="" class="sr-only peer" checked />
-            <div
-              class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-black"
-            ></div>
-          </label>
+          <Toggle
+            v-if="working_time.setting_data.organization_working_time"
+            v-model="working_time.setting_data.organization_working_time.active"
+          />
         </div>
       </div>
       <!--4  -->
@@ -178,17 +178,9 @@
           <!--  -->
 
           <!-- select -->
-          <label class="hidden sm:inline-flex h-9 items-center cursor-pointer">
-            <input
-              type="checkbox"
-              value=""
-              class="sr-only peer"
-              v-model="day.active"
-            />
-            <div
-              class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-black"
-            ></div>
-          </label>
+          <Toggle 
+            v-model="day.active"
+          />
         </div>
         <!--  -->
       </div>
@@ -198,16 +190,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { useCommonStore } from '@/stores'
+import { TIME_ZONES } from '@/service/constant'
 
+// * library
+import { storeToRefs } from 'pinia'
+
+// * component
+import Toggle from '@/components/Toggle.vue'
+
+// * icons
 import IconTime from '@/components/icons/IconTime.vue'
 import IconWorld from '@/components/icons/IconWorld.vue'
 import IconPapers from '@/components/icons/IconPapers.vue'
 import IconArrow from '@/components/icons/IconArrow.vue'
-import { useCommonStore } from '@/stores'
-import { storeToRefs } from 'pinia'
-
-/**Biến*/
 
 // * store
 const commonStore = useCommonStore()

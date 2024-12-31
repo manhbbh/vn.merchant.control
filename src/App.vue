@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import { useCommonStore } from '@/stores'
-import { getBusinessInfo, getSetting } from '@/service/api/api'
+import { getBusinessInfo, getSetting, getUserInfo } from '@/service/api/api'
 import { Toast } from '@/service/helper/toast'
 import { queryString } from '@/service/helper/queryString'
 
@@ -40,6 +40,7 @@ onMounted(() => {
   getDataFromUrl()
   getSettings()
   getBusinessInfos()
+  // getUserInfos()
 })
 
 /** lấy các dữ liệu thiết lập trừ thiết lập chung */
@@ -117,8 +118,20 @@ async function getBusinessInfos() {
         },
         {}
       )
-      console.log(commonStore.employees);
+    // nếu có thôn tin nhân sự hiện tại thì lưu lại
+    if(RES?.data?.user) commonStore.user = RES?.data?.user
       
+  } catch (e) {
+    $toast.error(e)
+  }
+}
+
+/** lấy thông tin khách hàng */
+async function getUserInfos() {
+  try {
+    await getUserInfo({
+      body: {},
+    })
   } catch (e) {
     $toast.error(e)
   }
