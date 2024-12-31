@@ -11,7 +11,7 @@
         >
           <!-- icon -->
           <IconAdd class="w-4 h-4"></IconAdd>
-          <p class="text-xs font-medium">Thêm chi nhánh</p>
+          <p class="text-xs font-medium">Thêm nhân sự</p>
         </div>
       </div>
       <!--  -->

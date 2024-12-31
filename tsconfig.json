@@ -19,8 +19,8 @@
     },
     "preserveValueImports": false,
     "importsNotUsedAsValues": "remove",
-    "verbatimModuleSyntax": true
   },
+  "verbatimModuleSyntax": true,
   "references": [
     {
       "path": "./tsconfig.config.json"

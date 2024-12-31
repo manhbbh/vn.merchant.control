@@ -121,6 +121,7 @@
     :auto-focus="false"
     @ok="handleOk"
     :footer="null"
+    v-if="open"
   >
     <div class="flex flex-col w-full">
       <header class="flex items-center justify-between h-10 px-6 py-2">
@@ -158,13 +159,12 @@
             >
               Ngày thành lập
             </label>
-            <VueDatePicker
-              class="iconHidden"
-              auto-apply
+            <CustomVuePicker 
               v-model="date"
-              placeholder="Chọn ngày "
-              :action-row="{ showNow: true }"
-              now-button-label="Current"
+              placeholder="Chọn ngày"
+              :handle-date="() => {}"
+              :input_class="'!border-transparent'"
+              class="border border-gray-300"
             />
             <IconArrow
               class="w-4 h-4 text-slate-600 absolute right-10 sm:right-2 top-1/2"
@@ -172,84 +172,14 @@
           </div>
         </div>
         <!--  -->
-        <div class="flex gap-2.5 sm:flex-row flex-col">
-          <!-- Địa chỉ -->
-          <div class="sm:w-100.5 text-left h-16 space-y-1">
-            <label
-              for="shortName"
-              class="block text-sm font-medium text-gray-700 h-5.5"
-            >
-              Địa chỉ
-            </label>
-            <input
-              type="text"
-              id="shortName"
-              placeholder="Nhập địa chỉ"
-              class="h-9 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-            />
-          </div>
-          <!-- Phường -->
-          <div class="sm:w-42 text-left h-16 relative space-y-1">
-            <label
-              for="shortName"
-              class="block text-sm font-medium text-gray-700 h-5.5"
-            >
-              Phường/Xã
-            </label>
-            <select
-              class="appearance-none h-9 text-slate-600 outline-none w-full sm:w-42 text-sm rounded-lg border border-slate-300 px-7 sm:px-3 py-1.5"
-            >
-              <option value="BotBanHang">---Chọn---</option>
-              <option value="Retion">Retion</option>
-              <option value="AppOn">AppOn</option>
-            </select>
-            <IconArrow
-              class="w-4 h-4 text-slate-600 absolute right-10 sm:right-2 top-1/2"
-            ></IconArrow>
-          </div>
-          <!-- Quận -->
-          <div class="sm:w-42 text-left h-16 relative space-y-1">
-            <label
-              for="shortName"
-              class="block text-sm font-medium text-gray-700 h-5.5"
-            >
-              Quận/Huyện
-            </label>
-            <select
-              class="appearance-none h-9 text-slate-600 outline-none w-full sm:w-42 text-sm rounded-lg border border-slate-300 px-7 sm:px-3 py-1.5"
-            >
-              <option value="BotBanHang">---Chọn---</option>
-              <option value="Retion">Retion</option>
-              <option value="AppOn">AppOn</option>
-            </select>
-            <IconArrow
-              class="w-4 h-4 text-slate-600 absolute right-10 sm:right-2 top-1/2"
-            ></IconArrow>
-          </div>
-          <!-- Thành phố -->
-          <div class="sm:w-42 text-left h-16 relative space-y-1">
-            <label
-              for="shortName"
-              class="block text-sm font-medium text-gray-700 h-5.5"
-            >
-              Tỉnh/Thành phố
-            </label>
-            <select
-              class="appearance-none h-9 text-slate-600 outline-none w-full sm:w-42 text-sm rounded-lg border border-slate-300 px-7 sm:px-3 py-1.5"
-            >
-              <option value="BotBanHang">---Chọn---</option>
-              <option value="Retion">Retion</option>
-              <option value="AppOn">AppOn</option>
-            </select>
-            <IconArrow
-              class="w-4 h-4 text-slate-600 absolute right-10 sm:right-2 top-1/2"
-            ></IconArrow>
-          </div>
+        <div class="flex gap-2.5 sm:flex-row flex-col w-full">
+          <Location class="w-full"/>
         </div>
       </main>
       <footer class="flex items-center justify-between px-6 py-3">
         <button
           class="px-4 text-sm font-medium text-customDark py-2 border rounded-md border-slate-300"
+          @click="open = false"
         >
           Hủy
         </button>
@@ -270,11 +200,15 @@ import { useCommonStore } from '@/stores'
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 
+// * components
+import Location from '@/components/Location.vue'
+
 /**Icon*/
-import IconHome from '@/components/icons/IconHome.vue'
 import IconAdd from '@/components/icons/IconAdd.vue'
+import IconHome from '@/components/icons/IconHome.vue'
 import IconClose from '@/components/icons/IconClose.vue'
 import IconArrow from '@/components/icons/IconArrow.vue'
+import CustomVuePicker from '../CustomVuePicker.vue'
 
 // * store
 const commonStore = useCommonStore()

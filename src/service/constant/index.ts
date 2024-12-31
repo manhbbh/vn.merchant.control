@@ -1,2 +1,2 @@
-/**test constant */
-export const test = 'test'
+export * from './app'
+export * from './location'

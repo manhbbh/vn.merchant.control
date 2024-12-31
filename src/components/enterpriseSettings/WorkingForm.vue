@@ -95,16 +95,16 @@
             <!-- Người tạo -->
             <td class="text-left py-2 text-customGray hidden md:table-cell">
               <div class="flex items-center gap-1 h-5">
-                <img
-                  class="h-4 w-4 rounded-full"
-                  :src="
+                <Avatar
+                  class="w-4 h-4"
+                  :src="getInfo(form_of_work?.setting_data?.[holiday]?.created_by)"
+                  :text="
                     getInfo(
                       form_of_work?.setting_data?.[holiday]?.created_by,
-                      'avatar'
-                    )
+                      'name'
+                    ) || ''
                   "
-                  alt=""
-                />
+                ></Avatar>
                 <!--  -->
                 <div class="flex gap-1 items-end justify-between">
                   <p class="text-sm">
@@ -119,7 +119,7 @@
                 </div>
               </div>
               <!--  -->
-              <div class="h5 flex ml-5 items-center justify-start">
+              <div class="h5 flex ml-5 items-center justify-start text-xs">
                 <p v-if="form_of_work?.setting_data?.[holiday]?.created_time">
                   {{
                     format(
@@ -425,15 +425,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-/**Icon*/
-import IconTicks from '@/components/icons/IconTicks.vue'
-import IconPapers from '@/components/icons/IconPapers.vue'
-import IconNext from '@/components/icons/IconNext.vue'
-/**img*/
 import { useCommonStore } from '@/stores'
+
+// * libraries
+import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { format } from 'date-fns'
+
+// * components
+import Avatar from '@/components/avartar/Avatar.vue'
+
+/**Icon*/
+import IconNext from '@/components/icons/IconNext.vue'
+import IconTicks from '@/components/icons/IconTicks.vue'
+import IconPapers from '@/components/icons/IconPapers.vue'
 
 /**Biến*/
 const date = ref(new Date())

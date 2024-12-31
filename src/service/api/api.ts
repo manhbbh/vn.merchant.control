@@ -14,6 +14,12 @@ function getBusinessToken() {
   return ''
 }
 
+/** Lấy id business từ store */
+function getBusinessID() {
+  const $store = useCommonStore()
+  return $store.business_id
+}
+
 /** request api merchant */
 async function apiMerchantRequest({
   end_point,
@@ -37,6 +43,32 @@ async function apiMerchantRequest({
   }
 }
 
+/** Request api của sản phẩm */
+async function apiProductRequest({
+  end_point,
+  body,
+  access_token,
+}: InputRequestApi) {
+  try {
+
+    const RES = await requestAxios({
+      uri: `${$env.host.product}/${end_point}`,
+      method: 'POST',
+      headers: {
+        'token-user': getTokenUser(),
+        'token-business': getBusinessToken(),
+      },
+      body,
+    })
+
+    // * Trả về dữ liệu
+    return RES
+  } catch (e) {
+    throw e
+  }
+}
+
+// * Thiết lập doanh nghiệp
 /** lấy danh sách thiết lập */
 export async function getSetting(params: InputRequestApi) {
   try {
@@ -55,6 +87,108 @@ export async function getBusinessInfo(params: InputRequestApi) {
     return await apiMerchantRequest({
       ...params,
       end_point: 'business/get_business_info',
+    })
+  } catch (e) {
+    throw e
+  }
+}
+
+/** Lưu thiết lập doanh nghiệp */
+export async function businessSaveSetting(params: InputRequestApi) {
+  try {
+    return await apiMerchantRequest({
+      ...params,
+      end_point: 'business/save_setting',
+      body: { ...params.body, business_id: getBusinessID() },
+    })
+  } catch (e) {
+    throw e
+  }
+}
+
+/** cập nhật thông tin doanh nghiệp */
+export async function businessUpdate(params: InputRequestApi) {
+  try {
+    return await apiMerchantRequest({
+      ...params,
+      end_point: 'business/update_business',
+    })
+  } catch (e) {
+    throw e
+  }
+}
+
+// * Thiết lập chi nhánh
+
+// * API LOCATION
+/** Lấy danh sách tỉnh thành */
+export const getProvince = async (data: {}) => {
+  try {
+    return await apiProductRequest({
+      body: data,
+      end_point: 'locations/province',
+    })
+  } catch (e) {
+    throw e
+  }
+}
+
+/** Lấy danh sách quận huyện */
+export const getDistrict = async (data: {}) => {
+  try {
+    return await apiProductRequest({
+      body: data,
+      end_point: 'locations/district',
+    })
+  } catch (e) {
+    throw e
+  }
+}
+/** Lấy danh sách xã phường */
+export const getWard = async (data: {}) => {
+  try {
+    return await apiProductRequest({
+      body: data,
+      end_point: 'locations/ward',
+    })
+  } catch (e) {
+    throw e
+  }
+}
+
+/**
+ * @deprecated 
+ * Nhận diện địa chỉ cũ 
+ * */
+export const detectAddress = async (data: {}) => {
+  try {
+    return await apiProductRequest({
+      body: data,
+      end_point: 'locations/detect_address',
+    })
+  } catch (e) {
+    throw e
+  }
+}
+
+/** nhận diện địa chỉ mới */
+export const detectAddressV2 = async (data: {}) => {
+  try {
+    return await apiProductRequest({
+      body: data,
+      end_point: 'locations/detect_address_v2',
+    })
+  } catch (e) {
+    throw e
+  }
+}
+
+/** Lấy ra thông tin chi tiết địa chỉ */
+export const getAddress = async (data: {}) => {
+  try {
+    return await apiProductRequest({
+      body: data,
+      end_point: 'locations/get_address',
     })
   } catch (e) {
     throw e

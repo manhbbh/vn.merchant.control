@@ -17,26 +17,163 @@
     <!-- 8 -->
     <Background></Background>
     <!-- nút lưu -->
-    <div class="py-2 px-3 sticky bottom-0 bg-white rounded-lg flex  items-center justify-end z-30">
-      <button class="h-9 text-sm font-medium bg-blue-700 px-4 py-2 flex justify-center items-center rounded-lg text-white">Lưu thiết lập</button>
+    <div
+      class="py-2 px-3 sticky bottom-0 bg-white rounded-lg flex items-center justify-end z-30"
+    >
+      <button
+        class="h-9 text-sm font-medium bg-blue-700 px-4 py-2 flex justify-center items-center rounded-lg text-white"
+        @click="saveSetting()"
+      >
+        Lưu thiết lập
+      </button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { useCommonStore } from '@/stores'
+import { Toast } from '@/service/helper/toast'
+import { businessSaveSetting, businessUpdate } from '@/service/api/api'
+
+// * libraries
+import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
+
 /**Component*/
-import InforGeneral from "@/components/enterpriseSettings/InforGeneral.vue";
-import ListBrach from "@/components/enterpriseSettings/ListBrach.vue";
-import ListEmployee from "@/components/enterpriseSettings/ListEmployee.vue";
-import Timeworking from "@/components/enterpriseSettings/Timeworking.vue";
-import Holiday from "@/components/enterpriseSettings/Holiday.vue";
-import WorkingForm from "@/components/enterpriseSettings/WorkingForm.vue";
-import BusinessPeriod from "@/components/enterpriseSettings/BusinessPeriod.vue";
-import Background from "@/components/enterpriseSettings/Background.vue";
+import InforGeneral from '@/components/enterpriseSettings/InforGeneral.vue'
+import ListBrach from '@/components/enterpriseSettings/ListBrach.vue'
+import ListEmployee from '@/components/enterpriseSettings/ListEmployee.vue'
+import Timeworking from '@/components/enterpriseSettings/Timeworking.vue'
+import Holiday from '@/components/enterpriseSettings/Holiday.vue'
+import WorkingForm from '@/components/enterpriseSettings/WorkingForm.vue'
+import BusinessPeriod from '@/components/enterpriseSettings/BusinessPeriod.vue'
+import Background from '@/components/enterpriseSettings/Background.vue'
 
+// * store
+const commonStore = useCommonStore()
+const {
+  holidays,
+  background,
+  working_time,
+  form_of_work,
+  year_business_period,
+  monthly_business_period,
+  business_data
+} = storeToRefs(commonStore)
 
+// * toast
+const $toast = new Toast()
 
+/** lưu thiết lập chu kỳ kinh doanh theo tháng */
+async function savesSettingPeriodMonthly() {
+  try {
+    await businessSaveSetting({
+      body: {
+        setting_type: 'monthly_business_period',
+        setting_data: monthly_business_period.value?.setting_data,
+      },
+    })
+  } catch (e) {
+    throw e
+  }
+}
 
+/** lưu thiết lập chu kỳ kinh doanh theo năm */
+async function savesSettingPeriodYearly() {
+  try {
+    await businessSaveSetting({
+      body: {
+        setting_type: 'year_business_period',
+        setting_data: year_business_period.value?.setting_data,
+      },
+    })
+  } catch (e) {
+    throw e
+  }
+}
+
+/** lưu thiết lập ngày nghỉ lễ */
+async function savesSettingHolidays() {
+  try {
+    await businessSaveSetting({
+      body: {
+        setting_type: 'holiday',
+        setting_data: holidays.value?.setting_data,
+      },
+    })
+  } catch (e) {
+    throw e
+  }
+}
+
+/** lưu thiết lập hình thức làm việc */
+async function savesSettingFormOfWork() {
+  try {
+    await businessSaveSetting({
+      body: {
+        setting_type: 'form_of_work',
+        setting_data: form_of_work.value?.setting_data,
+      },
+    })
+  } catch (e) {
+    throw e
+  }
+}
+
+/** lưu thiết lập thời gian làm việc */
+async function savesSettingTimeworking() {
+  try {
+    await businessSaveSetting({
+      body: {
+        setting_type: 'working_time',
+        setting_data: working_time.value?.setting_data,
+      },
+    })
+  } catch (e) {
+    throw e
+  }
+}
+
+/** lưu thiết lập hình nền */
+async function savesSettingBackground() {
+  try {
+    await businessSaveSetting({
+      body: {
+        setting_type: 'background',
+        setting_data: background.value?.setting_data,
+      },
+    })
+  } catch (e) {
+    throw e
+  }
+}
+
+/** lưu thông tin doanh nghiệp */
+async function saveBusinessInfo() {
+  try {
+    await businessUpdate({
+      body: {
+        ...business_data.value
+      },
+    })
+  } catch (e) {
+    $toast.error(e)
+  }
+}
+
+async function saveSetting() {
+  try {
+    await Promise.all([
+      saveBusinessInfo(),
+      savesSettingPeriodMonthly(),
+      savesSettingPeriodYearly(),
+      savesSettingHolidays(),
+      savesSettingFormOfWork(),
+      savesSettingTimeworking(),
+      savesSettingBackground()
+    ])
+  } catch (e) {
+    $toast.error(e)
+  }
+}
 </script>
-

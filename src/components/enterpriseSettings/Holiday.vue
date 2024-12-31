@@ -14,6 +14,7 @@
           </p>
           <button
             class="h-9 w-18 text-sm font-medium text-white rounded-md bg-black"
+            @click="is_show_add = true"
           >
             Thêm
           </button>
@@ -69,21 +70,31 @@
               class="text-left py-2 text-customGray flex-col text-15px hidden md:flex"
             >
               <div class="flex items-center gap-1 h-5">
-                <img
-                  class="h-4 w-4 rounded-full"
+                <Avatar
+                  class="w-4 h-4"
                   :src="getInfo(holidays?.setting_data?.[holiday]?.created_by)"
-                  alt=""
-                />
+                  :text="
+                    getInfo(
+                      holidays?.setting_data?.[holiday]?.created_by,
+                      'name'
+                    ) || ''
+                  "
+                ></Avatar>
                 <!--  -->
                 <div class="flex gap-1 items-end justify-between">
                   <p class="text-sm">
-                    {{ getInfo(holidays?.setting_data?.[holiday]?.created_by,'name') }}
+                    {{
+                      getInfo(
+                        holidays?.setting_data?.[holiday]?.created_by,
+                        'name'
+                      )
+                    }}
                   </p>
                   <IconTicks class="w-4 h-4"></IconTicks>
                 </div>
               </div>
               <!--  -->
-              <div class="h5 flex ml-5 items-center justify-start">
+              <div class="h5 flex ml-5 items-center justify-start text-xs">
                 <p v-if="holidays?.setting_data?.[holiday]?.created_time">
                   {{
                     format(
@@ -111,7 +122,9 @@
         </tbody>
       </table>
       <!--  -->
-      <div class="flex flex-col gap-4 sm:flex-row">
+      <div class="flex flex-col gap-4 sm:flex-row"
+        v-if="is_show_add"
+      >
         <!-- Ngày thành lập-->
         <div class="flex text-left h-9 items-center gap-4">
           <label
@@ -134,12 +147,12 @@
           >
             Ngày
           </label>
-          <VueDatePicker
-            class="iconHidden w-full sm:w-39 sm:h-9"
+          <CustomVuePicker 
             v-model="date"
             placeholder="Chọn ngày"
-            auto-apply
-            :enable-time-picker="false"
+            :handle-date="() => {}"
+            :input_class="'!border-transparent'"
+            class="border border-gray-300 w-40"
           />
         </div>
 
@@ -163,9 +176,13 @@ import { ref } from 'vue'
 import { format } from 'date-fns'
 import { storeToRefs } from 'pinia'
 
+// * components
+import Avatar from '@/components/avartar/Avatar.vue'
+
 /**Icon*/
 import IconTicks from '@/components/icons/IconTicks.vue'
 import IconCalendar from '@/components/icons/IconCalendar.vue'
+import CustomVuePicker from '../CustomVuePicker.vue'
 
 // * store
 const commonStore = useCommonStore()
@@ -174,15 +191,24 @@ const { holidays, employees } = storeToRefs(commonStore)
 /**Biến*/
 const date = ref(new Date())
 
-function getInfo(id?: string, type?:string) {
-  if(!id) return
+const is_show_add = ref(false)
+
+const add_form = ref({
+  title: '',
+  date: ''
+})
+
+function getInfo(id?: string, type?: string) {
+  if (!id) return
 
   /** thông tin nhân viên */
   const EMPLOYEE = employees.value?.[id]
 
-  if(type === 'name')
+  // nếu lấy tên thì trả tên
+  if (type === 'name')
     return `${EMPLOYEE?.first_name || ''} ${EMPLOYEE?.last_name || ''}`?.trim()
 
+  // còn lại trả về ảnh đại diện
   return EMPLOYEE?.avatar
 }
 </script>
