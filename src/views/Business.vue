@@ -5,15 +5,65 @@
     >
       <!-- phần trên -->
       <header
-        class="rounded-xl static top-0 sm:h-14 bg-white py-2 px-5 flex justify-between items-center flex-shrink-0"
+        class="rounded-xl static top-0 bg-white py-2 px-5 flex justify-between items-center flex-shrink-0"
       >
         <!-- logo and name -->
         <div class="flex gap-2 items-center justify-start">
-          <img src="@/assets/imgs/Image113.png" h-9 w-9 alt="logoMerchant" />
+          <img
+            src="@/assets/imgs/merchant-icon.png"
+            class="h-9 w-9"
+            alt="logoMerchant"
+          />
           <h2 class="text-2xl font-semibold">Merchant</h2>
         </div>
         <!-- avatar -->
-        <img src="@/assets/imgs/Image114.png" h-9 w-9 alt="avartaUser" />
+        <div class="relative text-start group">
+          <Avatar
+            class="h-9 w-9 cursor-pointer"
+            :text_class="'text-lg font-semibold'"
+            :src="employees[user?._id || '']?.avatar"
+            :text="`${user?.first_name || ''} ${user?.last_name || ''}`"
+          />
+          <div
+            class="hidden group-hover:block hover:block absolute top-9 py-1 -right-4 z-50"
+          >
+            <div
+              class="flex flex-col border mr-2 rounded-lg bg-white shadow-lg"
+            >
+              <div class="px-6 py-3 text-sm">
+                <div class="text-black font-medium">
+                  {{ user?.first_name || '' }} {{ user?.last_name || '' }}
+                </div>
+                <div class="font-medium text-xs text-slate-500 truncate">
+                  {{ employees[user?._id || '']?.email }}
+                </div>
+              </div>
+              <hr class="border-1 border-slate-200" />
+              <ul class="space-y-1 p-4 font-medium cursor-pointer">
+                <li>
+                  <a
+                    class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100"
+                    href="https://merchant.vn/profile"
+                  >
+                    <UserCircleIcon class="w-5 h-5" />
+                    <span class="ms-3">Tài khoản</span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="flex items-center p-2 rounded-lg text-red-500 hover:bg-gray-100"
+                    href="https://merchant.vn/login"
+                  >
+                    <ArrowRightStartOnRectangleIcon class="w-5 h-5" />
+                    <span class="flex-1 ms-3 whitespace-nowrap">
+                      Đăng xuất
+                    </span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </header>
       <!-- Phần thân -->
       <div
@@ -60,10 +110,10 @@
             >
               <FormatAvartar :employee="control" :size="5"></FormatAvartar>
               <!--  -->
-              <div class="flex-1 flex flex-col justify-start h-9">
-                <div class="flex items-center h-5 justify-between">
-                  <h3 class="text-sm font-medium">
-                    {{ control.name }}
+              <div class="flex-1 flex flex-col justify-start overflow-hidden">
+                <div class="flex items-center justify-between">
+                  <h3 class="text-sm font-medium truncate">
+                    {{ control?.short_name || control?.name }}
                   </h3>
                   <IconStar
                     v-if="control.type === 'headquarter'"
@@ -107,6 +157,7 @@ import { provide, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 
 /**compomnet con*/
+import Avatar from '@/components/avartar/Avatar.vue'
 import FormatAvartar from '@/components/avartar/FormatAvartar.vue'
 import BranchSetting from '@/components/business/BranchSetting.vue'
 import BusinessSetting from '@/components/business/BusinessSetting.vue'
@@ -117,15 +168,16 @@ import IconStar from '@/components/icons/IconStar.vue'
 import IconBusiness from '@/components/icons/IconBusiness.vue'
 
 /**ảnh */
-import Avatar from '@/assets/imgs/Avatar.png'
 
 // * interface
 import { BranchData } from '@/service/interface'
 import { isEmpty } from 'lodash'
+import { UserCircleIcon } from '@heroicons/vue/24/solid'
+import { ArrowRightStartOnRectangleIcon } from '@heroicons/vue/24/outline'
 
 // * store
 const commonStore = useCommonStore()
-const { branches, branch_data } = storeToRefs(commonStore)
+const { branches, branch_data, employees, user } = storeToRefs(commonStore)
 
 // * toast
 const $toast = new Toast()

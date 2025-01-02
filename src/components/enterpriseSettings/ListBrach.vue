@@ -73,7 +73,9 @@
             <td
               class="text-left py-2 text-customGray hidden md:table-cell text-15px"
             >
-              <p v-if="branch?.establish_date">{{ format(branch?.establish_date, 'dd/MM/yyyy') }}</p>
+              <p v-if="branch?.establish_date">
+                {{ format(branch?.establish_date, 'dd/MM/yyyy') }}
+              </p>
             </td>
 
             <!-- số nhân sự -->
@@ -130,7 +132,22 @@
       <main class="flex flex-col p-6 border-b border-t gap-2.5 border-gray-200">
         <div class="flex gap-2.5 sm:flex-row flex-col">
           <!-- Tên viết tắt -->
-          <div class="sm:w-115.5 text-left h-16 space-y-1">
+          <div class="sm:w-40 text-left h-16 space-y-1">
+            <label
+              for="shortName"
+              class="block text-sm font-medium text-gray-700 h-5.5"
+            >
+              Tên viết tắt
+            </label>
+            <input
+              type="text"
+              v-model="form_add.short_name"
+              id="shortName"
+              placeholder="Nhập tên chi nhánh"
+              class="h-9 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            />
+          </div>
+          <div class="sm:w-80 text-left h-16 space-y-1">
             <label
               for="shortName"
               class="block text-sm font-medium text-gray-700 h-5.5"
@@ -238,24 +255,24 @@ function showModal() {
   }
 }
 
-/**Hàm đóng modal*/
+/**Hàm xử lý thêm*/
 async function handleOk() {
   try {
+    if (!form_add.value.name) throw 'Vui lòng tên chi nhánh'
+
     const RES = await businessAddBranch({
       body: {
         ...form_add.value,
       },
     })
 
-    if(RES.data.branch){
+    if (RES.data.branch) {
       branches.value = [...branches.value, RES.data.branch]
       $toast.success('Tạo chi nhánh thành công')
     }
-
+    open.value = false
   } catch (e) {
     $toast.error(e)
   }
-
-  open.value = false
 }
 </script>

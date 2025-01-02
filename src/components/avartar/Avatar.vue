@@ -6,7 +6,7 @@
       @error="onImageError"
       class="image"
     />
-    <div v-else class="text-[8px] text-white">{{ fallback_text }}</div>
+    <div v-else class="text-white" :class="text_class">{{ fallback_text }}</div>
   </div>
 </template>
 
@@ -23,6 +23,11 @@ const $props = defineProps({
   text: {
     type: String,
     required: true,
+  },
+  text_class: {
+    type: String,
+    required: false,
+    default: "text-[8px]",
   }
 })
 

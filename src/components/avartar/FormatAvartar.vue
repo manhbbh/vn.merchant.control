@@ -21,7 +21,7 @@
     class="custom-rounded flex items-center justify-center font-semibold text-white"
   >
     {{
-      (props.employee?.name?.charAt(0) || "").toUpperCase() 
+      (props.employee?.short_name?.charAt(0) || "").toUpperCase() || (props.employee?.name?.charAt(0) || "").toUpperCase()
     
     }}
   </div>

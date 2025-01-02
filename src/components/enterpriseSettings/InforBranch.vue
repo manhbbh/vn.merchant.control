@@ -26,8 +26,24 @@
             class="h-9 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
           />
         </div>
-        <!-- Địa chỉ -->
+        <!-- Tên viết tắt -->
         <div class="md:col-span-2 text-left h-16">
+          <label
+            for="shortName"
+            class="block text-sm font-medium text-gray-700 h-5.5"
+          >
+            Tên đầy đủ
+          </label>
+          <input
+            v-model="branch_data.name"
+            type="text"
+            id="shortName"
+            placeholder="Nhập tên đầy đủ"
+            class="h-9 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          />
+        </div>
+        <!-- Địa chỉ -->
+        <div class="md:col-span-2 text-left">
           <label
             for="taxCode"
             class="block text-sm font-medium text-gray-700 h-5.5"

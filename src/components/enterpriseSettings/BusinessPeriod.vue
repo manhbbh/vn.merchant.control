@@ -146,7 +146,7 @@
 import { useCommonStore } from '@/stores'
 
 // * libraries
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 
 // * component
@@ -161,6 +161,11 @@ import Toggle from '../Toggle.vue'
 const commonStore = useCommonStore()
 const { monthly_business_period, year_business_period } =
   storeToRefs(commonStore)
+
+onMounted(() => {
+  start_date_year.value = getStartDateYear()
+  end_date_year.value = getEndDateYear()
+})
 
 const stop = watch(
   () => year_business_period.value,
