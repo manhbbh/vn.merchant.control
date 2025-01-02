@@ -190,11 +190,9 @@
 </template>
 
 <script setup lang="ts">
-import { useCommonStore } from '@/stores'
 import { TIME_ZONES } from '@/service/constant'
 
 // * library
-import { storeToRefs } from 'pinia'
 
 // * component
 import Toggle from '@/components/Toggle.vue'
@@ -205,7 +203,12 @@ import IconWorld from '@/components/icons/IconWorld.vue'
 import IconPapers from '@/components/icons/IconPapers.vue'
 import IconArrow from '@/components/icons/IconArrow.vue'
 
-// * store
-const commonStore = useCommonStore()
-const { working_time } = storeToRefs(commonStore)
+// * interface
+import { WorkingTimeSetting } from '@/service/interface'
+
+/** dữ liệu thiết lập thời gian làm việc */
+const working_time = defineModel<WorkingTimeSetting>({
+  default: {}
+})
+
 </script>

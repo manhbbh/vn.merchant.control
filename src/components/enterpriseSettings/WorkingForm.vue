@@ -148,7 +148,7 @@
                 </button>
                 <div
                   class="h-5 inline-flex text-red-500 bg-red-50 font-medium text-xs rounded-md px-2 py-0.5 items-center justify-center"
-                  @click="handleDelete()"
+                  @click="handleDelete(`${holiday}`)"
                 >
                   Xóa
                 </div>
@@ -445,7 +445,7 @@
           </button>
           <button
             class="px-4 py-2 text-sm text-white font-medium bg-blue-700 rounded-md"
-            @click="handleSave"
+            @click="handleSave()"
           >
             Lưu
           </button>
@@ -477,11 +477,16 @@ import IconTicks from '@/components/icons/IconTicks.vue'
 import IconPapers from '@/components/icons/IconPapers.vue'
 
 // * interface
-import { FormOfWorkData } from '@/service/interface'
+import { FormOfWork, FormOfWorkData} from '@/service/interface'
 
 // * store
 const commonStore = useCommonStore()
-const { form_of_work, employees, user } = storeToRefs(commonStore)
+const { employees, user } = storeToRefs(commonStore)
+
+/** dữ liệu thiết lập hình thức làm việc */
+const form_of_work = defineModel<FormOfWork>({
+  default: {},
+})
 
 /**Biến mở đóng modal*/
 const open = ref(false)
@@ -521,7 +526,7 @@ function showModal(item?: FormOfWorkData[string], idx?: string) {
     }
     type_model.value = 'create'
     index.value = (
-      Object.keys(form_of_work.value.setting_data || {})?.length + 1
+      Number(Object.keys(form_of_work.value.setting_data || {})?.pop()) + 1
     )?.toString()
   }
 }
@@ -619,13 +624,16 @@ function handleSave() {
 }
 
 /** xóa hình thức làm việc */
-function handleDelete() {
+function handleDelete(id:string) {
   confirm(
     'warning',
     'Xác nhận hình thức làm việc này?',
     '',
     (is_cancel: boolean) => {
       if (is_cancel) return
+
+      if(!form_of_work.value.setting_data) return
+      delete form_of_work.value.setting_data[id]
     }
   )
 }

@@ -21,14 +21,14 @@
       >
         <!-- Phần trái -->
         <nav
-          class="relative px-2 gap-1  sm:h-full flex-shrink-0 rounded-xl bg-white overflow-hidden flex flex-col mb-2 md:w-82 sm:mb-0 sm:w-1/2"
+          class="relative px-2 gap-1 sm:h-full flex-shrink-0 rounded-xl bg-white overflow-hidden flex flex-col mb-2 md:w-82 sm:mb-0 sm:w-1/2"
         >
-          <!--  -->
+          <!-- cài đặt doanh nghiệp & chi nhánh -->
           <ul class="pt-3 flex flex-col gap-1">
             <li
               @click="selectedBusiness"
               :class="{ 'bg-slate-100': is_business }"
-              class="flex items-center gap-2 h-13 rounded-lg p-2"
+              class="flex items-center gap-2 h-13 rounded-lg p-2 cursor-pointer"
             >
               <div
                 class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center"
@@ -40,7 +40,7 @@
             <li
               @click="selectedBrach"
               :class="{ 'bg-slate-100': !is_business }"
-              class="flex items-center gap-2 h-13 rounded-lg p-2"
+              class="flex items-center gap-2 h-13 rounded-lg p-2 cursor-pointer"
             >
               <div
                 class="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center"
@@ -51,11 +51,11 @@
             </li>
           </ul>
           <!-- danh sách chi nhánh  -->
-          <ul v-if="hidden_business" class="flex flex-col gap-3 ml-8 pb-2">
+          <ul v-if="!is_business" class="flex flex-col gap-3 ml-8 pb-2">
             <li
-            @click="detaiBranch(control.name_control)"
-              :class="{ 'bg-slate-100': name_baranch === control.name_control }"
-              v-for="control in list_branch"
+              v-for="control in branches"
+              @click="detaiBranch(control)"
+              :class="{ 'bg-slate-100': branch_data?._id === control?._id }"
               class="flex items-center cursor-pointer gap-2 h-13 rounded-lg border border-slate-200 p-2"
             >
               <FormatAvartar :employee="control" :size="5"></FormatAvartar>
@@ -63,10 +63,10 @@
               <div class="flex-1 flex flex-col justify-start h-9">
                 <div class="flex items-center h-5 justify-between">
                   <h3 class="text-sm font-medium">
-                    {{ control.name_control }}
+                    {{ control.name }}
                   </h3>
                   <IconStar
-                    v-if="control.star_control"
+                    v-if="control.type === 'headquarter'"
                     class="h-5 w-5"
                   ></IconStar>
                 </div>
@@ -74,11 +74,15 @@
                 <p
                   class="text-slate-500 text-xs h-4 flex justify-start truncate"
                 >
-                  {{ control.address_control }}
+                  {{
+                    control.type === 'headquarter'
+                      ? 'Trụ sở chính'
+                      : 'Chi nhánh'
+                  }}
                 </p>
               </div>
             </li>
-          </ul>       
+          </ul>
         </nav>
         <!-- phần phải -->
         <div
@@ -86,99 +90,116 @@
         >
           <BusinessSetting v-if="is_business"></BusinessSetting>
           <!--  -->
-          <BranchSetting v-else :detaiBranch="is_branch"> </BranchSetting>
+          <BranchSetting v-else></BranchSetting>
         </div>
       </div>
     </main>
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from "vue";
+import { useCommonStore } from '@/stores'
+import { copy } from '@/service/helper/format'
+import { Toast } from '@/service/helper/toast'
+import { getSettingBranch } from '@/service/api/api'
+
+// * libraries
+import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
+
 /**compomnet con*/
-import BusinessSetting from "@/components/business/BusinessSetting.vue";
-import BranchSetting from "@/components/business/BranchSetting.vue";
-import FormatAvartar from "@/components/avartar/FormatAvartar.vue";
+import FormatAvartar from '@/components/avartar/FormatAvartar.vue'
+import BranchSetting from '@/components/business/BranchSetting.vue'
+import BusinessSetting from '@/components/business/BusinessSetting.vue'
+
 /**Icon*/
-import IconHome from "@/components/icons/IconHome.vue";
-import IconBusiness from "@/components/icons/IconBusiness.vue";
-import IconStar from "@/components/icons/IconStar.vue";
+import IconHome from '@/components/icons/IconHome.vue'
+import IconStar from '@/components/icons/IconStar.vue'
+import IconBusiness from '@/components/icons/IconBusiness.vue'
+
 /**ảnh */
-import Avatar from "@/assets/imgs/Avatar.png";
+import Avatar from '@/assets/imgs/Avatar.png'
 
-/**Biến*/
+// * interface
+import { BranchData } from '@/service/interface'
+import { isEmpty } from 'lodash'
+
+// * store
+const commonStore = useCommonStore()
+const { branches, branch_data } = storeToRefs(commonStore)
+
+// * toast
+const $toast = new Toast()
+
 /**Biến kiểm tra hiện doanh nghiệp hay ứng dụng */
-const is_business = ref(true);
-/** Biến hiển thị danh sách chi nhánh*/
-const hidden_business = ref(false);
-/**danh sách chi nhánh*/ 
-const list_branch = ref([
-  {
-    name_control: "Trụ sở chính 1",
-    address_control: "Trụ sở chính",
-    image_control: "",
-    star_control: true,
-    type_control: "main",
-  },
-  {
-    name_control: "BU Hà Nội",
-    address_control: "Chi nhánh 19 Tố Hữu",
-    image_control: "",
-    star_control: false,
-    type_control: "HN",
-  },
-  {
-    name_control: "BU Hồ Chí Minh",
-    address_control: "Chi nhánh 19 Tố Hữu",
-    image_control: Avatar,
-    star_control: false,
-    type_control: "HN",
-  },
-  {
-    name_control: "BU Đà Nẵng",
-    address_control: "Chi nhánh 19 Tố Hữu",
-    image_control: "",
-    star_control: true,
-    type_control: "HCM",
-  },
-  {
-    name_control: "Trụ sở chính",
-    address_control: "Trụ sở chính",
-    image_control: Avatar,
-    star_control: true,
-    type_control: "main",
-  },
-  {
-    name_control: "Kênh Online",
-    address_control: "17909870000000000",
-    image_control: Avatar,
-    star_control: true,
-    type_control: "main",
-  },
-]);
-/**Biến chuyền prod sang cho component con*/ 
-const is_branch = ref(true);
-/**Biến xem bấm vào chi nhánh nào */
-const name_baranch = ref("");
+const is_business = ref(true)
 
-/**hàm bấm chọn cài đặt Chi nhánh*/ 
-function selectedBrach() {
-  is_business.value = false;
-  hidden_business.value = true;
-  name_baranch.value = ""
-  console.log("selectedBusiness",is_branch);
-  is_branch.value = true
+/** reset dữ liệu thiết lập của branch */
+function resetBranch() {
+  branch_data.value = {}
+  commonStore.branch_holidays = {}
+  commonStore.branch_form_of_work = {}
+  commonStore.branch_working_time = {}
 }
+
+/**hàm bấm chọn cài đặt Chi nhánh*/
+function selectedBrach() {
+  is_business.value = false
+  resetBranch()
+}
+
 /** hàm bấm chọn cài đặt Doanh nghiệp*/
 function selectedBusiness() {
-  is_business.value = true;
-  hidden_business.value = false;
-  name_baranch.value = ""
+  is_business.value = true
+  resetBranch()
 }
-/**Hàm khi bấm vào một chi nhánh nào đó*/
-function detaiBranch(name: string) {
-  is_branch.value = false
-  name_baranch.value = name
-} 
 
+/**Hàm khi bấm vào một chi nhánh nào đó*/
+async function detaiBranch(branch: BranchData) {
+  try {
+    resetBranch()
+
+    // lưu lại dữ liệu chi nhánh đã chọn
+    branch_data.value = copy(branch)
+
+    // call api lấy dữ liệu thiết lập của chi nhánh đó
+    const RES = await getSettingBranch({})
+
+    // không có data thì thôi
+    if (!RES.data) return
+
+    // lặp qua các dữ liệu thiết lập để lưu lại
+    RES.data?.forEach((item: any) => {
+      if (item.setting_type === 'holiday') {
+        commonStore.branch_holidays = item
+        return
+      }
+
+      if (item.setting_type === 'form_of_work') {
+        commonStore.branch_form_of_work = item
+        return
+      }
+
+      if (item.setting_type === 'working_time') {
+        commonStore.branch_working_time = item
+        return
+      }
+    })
+
+    // nếu chưa thiết lập ngày lễ thì lấy dữ liệu ở thiết lập doanh nghiệp
+    if (isEmpty(commonStore.branch_holidays)) {
+      commonStore.branch_holidays = copy(commonStore.holidays)
+    }
+
+    // nếu chưa thiết lập hình thức làm việc thì lấy dữ liệu ở thiết lập doanh nghiệp
+    if (isEmpty(commonStore.branch_form_of_work)) {
+      commonStore.branch_form_of_work = copy(commonStore.form_of_work)
+    }
+
+    // nếu chưa thiết lập thời gian làm việc thì lấy dữ liệu ở thiết lập doanh nghiệp
+    if (isEmpty(commonStore.branch_working_time)) {
+      commonStore.branch_working_time = copy(commonStore.working_time)
+    }
+  } catch (e) {}
+}
 </script>
 <style scoped lang="scss"></style>

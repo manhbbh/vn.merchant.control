@@ -9,11 +9,11 @@
     <!-- 4 -->
     <BusinessPeriod></BusinessPeriod>
     <!-- 5 -->
-    <Holiday></Holiday>
+    <Holiday v-model="holidays"></Holiday>
     <!-- 6 -->
-    <WorkingForm></WorkingForm>
+    <WorkingForm v-model="form_of_work"></WorkingForm>
     <!-- 7 -->
-    <Timeworking></Timeworking>
+    <Timeworking v-model="working_time"></Timeworking>
     <!-- 8 -->
     <Background></Background>
     <!-- nút lưu -->

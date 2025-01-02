@@ -1,4 +1,4 @@
-import { LocationDetail } from "./location"
+import { LocationDetail } from './location'
 
 /** Thiết lập chấm công và làm việc của nhân viên */
 export interface WorkingTimeSetting {
@@ -142,7 +142,7 @@ interface WorkingTimeDay {
     /** Phút check-out */
     minute?: number
   }
-  
+
   /** Trạng thái hoạt động của ngày (true: làm việc, false: nghỉ) */
   active?: boolean
 }
@@ -263,6 +263,8 @@ export interface BranchData {
   is_sync_facebook_product?: boolean
   /** Tên chi nhánh */
   name?: string
+  /** tên viết tắt */
+  short_name?: string
   /** ID của chủ sở hữu */
   owner?: string
   /** Trạng thái ứng dụng (READY, ERROR, v.v.) */
@@ -295,7 +297,6 @@ export interface BranchData {
 
   /** địa chỉ cụ thể */
   locations?: LocationDetail
-
 }
 
 /** dữ liệu chi nhánh trong dữ liệu nhân viên */

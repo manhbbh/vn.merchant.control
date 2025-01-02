@@ -191,9 +191,15 @@ import CustomVuePicker from '@/components/CustomVuePicker.vue'
 import IconTicks from '@/components/icons/IconTicks.vue'
 import IconCalendar from '@/components/icons/IconCalendar.vue'
 
+// * interfaces
+import { HolidaySetting } from '@/service/interface'
+
 // * store
 const commonStore = useCommonStore()
-const { holidays, employees, user } = storeToRefs(commonStore)
+const { employees, user } = storeToRefs(commonStore)
+
+/** dữ liệu thiết lập nghỉ lễ */
+const holidays = defineModel<HolidaySetting>({default: {}})
 
 /**Biến*/
 /** ẩn hiện modal thêm nhân viên */

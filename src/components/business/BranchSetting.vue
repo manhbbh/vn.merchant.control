@@ -1,5 +1,5 @@
 <template>
-  <div v-if="props.detaiBranch" class="py-3">
+  <div v-if="!branch_data?._id" class="py-3">
     <p class="text-sm font-semibold">Vui lòng chọn Chi nhánh</p>
   </div>
   <!--  -->
@@ -8,13 +8,16 @@
     <!-- 2 -->
     <ListEmployee></ListEmployee>
     <!-- 3 -->
-    <Holiday></Holiday>
+    <Holiday v-model="branch_holidays"></Holiday>
     <!-- 4 -->
-    <WorkingForm></WorkingForm>
+    <WorkingForm v-model="branch_form_of_work"></WorkingForm>
     <!-- 5 -->
-    <Timeworking></Timeworking>
+    <Timeworking v-model="branch_working_time"></Timeworking>
     <!-- nút lưu -->
-    <div class="py-2 px-3 bg-white rounded-lg flex items-center justify-end">
+    <div
+      class="py-2 px-3 bg-white rounded-lg flex items-center justify-end sticky bottom-0 z-40"
+      @click="saveSetting()"
+    >
       <button
         class="h-9 text-sm font-medium bg-blue-700 px-4 py-2 flex justify-center items-center rounded-lg text-white"
       >
@@ -24,16 +27,86 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from "vue";
+import { useCommonStore } from '@/stores'
+import { Toast } from '@/service/helper/toast'
+import { branchSaveSetting } from '@/service/api/api'
+
+// * libraries
+import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
+
 /**component */
-import InforBranch from "@/components/enterpriseSettings/InforBranch.vue";
-import ListEmployee from "@/components/enterpriseSettings/ListEmployee.vue";
-import Timeworking from "@/components/enterpriseSettings/Timeworking.vue";
-import Holiday from "@/components/enterpriseSettings/Holiday.vue";
-import WorkingForm from "@/components/enterpriseSettings/WorkingForm.vue";
-/**Prod*/
-/**truyền đối tượng employee sang*/
-const props = defineProps<{
-  detaiBranch: boolean;
-}>();
+import Holiday from '@/components/enterpriseSettings/Holiday.vue'
+import InforBranch from '@/components/enterpriseSettings/InforBranch.vue'
+import Timeworking from '@/components/enterpriseSettings/Timeworking.vue'
+import WorkingForm from '@/components/enterpriseSettings/WorkingForm.vue'
+import ListEmployee from '@/components/enterpriseSettings/ListEmployee.vue'
+
+// * store
+const commonStore = useCommonStore()
+const {
+  branch_data,
+  branch_holidays,
+  branch_form_of_work,
+  branch_working_time,
+} = storeToRefs(commonStore)
+
+// * toast
+const $toast = new Toast()
+
+/** lưu thiết lập ngày nghỉ lễ */
+async function savesSettingHolidays() {
+  try {
+    await branchSaveSetting({
+      body: {
+        setting_type: 'holiday',
+        setting_data: branch_holidays.value?.setting_data,
+      },
+    })
+  } catch (e) {
+    throw e
+  }
+}
+
+/** lưu thiết lập hình thức làm việc */
+async function savesSettingFormOfWork() {
+  try {
+    await branchSaveSetting({
+      body: {
+        setting_type: 'form_of_work',
+        setting_data: branch_form_of_work.value?.setting_data,
+      },
+    })
+  } catch (e) {
+    throw e
+  }
+}
+
+/** lưu thiết lập thời gian làm việc */
+async function savesSettingTimeworking() {
+  try {
+    await branchSaveSetting({
+      body: {
+        setting_type: 'working_time',
+        setting_data: branch_working_time.value?.setting_data,
+      },
+    })
+  } catch (e) {
+    throw e
+  }
+}
+
+async function saveSetting() {
+  try {
+    await Promise.all([
+      savesSettingHolidays(),
+      savesSettingFormOfWork(),
+      savesSettingTimeworking(),
+    ])
+    $toast.success('Lưu thiết lập thành công')
+  } catch (e) {
+    $toast.error(e)
+  }
+}
+
 </script>

@@ -11,7 +11,7 @@ function getTokenUser() {
 /** Lấy token business từ store */
 function getBusinessToken() {
   const $store = useCommonStore()
-  return ''
+  return $store.branch_data.access_token
 }
 
 /** Lấy id business từ store */
@@ -143,6 +143,53 @@ export async function businessAddBranch(params: InputRequestApi) {
   }
 }
 
+/** thêm mới nhân viên */
+export async function businessAddEmployee(params: InputRequestApi) {
+  try {
+    return await apiMerchantRequest({
+      ...params,
+      end_point: 'systems/employee/create_employee',
+    })
+  } catch (e) {
+    throw e
+  }
+}
+
+/** lấy danh sách nhân viên */
+export async function getEmployee(params:InputRequestApi) {
+  try {
+    return await apiMerchantRequest({
+      ...params,
+      end_point: 'systems/employee/get_employee',
+    })
+  } catch (e) {
+    throw e
+  }
+}
+
+/** lưu thiết lập chi nhánh */
+export async function branchSaveSetting(params: InputRequestApi) {
+  try {
+    return await apiMerchantRequest({
+      ...params,
+      end_point: 'systems/branchsetting/save_setting',
+    })
+  } catch (e) {
+    throw e
+  }
+}
+
+/** lấy danh sách thiết lập */
+export async function getSettingBranch(params: InputRequestApi) {
+  try {
+    return await apiMerchantRequest({
+      ...params,
+      end_point: 'systems/branchsetting/get_setting',
+    })
+  } catch (e) {
+    throw e
+  }
+}
 
 // * API LOCATION
 /** Lấy danh sách tỉnh thành */

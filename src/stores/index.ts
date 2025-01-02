@@ -1,4 +1,8 @@
+import { ref } from 'vue'
+import { defineStore } from 'pinia'
+
 import {
+  PrimarySettingData,
   type BackgroundSetting,
   type BranchData,
   type CompanyData,
@@ -10,8 +14,6 @@ import {
   type WorkingTimeSetting,
   type YearBusinessPeriod,
 } from '@/service/interface'
-import { defineStore } from 'pinia'
-import { ref } from 'vue'
 
 export const useCommonStore = defineStore('common_store', () => {
   /**toggle loading toàn trang */
@@ -32,11 +34,17 @@ export const useCommonStore = defineStore('common_store', () => {
   /** danh sách nhân viên */
   const employees = ref<{ [key: string]: FullEmployeeData }>({})
 
+  /** danh sách nhân viên của 1 chi nhánh */
+  const employees_branch = ref<FullEmployeeData[]>([])
+
   /** danh sách chi nhánh */
   const branches = ref<BranchData[]>([])
 
   /** dữ liệu của doanh nghiệp */
   const business_data = ref<CompanyData>({})
+
+  /** dữ liệu chi nhánh đang chọn */
+  const branch_data = ref<BranchData>({})
 
   /** dữ liệu chu kì kinh doanh theo tháng */
   const monthly_business_period = ref<MonthlyBusinessPeriod>({})
@@ -56,6 +64,15 @@ export const useCommonStore = defineStore('common_store', () => {
   /** dữ liệu hình nền */
   const background = ref<BackgroundSetting>({})
 
+  /** dữ liệu nghỉ lễ chi nhánh */
+  const branch_holidays = ref<HolidaySetting>({})
+
+  /** dữ liệu hình thức làm việc chi nhánh */
+  const branch_form_of_work = ref<FormOfWork>({})
+
+  /** dữ liệu thời gian làm việc chi nhánh */
+  const branch_working_time = ref<WorkingTimeSetting>({})
+
   return {
     user_token,
     business_id,
@@ -63,13 +80,18 @@ export const useCommonStore = defineStore('common_store', () => {
     user,
     users,
     employees,
+    employees_branch,
     branches,
     business_data,
+    branch_data,
     monthly_business_period,
     year_business_period,
     holidays,
     form_of_work,
     working_time,
     background,
+    branch_holidays,
+    branch_form_of_work,
+    branch_working_time,
   }
 })

@@ -19,6 +19,7 @@
             Tên viết tắt
           </label>
           <input
+            v-model="branch_data.short_name"
             type="text"
             id="shortName"
             placeholder="Nhập tên viết tắt"
@@ -36,6 +37,7 @@
           <input
             type="text"
             id="taxCode"
+            v-model="branch_data.address"
             placeholder="Nhập địa chỉ Doanh nghiệp"
             class="h-9 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
           />
@@ -48,12 +50,13 @@
           >
             Ngày thành lập
           </label>
-          <VueDatePicker
-            auto-apply
-            v-model="date"
+          <CustomVuePicker
+            v-model="branch_data.establish_date"
             placeholder="Chọn ngày"
-            :action-row="{ showNow: true }"
-            now-button-label="Current"
+            :handle-date="() => {}"
+            :teleport="true"
+            class="border border-gray-300"
+            :input_class="'leading-normal border-none'"
           />
         </div>
         <!-- Trạng thái-->
@@ -64,9 +67,21 @@
           >
             Trạng thái
           </label>
-          <div class="flex items-center h-9 text-green-600 gap-2">
-            <IconTick class="h-5 w-5"></IconTick>
-            <p class="text-sm">Đang hoạt động</p>
+          <div
+            class="flex items-center py-2 text-green-600 gap-2"
+            :class="{
+              'text-green-600': !branch_data.archive,
+              'text-red-500': branch_data.archive,
+            }"
+          >
+            <template v-if="!branch_data.archive">
+              <IconTick class="h-5 w-5"></IconTick>
+              <p class="text-sm">Đang hoạt động</p>
+            </template>
+            <template v-else>
+              <IconPause class="h-5 w-5"></IconPause>
+              <p class="text-sm">Tạm dừng hoạt động</p>
+            </template>
           </div>
         </div>
         <!-- Thao tác-->
@@ -77,12 +92,34 @@
           >
             Trạng thái
           </label>
-          <div
-            class="flex items-center bg-red-100 h-9 px-2.5 py-2 text-red-500 gap-2 border border-red-500 rounded-md"
+          <button
+            class="flex items-center px-2.5 py-2 gap-2 border rounded-md hover:brightness-95"
+            :class="{
+              'bg-green-100 text-green-600  border-green-500':
+                branch_data.archive,
+              'bg-red-100 text-red-500 border-red-500': !branch_data.archive,
+            }"
+            @click="
+              confirm(
+                'warning',
+                'Xác nhận thay đổi trạng thái?',
+                '',
+                (is_cancel: boolean) => {
+                  if (is_cancel) return
+                  branch_data.archive = !branch_data.archive
+                }
+              )
+            "
           >
-            <IconPause class="h-5 w-5"></IconPause>
-            <p class="text-sm">Tạm dừng</p>
-          </div>
+            <template v-if="branch_data.archive">
+              <IconTick class="h-5 w-5"></IconTick>
+              <p class="text-sm">Kích hoạt</p>
+            </template>
+            <template v-else>
+              <IconPause class="h-5 w-5"></IconPause>
+              <p class="text-sm">Tạm dừng</p>
+            </template>
+          </button>
         </div>
       </div>
     </div>
@@ -91,14 +128,21 @@
 </template>
 
 <script setup lang="ts">
+import { useCommonStore } from "@/stores";
+
+// * libraries
 import { ref } from "vue";
+import { storeToRefs } from "pinia";
 
 /**ICon*/
 import IconInformation from "@/components/icons/IconInformation.vue";
 import IconTick from "../icons/IconTick.vue";
 import IconPause from "@/components/icons/IconPause.vue";
-/**Biến*/
-const date = ref(new Date());
-</script>
+import CustomVuePicker from "../CustomVuePicker.vue";
+import { confirm } from "@/service/helper/alert";
 
-<style lang="scss" scoped></style>
+// * store
+const commonStore = useCommonStore();
+const { branch_data } = storeToRefs(commonStore);
+
+</script>
