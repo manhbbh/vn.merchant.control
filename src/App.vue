@@ -27,6 +27,7 @@ import Loading from '@/components/Loading.vue'
 import Network from '@/components/Network.vue'
 import AdBlocker from '@/components/AdBlocker.vue'
 import Template401 from '@/components/Template401.vue'
+import { useRouter } from 'vue-router'
 
 // * store
 const commonStore = useCommonStore()
@@ -35,6 +36,8 @@ const commonStore = useCommonStore()
 const $toast = new Toast()
 
 const is_authenticated = ref(false)
+
+const router = useRouter();
 
 onMounted(() => {
   getDataFromUrl()
@@ -140,10 +143,10 @@ async function getUserInfos() {
 /** lấy dữ liệu từ url */
 function getDataFromUrl() {
   /** lấy user_token */
-  const USER_TOKEN = queryString('token_user')
+  const USER_TOKEN = queryString('token_user') || localStorage.getItem('user_token')
 
   /** id doanh nghiệp */
-  const BUSINESS_ID = queryString('business_id')
+  const BUSINESS_ID = queryString('business_id') || localStorage.getItem('business_id')
 
   // nếu thiếu dữ liệu thôi
   if (!USER_TOKEN || !BUSINESS_ID) {
@@ -153,6 +156,11 @@ function getDataFromUrl() {
   // lưu lại dữ liệu vào store
   commonStore.user_token = USER_TOKEN
   commonStore.business_id = BUSINESS_ID
+
+  localStorage.setItem('user_token', USER_TOKEN)
+  localStorage.setItem('business_id', BUSINESS_ID)
+
+  router.replace({ query: {} })
 
   is_authenticated.value = true
 }
