@@ -21,10 +21,7 @@
         }"
         :name="'address_id'"
       >
-        <template
-          v-for="(item, index) in addresses"
-          #[item.address_id]
-        >
+        <template v-for="(item, index) in addresses" #[item.address_id]>
           <span class="block truncate">
             {{ item?.address_name }}
           </span>
@@ -129,12 +126,14 @@ import {
 // * toast
 const $toast = new Toast()
 
-const location = ref<{
-  address: string
-  locations: LocationDetail
+const location = defineModel<{
+  address?: string
+  locations?: LocationDetail
 }>({
-  address: '',
-  locations: {},
+  default: {
+    address: '',
+    locations: {},
+  },
 })
 
 // * hooks

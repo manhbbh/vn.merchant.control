@@ -1,3 +1,5 @@
+import { LocationDetail } from "./location"
+
 /** Thiết lập chấm công và làm việc của nhân viên */
 export interface WorkingTimeSetting {
   /** Trạng thái làm việc */
@@ -281,6 +283,19 @@ export interface BranchData {
   __v?: number
   /** ID MongoDB của tài liệu */
   _id?: string
+
+  /** id người dùng chủ sở hữu */
+  business_owner_id?: string
+
+  /** ngày thành lập */
+  establish_date?: Date
+
+  /** địa chỉ */
+  address?: string
+
+  /** địa chỉ cụ thể */
+  locations?: LocationDetail
+
 }
 
 /** dữ liệu chi nhánh trong dữ liệu nhân viên */

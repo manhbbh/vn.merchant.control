@@ -11,7 +11,7 @@
           Danh sách chi nhánh
         </h4>
         <div
-          @click="showModal"
+          @click="showModal()"
           class="flex items-center gap-2 bg-slate-100 py-3 px-3 h-5 cursor-pointer rounded-md"
         >
           <!-- icon -->
@@ -66,14 +66,14 @@
 
             <!-- địa chỉ -->
             <td class="text-left py-2">
-              <p>{{  }}</p>
+              <p>{{ branch?.address || '' }}</p>
             </td>
 
             <!-- ngày thành lập -->
             <td
               class="text-left py-2 text-customGray hidden md:table-cell text-15px"
             >
-              <p>{{  }}</p>
+              <p v-if="branch?.establish_date">{{ format(branch?.establish_date, 'dd/MM/yyyy') }}</p>
             </td>
 
             <!-- số nhân sự -->
@@ -87,15 +87,9 @@
             <td class="text-left py-2 hidden md:table-cell">
               <p
                 class="text-sm"
-                :class="
-                  !branch.archive ? 'text-green-500' : 'text-red-500'
-                "
+                :class="!branch.archive ? 'text-green-500' : 'text-red-500'"
               >
-                {{
-                  !branch.archive
-                    ? 'Đang hoạt động'
-                    : 'Không hoạt động'
-                }}
+                {{ !branch.archive ? 'Đang hoạt động' : 'Không hoạt động' }}
               </p>
             </td>
             <!-- thao tác -->
@@ -103,9 +97,7 @@
               <button
                 class="h-5 w-15 flex justify-center px-2 bg-slate-100 rounded-md py-0.5"
               >
-                <span class="text-xs font-medium">
-                  Cài đặt
-                </span>
+                <span class="text-xs font-medium"> Cài đặt </span>
               </button>
             </td>
           </tr>
@@ -146,6 +138,7 @@
             </label>
             <input
               type="text"
+              v-model="form_add.name"
               id="shortName"
               placeholder="Nhập tên chi nhánh"
               class="h-9 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
@@ -159,8 +152,8 @@
             >
               Ngày thành lập
             </label>
-            <CustomVuePicker 
-              v-model="date"
+            <CustomVuePicker
+              v-model="form_add.establish_date"
               placeholder="Chọn ngày"
               :handle-date="() => {}"
               :input_class="'!border-transparent'"
@@ -173,7 +166,7 @@
         </div>
         <!--  -->
         <div class="flex gap-2.5 sm:flex-row flex-col w-full">
-          <Location class="w-full"/>
+          <Location class="w-full" v-model="form_add" />
         </div>
       </main>
       <footer class="flex items-center justify-between px-6 py-3">
@@ -185,6 +178,7 @@
         </button>
         <button
           class="px-4 py-2 text-sm text-white font-medium bg-primary rounded-md"
+          @click="handleOk"
         >
           Tạo chi nhánh
         </button>
@@ -195,6 +189,8 @@
 
 <script setup lang="ts">
 import { useCommonStore } from '@/stores'
+import { Toast } from '@/service/helper/toast'
+import { businessAddBranch } from '@/service/api/api'
 
 // * libraries
 import { ref } from 'vue'
@@ -202,28 +198,58 @@ import { storeToRefs } from 'pinia'
 
 // * components
 import Location from '@/components/Location.vue'
+import CustomVuePicker from '@/components/CustomVuePicker.vue'
 
 /**Icon*/
 import IconAdd from '@/components/icons/IconAdd.vue'
 import IconHome from '@/components/icons/IconHome.vue'
 import IconClose from '@/components/icons/IconClose.vue'
 import IconArrow from '@/components/icons/IconArrow.vue'
-import CustomVuePicker from '../CustomVuePicker.vue'
+
+// * interface
+import { BranchData } from '@/service/interface'
+import { format } from 'date-fns'
 
 // * store
 const commonStore = useCommonStore()
-const { branches } = storeToRefs(commonStore)
+const { branches, business_id } = storeToRefs(commonStore)
 
-/**Biến*/
-const date = ref(new Date())
+/** dữ liệu thêm */
+const form_add = ref<BranchData>({})
+
+const $toast = new Toast()
+
 /**Biến mở đóng modal*/
 const open = ref(false)
 /**Hàm mở modal*/
 function showModal() {
   open.value = true
+  form_add.value = {
+    name: '',
+    address: '',
+    establish_date: new Date(),
+    business_owner_id: business_id.value,
+    locations: {},
+  }
 }
 /**Hàm đóng modal*/
-function handleOk() {
+async function handleOk() {
+  try {
+    const RES = await businessAddBranch({
+      body: {
+        ...form_add.value,
+      },
+    })
+
+    if(RES.data.branch){
+      branches.value = [...branches.value, RES.data.branch]
+      $toast.success('Tạo chi nhánh thành công')
+    }
+
+  } catch (e) {
+    $toast.error(e)
+  }
+
   open.value = false
 }
 </script>

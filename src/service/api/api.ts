@@ -131,6 +131,18 @@ export async function businessUpdate(params: InputRequestApi) {
 }
 
 // * Thiết lập chi nhánh
+/** thêm mới chi nhánh */
+export async function businessAddBranch(params: InputRequestApi) {
+  try {
+    return await apiMerchantRequest({
+      ...params,
+      end_point: 'business/create_branch',
+    })
+  } catch (e) {
+    throw e
+  }
+}
+
 
 // * API LOCATION
 /** Lấy danh sách tỉnh thành */

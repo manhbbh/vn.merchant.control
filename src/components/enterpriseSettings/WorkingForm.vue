@@ -19,7 +19,7 @@
           </button>
           <button
             class="h-9 w-18 text-sm font-medium text-white rounded-md bg-black"
-            @click="open = true"
+            @click="showModal()"
           >
             Thêm
           </button>
@@ -98,7 +98,9 @@
               <div class="flex items-center gap-1 h-5">
                 <Avatar
                   class="w-4 h-4"
-                  :src="getInfo(form_of_work?.setting_data?.[holiday]?.created_by)"
+                  :src="
+                    getInfo(form_of_work?.setting_data?.[holiday]?.created_by)
+                  "
                   :text="
                     getInfo(
                       form_of_work?.setting_data?.[holiday]?.created_by,
@@ -124,7 +126,8 @@
                 <p v-if="form_of_work?.setting_data?.[holiday]?.created_time">
                   {{
                     format(
-                      form_of_work?.setting_data?.[holiday]?.created_time as Date,
+                      form_of_work?.setting_data?.[holiday]
+                        ?.created_time as Date,
                       'HH:mm - dd/MM/yyyy'
                     )
                   }}
@@ -136,7 +139,9 @@
             <td class="text-center py-2">
               <div class="flex gap-1 sm:gap-2.5 justify-center">
                 <button
-                  @click="showModal"
+                  @click="
+                    showModal(form_of_work?.setting_data?.[holiday], holiday)
+                  "
                   class="h-5 w-14.5 text-xs font-medium text-white rounded-md bg-blue-700"
                 >
                   Cài đặt
@@ -187,6 +192,7 @@
           </label>
           <input
             type="text"
+            v-model="form_of_work_value.name"
             id="shortName"
             placeholder="Nhập tiêu đề"
             class="h-9 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
@@ -199,22 +205,12 @@
             <p class="text-sm font-medium">Thời gian làm việc trong ngày</p>
           </div>
           <!-- select -->
-          <label class="hidden sm:inline-flex h-9 items-center cursor-pointer">
-            <input
-              type="checkbox"
-              value=""
-              class="sr-only peer"
-              v-model="active"
-            />
-            <div
-              class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-black"
-            ></div>
-          </label>
+          <!-- <Toggle /> -->
         </div>
         <!-- Vòng lặp qua mảng -->
         <div class="pl-8 overflow-hidden">
           <div
-            v-for="(day, index) in LIST_DAYS"
+            v-for="(day, index) in form_of_work_value.working_time"
             :key="index"
             class="flex flex-col text-sm border-b border-slate-200 items-center py-3 md:justify-between text-customDark md:flex-row last:border-none"
           >
@@ -226,7 +222,8 @@
                   {{ day.title }}
                 </div>
                 <!-- select -->
-                <label
+                <Toggle v-model="day.active" class="sm:hidden" />
+                <!-- <label
                   class="inline-flex h-9 items-center cursor-pointer sm:hidden"
                 >
                   <input
@@ -238,21 +235,20 @@
                   <div
                     class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-black"
                   ></div>
-                </label>
+                </label> -->
               </div>
               <select
-                v-if="day.active"
-                v-model="day.status"
+                v-model="day.work_status"
                 class="outline-none mr-0 h-9 w-34 flex flex-none sm:hidden rounded-md border px-3 py-1.5"
               >
-                <option value="permanent">Cố định</option>
-                <option value="not_fixed">Không cố định</option>
+                <option value="full_time">Cố định</option>
+                <option value="part_time">Không cố định</option>
               </select>
             </div>
             <!--  -->
             <div
-              :class="{ 'gap-1': !day.active, 'gap-4': day.active }"
               class="h-9 text-sm text-black flex flex-colflex-1 flex-shrink-0 items-center sm:flex-row sm:justify-end"
+              :class="{ 'gap-1': !day.active, 'gap-4': day.active }"
             >
               <div class="flex items-center flex-shrink-0 gap-4">
                 <!-- giờ làm -->
@@ -262,27 +258,22 @@
                 <!-- cố định -->
                 <select
                   v-if="day.active"
-                  v-model="day.status"
+                  v-model="day.work_status"
                   class="outline-none mr-0 h-9 w-34 flex-none hidden sm:flex rounded-md border px-3 py-1.5"
                 >
-                  <option value="permanent">Cố định</option>
-                  <option value="not_fixed">Không cố định</option>
+                  <option value="full_time">Cố định</option>
+                  <option value="part_time">Không cố định</option>
                 </select>
               </div>
               <!--từ  -->
               <div
-                v-if="day.status === 'permanent'"
+                v-if="day.work_status === 'full_time' && day.active"
                 class="flex items-center flex-shrink-0 gap-4"
               >
-                <p
-                  v-if="day.active && day.status === 'permanent'"
-                  class="text-center flex-shrink-0"
-                >
-                  từ
-                </p>
+                <p class="text-center flex-shrink-0">từ</p>
                 <!-- giờ bắt đầu -->
-                <div v-if="day.active && day.status === 'permanent'" class="">
-                  <select
+                <div>
+                  <!-- <select
                     v-model="day.checkin.hour"
                     id="from-time"
                     class="mr-0 flex h-9 w-22.5 rounded-md border px-3 py-2"
@@ -290,56 +281,89 @@
                     <option value="7">9:00</option>
                     <option value="8">8:00</option>
                     <option value="9">7:00</option>
+                    Add more options as needed
+                  </select> -->
+                  <select
+                    :value="`${day?.checkin?.hour
+                      ?.toString()
+                      .padStart(2, '0')}:${day?.checkin?.minute
+                      ?.toString()
+                      .padStart(2, '0')}`"
+                    class="mr-0 flex h-9 w-30 rounded-md border px-3 py-2"
+                    @change="($event:Event)=>{
+                      const TARGET = $event.target as HTMLSelectElement
+                      if(!day.checkin) return
+                      day.checkin.hour = parseInt(TARGET.value.split(':')[0]);
+                      day.checkin.minute = parseInt(TARGET.value.split(':')[1]);
+                    }"
+                  >
+                    <template v-for="i in 24">
+                      <option :value="`${i?.toString().padStart(2, '0')}:00`">
+                        {{ `${i?.toString().padStart(2, '0')}:00` }}
+                      </option>
+                      <option :value="`${i?.toString().padStart(2, '0')}:30`">
+                        {{ `${i?.toString().padStart(2, '0')}:30` }}
+                      </option>
+                    </template>
                     <!-- Add more options as needed -->
                   </select>
                 </div>
               </div>
-              <!--  -->
+              <!-- nghỉ trưa -->
               <div
-                v-if="day.status === 'permanent'"
+                v-if="day.work_status === 'full_time' && day.active"
                 class="flex items-center flex-shrink-0 gap-4"
               >
                 <!--Nghỉ  -->
-                <p
-                  v-if="day.active && day.status === 'permanent'"
-                  class="text-center"
-                >
-                  Nghỉ
-                </p>
+                <p class="text-center">Nghỉ</p>
                 <!-- thời gian nghỉ trưa -->
-                <div v-if="day.active && day.status === 'permanent'" class="">
+                <div>
                   <select
-                    v-model="day.lunch_break"
+                    v-model="day.rest_hours"
                     id="from-time"
                     class="mr-0 flex h-9 w-34 items-center rounded-md border px-3 py-1"
                   >
-                    <option value="90 phút">1 giờ 30 phút</option>
-                    <option value="0">0 giờ</option>
-                    <!-- Add more options as needed -->
+                    <option v-for="i in [0, 0.5, 1, 1.5, 2, 2.5]" :value="i">
+                      {{ convertDecimalHoursToHoursAndMinutes(i) }}
+                    </option>
+                    <!-- <option value="0.5">30 phút</option>
+                    <option value="1">1 giờ</option>
+                    <option value="1.5">1 giờ 30 phút</option>
+                    <option value="2">2 giờ</option>
+                    <option value="2.5">2 giờ 30 phút</option> -->
                   </select>
                 </div>
               </div>
               <!--đến  -->
               <div
-                v-if="day.status === 'permanent'"
+                v-if="day.work_status === 'full_time' && day.active"
                 class="flex items-center flex-shrink-0 gap-4"
               >
-                <p
-                  v-if="day.active && day.status === 'permanent'"
-                  class="text-center"
-                >
-                  đến
-                </p>
+                <p class="text-center">đến</p>
                 <!-- thời gian kết thúc -->
-                <div v-if="day.active && day.status === 'permanent'">
+                <div>
                   <select
-                    v-model="day.checkout.hour"
-                    id="from-time"
-                    class="mr-0 flex h-9 w-22.5 rounded-md border px-3 py-2"
+                    :value="`${day?.checkout?.hour
+                      ?.toString()
+                      .padStart(2, '0')}:${day?.checkout?.minute
+                      ?.toString()
+                      .padStart(2, '0')}`"
+                    class="mr-0 flex h-9 w-30 rounded-md border px-3 py-2"
+                    @change="($event:Event)=>{
+                      const TARGET = $event.target as HTMLSelectElement
+                      if(!day.checkout) return
+                      day.checkout.hour = parseInt(TARGET.value.split(':')[0]);
+                      day.checkout.minute = parseInt(TARGET.value.split(':')[1]);
+                    }"
                   >
-                    <option value="1730">17:30</option>
-                    <option value="1800">18:00</option>
-                    <option value="1830">18:30</option>
+                    <template v-for="i in 24">
+                      <option :value="`${i?.toString().padStart(2, '0')}:00`">
+                        {{ `${i?.toString().padStart(2, '0')}:00` }}
+                      </option>
+                      <option :value="`${i?.toString().padStart(2, '0')}:30`">
+                        {{ `${i?.toString().padStart(2, '0')}:30` }}
+                      </option>
+                    </template>
                     <!-- Add more options as needed -->
                   </select>
                 </div>
@@ -348,13 +372,13 @@
               <div class="flex items-center flex-shrink-0 gap-4">
                 <!-- số giờ làm  -->
                 <p
-                  v-if="day.active && day.status === 'permanent'"
+                  v-if="day.active && day.work_status === 'full_time'"
                   class="text-center flex-shrink-0"
                 >
                   Số giờ làm
                 </p>
                 <p
-                  v-if="day.active && day.status === 'not_fixed'"
+                  v-if="day.active && day.work_status === 'part_time'"
                   class="text-center flex-shrink-0"
                 >
                   Chọn số giờ làm
@@ -367,34 +391,37 @@
                 ></IconNext>
                 <!-- tổng số giờ làm -->
                 <div v-if="day.active">
+                  <p v-if="day.work_status === 'full_time'" class="w-24">
+                    {{
+                      convertDecimalHoursToHoursAndMinutes(
+                        Number(day?.checkout?.hour || 0) +
+                          Number(day?.checkout?.minute || 0) / 60 -
+                          Number(day?.checkin?.hour || 0) -
+                          Number(day?.checkin?.minute || 0) / 60 -
+                          Number(day?.rest_hours || 0)
+                      )
+                    }}
+                  </p>
                   <select
-                    v-model="day.work_status"
+                    v-if="day.work_status !== 'full_time'"
                     id="from-time"
-                    :class="{ 'bg-slate-100': day.status === 'permanent' }"
+                    v-model="day.working_hours"
                     class="mr-0 flex h-9 w-34 rounded-md border px-3 py-1"
                   >
-                    <option value="full_time">8 giờ</option>
-                    <option value="part_morning">3 giờ 30 phút</option>
-                    <option value="part_afternoon">4 giờ 30 phút</option>
+                    <template v-for="i in 10">
+                      <option :value="i + 2">
+                        {{ convertDecimalHoursToHoursAndMinutes(i + 2) }}
+                      </option>
+                      <option v-if="i < 10" :value="i + 2.5">
+                        {{ convertDecimalHoursToHoursAndMinutes(i + 2.5) }}
+                      </option>
+                    </template>
                     <!-- Add more options as needed -->
                   </select>
                 </div>
               </div>
-              <!--  -->
               <!-- select -->
-              <label
-                class="hidden sm:inline-flex h-9 items-center cursor-pointer"
-              >
-                <input
-                  type="checkbox"
-                  value=""
-                  class="sr-only peer"
-                  v-model="day.active"
-                />
-                <div
-                  class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-black"
-                ></div>
-              </label>
+              <Toggle v-model="day.active" class="hidden sm:flex" />
             </div>
             <!--  -->
           </div>
@@ -412,11 +439,13 @@
         <div class="flex gap-5">
           <button
             class="px-4 py-2 text-sm text-customDark font-medium bg-slate-200 rounded-md"
+            @click="reset()"
           >
             Khôi phục mặc định
           </button>
           <button
             class="px-4 py-2 text-sm text-white font-medium bg-blue-700 rounded-md"
+            @click="handleSave"
           >
             Lưu
           </button>
@@ -428,15 +457,18 @@
 
 <script setup lang="ts">
 import { useCommonStore } from '@/stores'
+import { copy } from '@/service/helper/format'
 import { confirm } from '@/service/helper/alert'
 import { setting } from '@/service/constant/setting_default'
 
 // * libraries
 import { ref } from 'vue'
-import { storeToRefs } from 'pinia'
 import { format } from 'date-fns'
+import { cloneDeep } from 'lodash'
+import { storeToRefs } from 'pinia'
 
 // * components
+import Toggle from '@/components/Toggle.vue'
 import Avatar from '@/components/avartar/Avatar.vue'
 
 /**Icon*/
@@ -444,140 +476,113 @@ import IconNext from '@/components/icons/IconNext.vue'
 import IconTicks from '@/components/icons/IconTicks.vue'
 import IconPapers from '@/components/icons/IconPapers.vue'
 
-
-/**Biến*/
-const LIST_DAYS = [
-  {
-    active: true,
-
-    lunch_break: "90 phút",
-    status: "permanent",
-    checkin: {
-      hour: 8,
-    },
-    checkout: {
-      hour: 1730,
-    },
-    title: "Thứ 2",
-    work_status: "full_time",
-  },
-  {
-    active: true,
-
-    lunch_break: "0 phút",
-    status: "not_fixed",
-    checkin: {
-      hour: 8,
-    },
-    checkout: {
-      hour: 1730,
-    },
-    title: "Thứ 3",
-    work_status: "part_morning",
-  },
-  {
-    active: true,
-
-    lunch_break: "90 phút",
-    status: "permanent",
-    checkin: {
-      hour: 8,
-    },
-    checkout: {
-      hour: 1730,
-    },
-    title: "Thứ 4",
-    work_status: "full_time",
-  },
-  {
-    active: true,
-
-    lunch_break: "90 phút",
-    status: "permanent",
-    checkin: {
-      hour: 8,
-    },
-    checkout: {
-      hour: 1730,
-    },
-    title: "Thứ 5",
-    work_status: "full_time",
-  },
-  {
-    active: true,
-
-    lunch_break: "90 phút",
-    status: "permanent",
-    checkin: {
-      hour: 8,
-    },
-    checkout: {
-      hour: 1730,
-    },
-    title: "Thứ 6",
-    work_status: "full_time",
-  },
-  {
-    active: true,
-
-    lunch_break: "0",
-    status: "permanent",
-    checkin: {
-      hour: 8,
-      minute: 0,
-    },
-    checkout: {
-      hour: 1730,
-      minute: 0,
-    },
-    title: "Thứ 7",
-    work_status: "part_morning",
-  },
-  {
-    active: false,
-    status: "permanent",
-    checkin: {
-      hour: 8,
-      minute: 0,
-    },
-    checkout: {
-      hour: 18,
-      minute: 0,
-    },
-    title: "Chủ nhật",
-    work_status: "day_off",
-  },
-];
+// * interface
+import { FormOfWorkData } from '@/service/interface'
 
 // * store
 const commonStore = useCommonStore()
 const { form_of_work, employees, user } = storeToRefs(commonStore)
 
-/**biến*/
-const active = ref(true)
-
 /**Biến mở đóng modal*/
 const open = ref(false)
 
 /** loại modal mở ra */
-const type_model = ref<'create'|'update'>('create')
+const type_model = ref<'create' | 'update'>('create')
 
 /** dữ liệu của hình thức làm việc đang chọn */
-const form_of_work_value = ref({
+const form_of_work_value = ref<FormOfWorkData[string]>({
   name: '',
   working_hours: 0,
-  setting_data: {},
+  working_time: [],
   created_by: user.value?._id,
   created_time: new Date(),
 })
 
+/** index hình thức làm việc */
+const index = ref('')
+
 /**Hàm mở modal*/
-function showModal() {
+function showModal(item?: FormOfWorkData[string], idx?: string) {
   open.value = true
+  // nếu update thì gán dữ liệu đang chọn
+  if (item) {
+    form_of_work_value.value = copy(item)
+    type_model.value = 'update'
+    index.value = idx || ''
+  }
+  // nếu thêm mới thì gán dữ liệu mặc định
+  else {
+    form_of_work_value.value = {
+      name: '',
+      working_hours: 0,
+      working_time: cloneDeep(setting.form_of_work['1'].working_time),
+      created_by: user.value?._id,
+      created_time: new Date(),
+    }
+    type_model.value = 'create'
+    index.value = (
+      Object.keys(form_of_work.value.setting_data || {})?.length + 1
+    )?.toString()
+  }
 }
+
 /**Hàm đóng modal*/
 function handleOk() {
   open.value = false
+}
+
+/** hàm chuyển đổi giờ */
+function convertDecimalHoursToHoursAndMinutes(decimal_hours: number) {
+  /** giờ */
+  const HOURS = Math.floor(decimal_hours)
+
+  /** phút */
+  const MINUTES = Math.round((decimal_hours - HOURS) * 60)
+
+  /** kết quả trả về */
+  let result = ''
+
+  // nếu có giờ thì mới hiẹn
+  if (HOURS > 0 || !MINUTES) {
+    result += `${HOURS} giờ `
+  }
+
+  // nếu có phút thì mới hiêjn
+  if (MINUTES > 0) {
+    result += `${MINUTES} phút`
+  }
+
+  // Xóa khoảng trắng ở cuối nếu có
+  result = result.trim()
+
+  // Trả về chuỗi rỗng nếu cả giờ và phút đều bằng 0
+  if (result === '') {
+    return '' // Hoặc bạn có thể trả về "0 phút" nếu muốn
+  }
+
+  return result
+}
+
+/** tính toán số giờ */
+function calculateHours() {
+  /** tổng số giờ / tuần */
+  let sum = 0
+
+  form_of_work_value.value.working_time?.forEach((item) => {
+    if(!item.active) return
+    
+    if (item.work_status !== 'full_time') {
+      item.working_hours =
+        Number(item?.checkout?.hour || 0) +
+        Number(item?.checkout?.minute || 0) / 60 -
+        Number(item?.checkin?.hour || 0) -
+        Number(item?.checkin?.minute || 0) / 60
+    }
+
+    sum += Number(item.working_hours || 0)
+  })
+
+  form_of_work_value.value.working_hours = sum
 }
 
 /** Lấy thông tin nhân viên */
@@ -593,27 +598,52 @@ function getInfo(id?: string, type?: string) {
   return EMPLOYEE?.avatar
 }
 
+/** lưu hình thức làm việc */
+function handleSave() {
+  if (!form_of_work.value.setting_data) form_of_work.value.setting_data = {}
+
+  calculateHours()
+
+  if (type_model.value === 'create') {
+    form_of_work.value.setting_data[index.value] = {
+      ...form_of_work_value.value,
+    }
+  } else {
+    form_of_work.value.setting_data[index.value] = {
+      ...form_of_work_value.value,
+      created_by: user.value?._id,
+      created_time: new Date(),
+    }
+  }
+  open.value = false
+}
+
 /** xóa hình thức làm việc */
 function handleDelete() {
-  confirm('warning', 'Xác nhận hình thức làm việc này?', '', (is_cancel: boolean) => {
-    if (is_cancel) return
-  })
+  confirm(
+    'warning',
+    'Xác nhận hình thức làm việc này?',
+    '',
+    (is_cancel: boolean) => {
+      if (is_cancel) return
+    }
+  )
 }
 
 /** khôi phục mặc định */
 function reset() {
-  confirm('warning', 'Xác nhận khôi phục mặc định?', '', (is_cancel: boolean) => {
-    if (is_cancel) return
+  confirm(
+    'warning',
+    'Xác nhận khôi phục mặc định?',
+    '',
+    (is_cancel: boolean) => {
+      if (is_cancel) return
+      form_of_work_value.value.working_time = cloneDeep(
+        setting.form_of_work['1']
+      ).working_time
 
-    form_of_work.value.setting_data = {}
-    for (const key in setting.form_of_work) {
-      form_of_work.value.setting_data[key] = {
-        ...setting.form_of_work[key],
-        created_by: user.value?._id,
-        created_time: new Date()
-      }
+      handleSave()
     }
-  })
+  )
 }
-
 </script>
