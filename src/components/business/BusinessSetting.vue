@@ -173,6 +173,7 @@ async function saveSetting() {
       savesSettingTimeworking(),
       savesSettingBackground()
     ])
+    $toast.success('Lưu thiết lập thành công')
   } catch (e) {
     $toast.error(e)
   }
