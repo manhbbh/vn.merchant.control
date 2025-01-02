@@ -54,7 +54,7 @@
                   v-model="monthly_business_period.setting_data.end"
                   class="outline-none appearance-none text-center bg-transparent"
                 >
-                  <option v-for="i in 31" :value="i" class="px-2">
+                  <option v-for="i in 28" :value="i" class="px-2">
                     {{ i }}
                   </option>
                 </select>

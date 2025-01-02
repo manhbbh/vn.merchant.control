@@ -223,19 +223,6 @@
                 </div>
                 <!-- select -->
                 <Toggle v-model="day.active" class="sm:hidden" />
-                <!-- <label
-                  class="inline-flex h-9 items-center cursor-pointer sm:hidden"
-                >
-                  <input
-                    type="checkbox"
-                    value=""
-                    class="sr-only peer"
-                    v-model="day.active"
-                  />
-                  <div
-                    class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-black"
-                  ></div>
-                </label> -->
               </div>
               <select
                 v-model="day.work_status"
@@ -273,16 +260,6 @@
                 <p class="text-center flex-shrink-0">từ</p>
                 <!-- giờ bắt đầu -->
                 <div>
-                  <!-- <select
-                    v-model="day.checkin.hour"
-                    id="from-time"
-                    class="mr-0 flex h-9 w-22.5 rounded-md border px-3 py-2"
-                  >
-                    <option value="7">9:00</option>
-                    <option value="8">8:00</option>
-                    <option value="9">7:00</option>
-                    Add more options as needed
-                  </select> -->
                   <select
                     :value="`${day?.checkin?.hour
                       ?.toString()
@@ -301,7 +278,7 @@
                       <option :value="`${i?.toString().padStart(2, '0')}:00`">
                         {{ `${i?.toString().padStart(2, '0')}:00` }}
                       </option>
-                      <option :value="`${i?.toString().padStart(2, '0')}:30`">
+                      <option v-if="i < 24" :value="`${i?.toString().padStart(2, '0')}:30`">
                         {{ `${i?.toString().padStart(2, '0')}:30` }}
                       </option>
                     </template>
@@ -360,7 +337,7 @@
                       <option :value="`${i?.toString().padStart(2, '0')}:00`">
                         {{ `${i?.toString().padStart(2, '0')}:00` }}
                       </option>
-                      <option :value="`${i?.toString().padStart(2, '0')}:30`">
+                      <option v-if="i < 24" :value="`${i?.toString().padStart(2, '0')}:30`">
                         {{ `${i?.toString().padStart(2, '0')}:30` }}
                       </option>
                     </template>
@@ -439,7 +416,7 @@
         <div class="flex gap-5">
           <button
             class="px-4 py-2 text-sm text-customDark font-medium bg-slate-200 rounded-md"
-            @click="reset()"
+            @click="resetModal()"
           >
             Khôi phục mặc định
           </button>
@@ -638,8 +615,8 @@ function handleDelete(id:string) {
   )
 }
 
-/** khôi phục mặc định */
-function reset() {
+/** khôi phục mặc định dữ liệu trong modal */
+function resetModal() {
   confirm(
     'warning',
     'Xác nhận khôi phục mặc định?',
@@ -649,8 +626,26 @@ function reset() {
       form_of_work_value.value.working_time = cloneDeep(
         setting.form_of_work['1']
       ).working_time
+    }
+  )
+}
 
-      handleSave()
+/** khôi phục mặc định danh sách */
+function reset(){
+  confirm(
+    'warning',
+    'Xác nhận khôi phục mặc định?',
+    '',
+    (is_cancel: boolean) => {
+      if (is_cancel) return
+      form_of_work.value.setting_data = {
+        '1': {
+          
+          ...cloneDeep(setting.form_of_work['1']),
+          created_by: user.value?._id,
+          created_time: new Date(),
+        }
+      }
     }
   )
 }

@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import { useCommonStore } from '@/stores'
 import { Toast } from '@/service/helper/toast'
-import { branchSaveSetting } from '@/service/api/api'
+import { branchSaveSetting, businessUpdate } from '@/service/api/api'
 
 // * libraries
 import { ref } from 'vue'
@@ -41,6 +41,7 @@ import InforBranch from '@/components/enterpriseSettings/InforBranch.vue'
 import Timeworking from '@/components/enterpriseSettings/Timeworking.vue'
 import WorkingForm from '@/components/enterpriseSettings/WorkingForm.vue'
 import ListEmployee from '@/components/enterpriseSettings/ListEmployee.vue'
+import { BranchData } from '@/service/interface'
 
 // * store
 const commonStore = useCommonStore()
@@ -49,6 +50,7 @@ const {
   branch_holidays,
   branch_form_of_work,
   branch_working_time,
+  branches
 } = storeToRefs(commonStore)
 
 // * toast
@@ -96,9 +98,29 @@ async function savesSettingTimeworking() {
   }
 }
 
+/** lưu thông tin doanh nghiệp */
+async function saveBusinessInfo() {
+  try {
+    await businessUpdate({
+      body: {
+        ...branch_data.value,
+        id: branch_data.value?._id
+      },
+    })
+
+    branches.value = branches.value.map((item: BranchData) => {
+      if(item._id === branch_data.value?._id) return branch_data.value
+      return item
+    })
+  } catch (e) {
+    $toast.error(e)
+  }
+}
+
 async function saveSetting() {
   try {
     await Promise.all([
+      saveBusinessInfo(),
       savesSettingHolidays(),
       savesSettingFormOfWork(),
       savesSettingTimeworking(),

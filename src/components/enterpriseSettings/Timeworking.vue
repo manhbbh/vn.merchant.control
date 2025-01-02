@@ -117,7 +117,7 @@
         <div
           class="h-9 flex sm:gap-5 w-full justify-between items-center sm:justify-end"
         >
-          <!--  -->
+          <!-- từ -->
           <p v-if="day.active" class="text-center md:px-4">từ</p>
 
           <div v-if="day.active && day.checkin">
@@ -139,14 +139,14 @@
                 <option :value="`${i?.toString().padStart(2, '0')}:00`">
                   {{ `${i?.toString().padStart(2, '0')}:00` }}
                 </option>
-                <option :value="`${i?.toString().padStart(2, '0')}:30`">
+                <option v-if="i < 24" :value="`${i?.toString().padStart(2, '0')}:30`">
                   {{ `${i?.toString().padStart(2, '0')}:30` }}
                 </option>
               </template>
               <!-- Add more options as needed -->
             </select>
           </div>
-          <!--  -->
+          <!-- đến -->
           <p v-if="day.active" class="text-center md:px-4">đến</p>
 
           <div v-if="day.active && day.checkout">
@@ -168,7 +168,7 @@
                 <option :value="`${i?.toString().padStart(2, '0')}:00`">
                   {{ `${i?.toString().padStart(2, '0')}:00` }}
                 </option>
-                <option :value="`${i?.toString().padStart(2, '0')}:30`">
+                <option v-if="i < 24" :value="`${i?.toString().padStart(2, '0')}:30`">
                   {{ `${i?.toString().padStart(2, '0')}:30` }}
                 </option>
               </template>

@@ -21,7 +21,7 @@
       >
         <!-- Phần trái -->
         <nav
-          class="relative px-2 gap-1 sm:h-full flex-shrink-0 rounded-xl bg-white overflow-hidden flex flex-col mb-2 md:w-82 sm:mb-0 sm:w-1/2"
+          class="relative px-2 gap-1 sm:h-full flex-shrink-0 rounded-xl bg-white overflow-hidden flex flex-col mb-2 md:w-60 sm:mb-0"
         >
           <!-- cài đặt doanh nghiệp & chi nhánh -->
           <ul class="pt-3 flex flex-col gap-1">
@@ -103,7 +103,7 @@ import { Toast } from '@/service/helper/toast'
 import { getSettingBranch } from '@/service/api/api'
 
 // * libraries
-import { ref } from 'vue'
+import { provide, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 
 /**compomnet con*/
@@ -156,6 +156,7 @@ function selectedBusiness() {
 /**Hàm khi bấm vào một chi nhánh nào đó*/
 async function detaiBranch(branch: BranchData) {
   try {
+    is_business.value = false
     resetBranch()
 
     // lưu lại dữ liệu chi nhánh đã chọn
@@ -201,5 +202,6 @@ async function detaiBranch(branch: BranchData) {
     }
   } catch (e) {}
 }
+
+provide('detaiBranch', detaiBranch)
 </script>
-<style scoped lang="scss"></style>

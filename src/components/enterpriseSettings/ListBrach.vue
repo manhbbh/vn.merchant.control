@@ -96,6 +96,7 @@
             <td class="text-left py-2 hidden md:table-cell">
               <button
                 class="h-5 w-15 flex justify-center px-2 bg-slate-100 rounded-md py-0.5"
+                @click="detaiBranch(branch)"
               >
                 <span class="text-xs font-medium"> Cài đặt </span>
               </button>
@@ -193,7 +194,7 @@ import { Toast } from '@/service/helper/toast'
 import { businessAddBranch } from '@/service/api/api'
 
 // * libraries
-import { ref } from 'vue'
+import { inject, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 
 // * components
@@ -210,6 +211,8 @@ import IconArrow from '@/components/icons/IconArrow.vue'
 import { BranchData } from '@/service/interface'
 import { format } from 'date-fns'
 
+const detaiBranch = inject('detaiBranch') as Function
+
 // * store
 const commonStore = useCommonStore()
 const { branches, business_id } = storeToRefs(commonStore)
@@ -217,10 +220,12 @@ const { branches, business_id } = storeToRefs(commonStore)
 /** dữ liệu thêm */
 const form_add = ref<BranchData>({})
 
+// * toast
 const $toast = new Toast()
 
 /**Biến mở đóng modal*/
 const open = ref(false)
+
 /**Hàm mở modal*/
 function showModal() {
   open.value = true
@@ -232,6 +237,7 @@ function showModal() {
     locations: {},
   }
 }
+
 /**Hàm đóng modal*/
 async function handleOk() {
   try {
@@ -253,5 +259,3 @@ async function handleOk() {
   open.value = false
 }
 </script>
-
-<style lang="scss" scoped></style>
