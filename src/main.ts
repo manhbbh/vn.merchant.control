@@ -8,6 +8,9 @@ import {
   loadLanguage,
   loadRouter,
 } from "@/service/core";
+import FloatingVue from 'floating-vue'
+import 'floating-vue/dist/style.css'
+
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 // * Import css
@@ -21,6 +24,11 @@ const APP = createApp(App);
 APP.use(Antd); 
 // * Sử dụng vue Date Picker
 APP.component('VueDatePicker', VueDatePicker);
+
+
+
+APP.use(FloatingVue)
+
 waterfall(
   [
     (cb: CbError) => loadEnv(cb),

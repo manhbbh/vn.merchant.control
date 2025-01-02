@@ -81,12 +81,19 @@
                     ?.working_time"
                   :class="{
                     'bg-green-500':
-                      time?.work_status === 'full_time' && time?.active,
+                      Number(time?.working_hours || 0) >= 5 && time?.active,
                     'bg-orange-500':
-                      time?.work_status !== 'full_time' && time?.active,
+                      Number(time?.working_hours || 0) < 5 && time?.active,
                     'bg-slate-500': !time?.active,
                   }"
                   class="w-2.5 text-ss text-white flex items-center justify-center h-2.5 rounded-full"
+                  v-tooltip="
+                    !time?.active
+                      ? 'Nghỉ'
+                      : Number(time?.working_hours || 0) >= 5
+                      ? 'Toàn thời gian'
+                      : 'Bán thời gian'
+                  "
                 >
                   {{ index < 6 ? index + 2 : 'C' }}
                 </p>
@@ -278,7 +285,10 @@
                       <option :value="`${i?.toString().padStart(2, '0')}:00`">
                         {{ `${i?.toString().padStart(2, '0')}:00` }}
                       </option>
-                      <option v-if="i < 24" :value="`${i?.toString().padStart(2, '0')}:30`">
+                      <option
+                        v-if="i < 24"
+                        :value="`${i?.toString().padStart(2, '0')}:30`"
+                      >
                         {{ `${i?.toString().padStart(2, '0')}:30` }}
                       </option>
                     </template>
@@ -337,7 +347,10 @@
                       <option :value="`${i?.toString().padStart(2, '0')}:00`">
                         {{ `${i?.toString().padStart(2, '0')}:00` }}
                       </option>
-                      <option v-if="i < 24" :value="`${i?.toString().padStart(2, '0')}:30`">
+                      <option
+                        v-if="i < 24"
+                        :value="`${i?.toString().padStart(2, '0')}:30`"
+                      >
                         {{ `${i?.toString().padStart(2, '0')}:30` }}
                       </option>
                     </template>
@@ -454,7 +467,7 @@ import IconTicks from '@/components/icons/IconTicks.vue'
 import IconPapers from '@/components/icons/IconPapers.vue'
 
 // * interface
-import { FormOfWork, FormOfWorkData} from '@/service/interface'
+import { FormOfWork, FormOfWorkData } from '@/service/interface'
 
 // * store
 const commonStore = useCommonStore()
@@ -551,8 +564,8 @@ function calculateHours() {
   let sum = 0
 
   form_of_work_value.value.working_time?.forEach((item) => {
-    if(!item.active) return
-    
+    if (!item.active) return
+
     if (item.work_status !== 'full_time') {
       item.working_hours =
         Number(item?.checkout?.hour || 0) +
@@ -601,7 +614,7 @@ function handleSave() {
 }
 
 /** xóa hình thức làm việc */
-function handleDelete(id:string) {
+function handleDelete(id: string) {
   confirm(
     'warning',
     'Xác nhận hình thức làm việc này?',
@@ -609,7 +622,7 @@ function handleDelete(id:string) {
     (is_cancel: boolean) => {
       if (is_cancel) return
 
-      if(!form_of_work.value.setting_data) return
+      if (!form_of_work.value.setting_data) return
       delete form_of_work.value.setting_data[id]
     }
   )
@@ -631,7 +644,7 @@ function resetModal() {
 }
 
 /** khôi phục mặc định danh sách */
-function reset(){
+function reset() {
   confirm(
     'warning',
     'Xác nhận khôi phục mặc định?',
@@ -640,11 +653,10 @@ function reset(){
       if (is_cancel) return
       form_of_work.value.setting_data = {
         '1': {
-          
           ...cloneDeep(setting.form_of_work['1']),
           created_by: user.value?._id,
           created_time: new Date(),
-        }
+        },
       }
     }
   )
