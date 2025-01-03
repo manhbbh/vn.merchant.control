@@ -305,7 +305,7 @@ function handleAdd() {
 
 /** xử lý xóa ngày lễ */
 function handleDelete(index:number, type: 'pc' | 'mobile') {
-  confirm('warning', 'Xác nhận xóa nghỉ lễ?', '', (is_cancel: boolean) => {
+  confirm('warning', 'Xác nhận xóa hình nền?', '', (is_cancel: boolean) => {
     if(is_cancel) return
 
     // nếu không có dữ liệu thì thôi
