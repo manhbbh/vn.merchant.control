@@ -15,7 +15,8 @@
             class="text-sm font-medium text-slate-500 h-9 px-0 sm:px-6 sm:py-2"
             @click="reset()"
           >
-            Khôi phục mặc định
+            <span v-if="!branch_data?._id">Khôi phục mặc định</span>
+            <span v-else>Khôi phục theo Doanh nghiệp</span>
           </button>
           <button
             class="h-9 w-18 text-sm font-medium text-white rounded-md bg-black"
@@ -185,7 +186,7 @@
           @click="open = false"
           class="p-1 rounded-md hover:bg-gray-300 hover:text-black"
         >
-          <IconClose class="w-5 h-5"></IconClose>
+          <XMarkIcon class="w-5 h-5"/>
         </button>
       </header>
       <!--  -->
@@ -452,7 +453,7 @@ import { confirm } from '@/service/helper/alert'
 import { setting } from '@/service/constant/setting_default'
 
 // * libraries
-import { ref } from 'vue'
+import { PropType, ref } from 'vue'
 import { format } from 'date-fns'
 import { cloneDeep } from 'lodash'
 import { storeToRefs } from 'pinia'
@@ -462,6 +463,7 @@ import Toggle from '@/components/Toggle.vue'
 import Avatar from '@/components/avartar/Avatar.vue'
 
 /**Icon*/
+import { XMarkIcon } from '@heroicons/vue/24/solid'
 import IconNext from '@/components/icons/IconNext.vue'
 import IconTicks from '@/components/icons/IconTicks.vue'
 import IconPapers from '@/components/icons/IconPapers.vue'
@@ -469,9 +471,17 @@ import IconPapers from '@/components/icons/IconPapers.vue'
 // * interface
 import { FormOfWork, FormOfWorkData } from '@/service/interface'
 
+// * props
+const props = defineProps({
+  setting_form_of_work: {
+    type: Object as PropType<FormOfWorkData>,
+    required: true,
+  },
+})
+
 // * store
 const commonStore = useCommonStore()
-const { employees, user } = storeToRefs(commonStore)
+const { employees, user, branch_data } = storeToRefs(commonStore)
 
 /** dữ liệu thiết lập hình thức làm việc */
 const form_of_work = defineModel<FormOfWork>({
@@ -572,12 +582,20 @@ function calculateHours() {
         Number(item?.checkout?.minute || 0) / 60 -
         Number(item?.checkin?.hour || 0) -
         Number(item?.checkin?.minute || 0) / 60
+    } else {
+      item.working_hours =
+        Number(item?.checkout?.hour || 0) +
+        Number(item?.checkout?.minute || 0) / 60 -
+        Number(item?.checkin?.hour || 0) -
+        Number(item?.checkin?.minute || 0) / 60 -
+        Number(item?.rest_hours || 0)
     }
 
     sum += Number(item.working_hours || 0)
   })
 
   form_of_work_value.value.working_hours = sum
+  console.log(form_of_work_value.value)
 }
 
 /** Lấy thông tin nhân viên */
@@ -651,12 +669,10 @@ function reset() {
     '',
     (is_cancel: boolean) => {
       if (is_cancel) return
-      form_of_work.value.setting_data = {
-        '1': {
-          ...cloneDeep(setting.form_of_work['1']),
-          created_by: user.value?._id,
-          created_time: new Date(),
-        },
+      form_of_work.value.setting_data = cloneDeep(props.setting_form_of_work)
+      for (const key in form_of_work.value.setting_data) {
+        form_of_work.value.setting_data[key].created_by = user.value?._id
+        form_of_work.value.setting_data[key].created_time = new Date()
       }
     }
   )

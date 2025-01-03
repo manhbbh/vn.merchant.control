@@ -8,11 +8,20 @@
     <!-- 2 -->
     <ListEmployee></ListEmployee>
     <!-- 3 -->
-    <Holiday v-model="branch_holidays"></Holiday>
+    <Holiday
+      v-model="branch_holidays"
+      :setting_holiday="holidays.setting_data || {}"
+    ></Holiday>
     <!-- 4 -->
-    <WorkingForm v-model="branch_form_of_work"></WorkingForm>
+    <WorkingForm
+      v-model="branch_form_of_work"
+      :setting_form_of_work="form_of_work.setting_data || {}"
+    ></WorkingForm>
     <!-- 5 -->
-    <Timeworking v-model="branch_working_time"></Timeworking>
+    <Timeworking
+      v-model="branch_working_time"
+      :setting_working_time="working_time.setting_data || {}"
+    ></Timeworking>
     <!-- nút lưu -->
     <div
       class="py-2 px-3 bg-white rounded-lg flex items-center justify-end sticky bottom-0 z-40"
@@ -50,7 +59,10 @@ const {
   branch_holidays,
   branch_form_of_work,
   branch_working_time,
-  branches
+  branches,
+  holidays,
+  form_of_work,
+  working_time,
 } = storeToRefs(commonStore)
 
 // * toast
@@ -104,12 +116,12 @@ async function saveBusinessInfo() {
     await businessUpdate({
       body: {
         ...branch_data.value,
-        id: branch_data.value?._id
+        id: branch_data.value?._id,
       },
     })
 
     branches.value = branches.value.map((item: BranchData) => {
-      if(item._id === branch_data.value?._id) return branch_data.value
+      if (item._id === branch_data.value?._id) return branch_data.value
       return item
     })
   } catch (e) {
@@ -130,5 +142,4 @@ async function saveSetting() {
     $toast.error(e)
   }
 }
-
 </script>

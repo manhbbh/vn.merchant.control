@@ -10,16 +10,22 @@
       v-if="working_time.setting_data"
     >
       <!-- tiêu đề -->
-      <div class="flex-col mb-3 sm:">
-        <h4
-          class="flex text-customDark h-5 mb-2.5 justify-start text-sm font-medium"
-        >
-          Thời gian làm việc chung
-        </h4>
-        <p class="flex h-5 justify-start text-sm text-gray-500 truncate">
-          Khi tạo thêm Chi nhánh thì mặc định kế thừa cấu hình này. Ngoài ra, có
-          thể thiết lập tùy biến theo từng Chi nhánh.
-        </p>
+      <div class="flex justify-between">
+        <div class="flex-col mb-3">
+          <h4
+            class="flex text-customDark h-5 mb-2.5 justify-start text-sm font-medium"
+          >
+            Thời gian làm việc chung
+          </h4>
+          <p class="flex h-5 justify-start text-sm text-gray-500 truncate">
+            Khi tạo thêm Chi nhánh thì mặc định kế thừa cấu hình này. Ngoài ra,
+            có thể thiết lập tùy biến theo từng Chi nhánh.
+          </p>
+        </div>
+        <button class="font-medium text-slate-500 px-3" @click="reset()">
+          <span v-if="!branch_data?._id">Khôi phục mặc định</span>
+          <span v-else>Khôi phục theo Doanh nghiệp</span>
+        </button>
       </div>
       <!-- Múi giờ -->
       <div
@@ -98,19 +104,7 @@
               {{ day.title }}
             </div>
             <!-- select -->
-            <label
-              class="inline-flex h-9 items-center cursor-pointer sm:hidden"
-            >
-              <input
-                type="checkbox"
-                value=""
-                class="sr-only peer"
-                v-model="day.active"
-              />
-              <div
-                class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-black"
-              ></div>
-            </label>
+            <Toggle v-model="day.active" class="sm:hidden" />
           </div>
         </div>
         <!--  -->
@@ -139,7 +133,10 @@
                 <option :value="`${i?.toString().padStart(2, '0')}:00`">
                   {{ `${i?.toString().padStart(2, '0')}:00` }}
                 </option>
-                <option v-if="i < 24" :value="`${i?.toString().padStart(2, '0')}:30`">
+                <option
+                  v-if="i < 24"
+                  :value="`${i?.toString().padStart(2, '0')}:30`"
+                >
                   {{ `${i?.toString().padStart(2, '0')}:30` }}
                 </option>
               </template>
@@ -168,7 +165,10 @@
                 <option :value="`${i?.toString().padStart(2, '0')}:00`">
                   {{ `${i?.toString().padStart(2, '0')}:00` }}
                 </option>
-                <option v-if="i < 24" :value="`${i?.toString().padStart(2, '0')}:30`">
+                <option
+                  v-if="i < 24"
+                  :value="`${i?.toString().padStart(2, '0')}:30`"
+                >
                   {{ `${i?.toString().padStart(2, '0')}:30` }}
                 </option>
               </template>
@@ -178,9 +178,7 @@
           <!--  -->
 
           <!-- select -->
-          <Toggle 
-            v-model="day.active"
-          />
+          <Toggle class="hidden sm:flex" v-model="day.active" />
         </div>
         <!--  -->
       </div>
@@ -190,9 +188,14 @@
 </template>
 
 <script setup lang="ts">
+import { useCommonStore } from '@/stores'
+import { copy } from '@/service/helper/format'
 import { TIME_ZONES } from '@/service/constant'
+import { confirm } from '@/service/helper/alert'
 
 // * library
+import { PropType } from 'vue'
+import { storeToRefs } from 'pinia'
 
 // * component
 import Toggle from '@/components/Toggle.vue'
@@ -204,11 +207,34 @@ import IconPapers from '@/components/icons/IconPapers.vue'
 import IconArrow from '@/components/icons/IconArrow.vue'
 
 // * interface
-import { WorkingTimeSetting } from '@/service/interface'
+import { WorkingTimeSetting, WorkingTimeSettingData } from '@/service/interface'
+
+// * props
+const props = defineProps({
+  setting_working_time: {
+    type: Object as PropType<WorkingTimeSettingData>,
+    required: true,
+  },
+})
+
+// * store
+const { branch_data } = storeToRefs(useCommonStore())
 
 /** dữ liệu thiết lập thời gian làm việc */
 const working_time = defineModel<WorkingTimeSetting>({
-  default: {}
+  default: {},
 })
 
+/** khôi phục dữ liệu */
+function reset() {
+  confirm(
+    'warning',
+    'Xác nhận khôi phục mặc định?',
+    '',
+    (is_cancel: boolean) => {
+      if (is_cancel) return
+      working_time.value.setting_data = copy(props.setting_working_time)
+    }
+  )
+}
 </script>

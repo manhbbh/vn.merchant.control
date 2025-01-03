@@ -8,14 +8,14 @@
     <div class="flex flex-col gap-2 w-full">
       <div class="flex h-5 items-center justify-between mb-3">
         <h4 class="flex justify-start text-sm font-medium">Nhân sự công ty</h4>
-        <div
+        <!-- <div
           class="flex items-center gap-2 bg-slate-100 py-3 px-3 h-5 cursor-pointer rounded-md"
           v-if="branch_data?._id"
           @click="openModal()"
         >
           <IconAdd class="w-4 h-4"></IconAdd>
           <p class="text-xs font-medium">Thêm nhân sự</p>
-        </div>
+        </div> -->
       </div>
       <!-- danh sách nhân viên -->
       <table class="min-w-full border-none bg-white rounded-lg z-10">
@@ -128,7 +128,7 @@
             @click="open = false"
             class="p-1 rounded-md hover:bg-gray-300 hover:text-black"
           >
-            <IconClose class="w-5 h-5"></IconClose>
+            <XMarkIcon class="w-5 h-5"/>
           </button>
         </header>
         <!--  -->
@@ -167,19 +167,20 @@
 <script setup lang="ts">
 import { useCommonStore } from '@/stores'
 import { Toast } from '@/service/helper/toast'
+import { businessAddEmployee } from '@/service/api/api'
 
 // * libraries
+import { format } from 'date-fns'
 import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { format } from 'date-fns'
 
 /**Icon*/
 import IconAdd from '@/components/icons/IconAdd.vue'
+import { XMarkIcon } from '@heroicons/vue/24/outline'
 import IconEmploye from '@/components/icons/IconEmploye.vue'
 
 // * interfaces
 import { EmployeeData } from '@/service/interface'
-import { businessAddEmployee } from '@/service/api/api'
 
 // * store
 const commonStore = useCommonStore()

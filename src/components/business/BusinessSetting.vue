@@ -9,11 +9,17 @@
     <!-- 4 -->
     <BusinessPeriod></BusinessPeriod>
     <!-- 5 -->
-    <Holiday v-model="holidays"></Holiday>
+    <Holiday v-model="holidays" :setting_holiday="setting.holiday"></Holiday>
     <!-- 6 -->
-    <WorkingForm v-model="form_of_work"></WorkingForm>
+    <WorkingForm
+      v-model="form_of_work"
+      :setting_form_of_work="setting.form_of_work"
+    ></WorkingForm>
     <!-- 7 -->
-    <Timeworking v-model="working_time"></Timeworking>
+    <Timeworking
+      v-model="working_time"
+      :setting_working_time="setting.working_time"
+    ></Timeworking>
     <!-- 8 -->
     <Background></Background>
     <!-- nút lưu -->
@@ -33,6 +39,7 @@
 <script setup lang="ts">
 import { useCommonStore } from '@/stores'
 import { Toast } from '@/service/helper/toast'
+import { setting } from '@/service/constant/setting_default'
 import { businessSaveSetting, businessUpdate } from '@/service/api/api'
 
 // * libraries
@@ -58,7 +65,7 @@ const {
   form_of_work,
   year_business_period,
   monthly_business_period,
-  business_data
+  business_data,
 } = storeToRefs(commonStore)
 
 // * toast
@@ -154,7 +161,7 @@ async function saveBusinessInfo() {
     await businessUpdate({
       body: {
         ...business_data.value,
-        id: business_data.value?._id
+        id: business_data.value?._id,
       },
     })
   } catch (e) {
@@ -171,7 +178,7 @@ async function saveSetting() {
       savesSettingHolidays(),
       savesSettingFormOfWork(),
       savesSettingTimeworking(),
-      savesSettingBackground()
+      savesSettingBackground(),
     ])
     $toast.success('Lưu thiết lập thành công')
   } catch (e) {

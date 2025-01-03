@@ -61,7 +61,7 @@
             </td>
             <!-- tên viết tắt -->
             <td class="text-left py-2 items-center space-x-4">
-              <p>{{ branch?.name || '' }}</p>
+              <p>{{ branch?.short_name || branch?.name || '' }}</p>
             </td>
 
             <!-- địa chỉ -->

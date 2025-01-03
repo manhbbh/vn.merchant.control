@@ -9,10 +9,12 @@
       <div class="flex h-9 items-start justify-between">
         <h4 class="flex justify-start text-sm font-medium">Nghỉ lễ</h4>
         <div class="flex items-center gap-2.5">
-          <button class="text-sm font-medium text-slate-500 h-9 px-6 py-2"
+          <button
+            class="text-sm font-medium text-slate-500 h-9 px-6 py-2"
             @click="reset()"
           >
-            Khôi phục mặc định
+            <span v-if="!branch_data?._id">Khôi phục mặc định</span>
+            <span v-else>Khôi phục theo Doanh nghiệp</span>
           </button>
           <button
             class="h-9 w-18 text-sm font-medium text-white rounded-md bg-black"
@@ -125,9 +127,7 @@
         </tbody>
       </table>
       <!--  -->
-      <div class="flex flex-col gap-4 sm:flex-row"
-        v-if="is_show_add"
-      >
+      <div class="flex flex-col gap-4 sm:flex-row" v-if="is_show_add">
         <!-- Ngày thành lập-->
         <div class="flex text-left h-9 items-center gap-4">
           <label
@@ -151,7 +151,7 @@
           >
             Ngày
           </label>
-          <CustomVuePicker 
+          <CustomVuePicker
             v-model="add_form.date"
             placeholder="Chọn ngày"
             :handle-date="() => {}"
@@ -176,10 +176,9 @@
 <script setup lang="ts">
 import { useCommonStore } from '@/stores'
 import { confirm } from '@/service/helper/alert'
-import { setting } from '@/service/constant/setting_default'
 
 // * libraries
-import { ref } from 'vue'
+import { PropType, ref } from 'vue'
 import { format } from 'date-fns'
 import { storeToRefs } from 'pinia'
 
@@ -192,14 +191,22 @@ import IconTicks from '@/components/icons/IconTicks.vue'
 import IconCalendar from '@/components/icons/IconCalendar.vue'
 
 // * interfaces
-import { HolidaySetting } from '@/service/interface'
+import { HolidaySetting, HolidaySettingData } from '@/service/interface'
+
+// * props
+const props = defineProps({
+  setting_holiday: {
+    type: Object as PropType<HolidaySettingData>,
+    required: true,
+  },
+})
 
 // * store
 const commonStore = useCommonStore()
-const { employees, user } = storeToRefs(commonStore)
+const { employees, user, branch_data } = storeToRefs(commonStore)
 
 /** dữ liệu thiết lập nghỉ lễ */
-const holidays = defineModel<HolidaySetting>({default: {}})
+const holidays = defineModel<HolidaySetting>({ default: {} })
 
 /**Biến*/
 /** ẩn hiện modal thêm nhân viên */
@@ -208,7 +215,7 @@ const is_show_add = ref(false)
 /** form thêm mới ngày lễ */
 const add_form = ref({
   title: '',
-  date: new Date()
+  date: new Date(),
 })
 
 /** lấy thông tin nhân viên */
@@ -232,7 +239,7 @@ function handleAdd() {
   const DATE_STR = format(add_form.value.date, 'dd/MM')
 
   // nếu không có ngày thì thôi
-  if(!DATE_STR) return
+  if (!DATE_STR) return
 
   // thêm vào ngày lễ
   holidays.value = {
@@ -243,14 +250,14 @@ function handleAdd() {
         name: add_form.value.title,
         created_time: add_form.value.date,
         created_by: user.value?._id,
-      }
-    }
+      },
+    },
   }
 
   // reset form
   add_form.value = {
     title: '',
-    date: new Date()
+    date: new Date(),
   }
 
   // đóng form
@@ -261,34 +268,38 @@ function handleAdd() {
 function handleDelete(date: string) {
   confirm('warning', 'Xác nhận xóa nghỉ lễ?', '', (is_cancel: boolean) => {
     // nếu hủy thì thôi
-    if(is_cancel) return
+    if (is_cancel) return
 
     // xóa
     delete holidays.value?.setting_data?.[date]
   })
-  
 }
 
 /** khôi phục mặc định */
-function reset(){
-  confirm('warning', 'Xác nhận khôi phục mặc định?', '', (is_cancel: boolean) => {
-    // nếu hủy thì thôi
-    if(is_cancel) return
+function reset() {
+  confirm(
+    'warning',
+    'Xác nhận khôi phục mặc định?',
+    '',
+    (is_cancel: boolean) => {
+      // nếu hủy thì thôi
+      if (is_cancel) return
 
-    /** ngày hôm này */
-    const TODAY = new Date()
+      /** ngày hôm này */
+      const TODAY = new Date()
 
-    // xóa hết dữ liệu
-    holidays.value.setting_data = {}
+      // xóa hết dữ liệu
+      holidays.value.setting_data = {}
 
-    // lấy dữ liệu trong default
-    for(const key in setting.holiday){
-      holidays.value.setting_data[key] = {
-        ...setting.holiday[key],
-        created_by: user.value?._id,
-        created_time: TODAY
+      // lấy dữ liệu trong default
+      for (const key in props.setting_holiday) {
+        holidays.value.setting_data[key] = {
+          ...props.setting_holiday[key],
+          created_by: user.value?._id,
+          created_time: TODAY,
+        }
       }
     }
-  })
+  )
 }
 </script>

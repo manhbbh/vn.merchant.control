@@ -123,6 +123,7 @@
                 (is_cancel: boolean) => {
                   if (is_cancel) return
                   branch_data.archive = !branch_data.archive
+                  saveBusinessInfo()
                 }
               )
             "
@@ -145,20 +146,49 @@
 
 <script setup lang="ts">
 import { useCommonStore } from "@/stores";
+import { Toast } from "@/service/helper/toast";
+import { confirm } from "@/service/helper/alert";
+import { businessUpdate } from "@/service/api/api";
 
 // * libraries
 import { ref } from "vue";
 import { storeToRefs } from "pinia";
 
-/**ICon*/
-import IconInformation from "@/components/icons/IconInformation.vue";
-import IconTick from "../icons/IconTick.vue";
+// * components
+import CustomVuePicker from "@/components/CustomVuePicker.vue";
+
+// * icons
+import IconTick from "@/components/icons/IconTick.vue";
 import IconPause from "@/components/icons/IconPause.vue";
-import CustomVuePicker from "../CustomVuePicker.vue";
-import { confirm } from "@/service/helper/alert";
+import IconInformation from "@/components/icons/IconInformation.vue";
+
+// * interfaces
+import { BranchData } from "@/service/interface";
 
 // * store
 const commonStore = useCommonStore();
-const { branch_data } = storeToRefs(commonStore);
+const { branch_data, branches } = storeToRefs(commonStore);
+
+// * toast
+const $toast = new Toast();
+
+/** lưu thông tin doanh nghiệp */
+async function saveBusinessInfo() {
+  try {
+    await businessUpdate({
+      body: {
+        ...branch_data.value,
+        id: branch_data.value?._id
+      },
+    })
+
+    branches.value = branches.value.map((item: BranchData) => {
+      if(item._id === branch_data.value?._id) return branch_data.value
+      return item
+    })
+  } catch (e) {
+    $toast.error(e)
+  }
+}
 
 </script>
