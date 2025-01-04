@@ -134,6 +134,7 @@
                 (is_cancel: boolean) => {
                   if (is_cancel) return
                   business_data.archive = !business_data.archive
+                  saveBusinessInfo()
                 }
               )
             "
@@ -156,6 +157,9 @@
 
 <script setup lang="ts">
 import { useCommonStore } from '@/stores'
+import { Toast } from '@/service/helper/toast'
+import { confirm } from '@/service/helper/alert'
+import { businessUpdate } from '@/service/api/api'
 
 // * libraries
 import { ref } from 'vue'
@@ -168,12 +172,28 @@ import CustomVuePicker from '@/components/CustomVuePicker.vue'
 import IconTick from '@/components/icons/IconTick.vue'
 import IconPause from '@/components/icons/IconPause.vue'
 import IconInformation from '@/components/icons/IconInformation.vue'
-import { confirm } from '@/service/helper/alert'
 
 // * store
 const commonStore = useCommonStore()
 
+// * toast
+const $toast = new Toast()
+
 const { business_data } = storeToRefs(commonStore)
+
+/** lưu thông tin doanh nghiệp */
+async function saveBusinessInfo() {
+  try {
+    await businessUpdate({
+      body: {
+        ...business_data.value,
+        id: business_data.value?._id,
+      },
+    })
+  } catch (e) {
+    $toast.error(e)
+  }
+}
 
 /**Biến*/
 </script>
