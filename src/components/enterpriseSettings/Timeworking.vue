@@ -11,25 +11,30 @@
     >
       <!-- tiêu đề -->
       <div class="flex justify-between">
-        <div class="flex-col mb-3">
+        <div class="flex-col">
           <h4
             class="flex text-customDark h-5 mb-2.5 justify-start text-sm font-medium"
           >
             Thời gian làm việc chung
           </h4>
-          <p class="flex h-5 justify-start text-sm text-gray-500 truncate">
+          <p
+            class="flex justify-start text-start text-sm text-gray-500 lg:truncate"
+          >
             Khi tạo thêm Chi nhánh thì mặc định kế thừa cấu hình này. Ngoài ra,
             có thể thiết lập tùy biến theo từng Chi nhánh.
           </p>
         </div>
-        <button class="font-medium text-slate-500 px-3" @click="reset()">
+        <button
+          class="hidden lg:block font-medium text-slate-500 px-3"
+          @click="reset()"
+        >
           <span v-if="!branch_data?._id">Khôi phục mặc định</span>
           <span v-else>Khôi phục theo Doanh nghiệp</span>
         </button>
       </div>
       <!-- Múi giờ -->
       <div
-        class="flex flex-col items-start justify-start gap-2 mb-2 sm:h-10 sm:flex-row"
+        class="flex flex-col items-start justify-start gap-2 mb-2 sm:flex-row"
       >
         <div class="flex">
           <IconWorld class="h-5 w-5"></IconWorld>
@@ -55,7 +60,7 @@
           <!-- select -->
           <div class="relative w-full flex justify-start sm:w-85">
             <select
-              class="appearance-none h-9 text-slate-600 outline-none sm:w-85 text-sm rounded-lg border border-slate-300 px-7 sm:px-3 py-1.5"
+              class="appearance-none h-9 text-slate-600 outline-none w-full sm:w-85 text-sm rounded-lg border border-slate-300 px-2 sm:px-3 py-1.5"
               v-model="working_time.setting_data.time_zone"
             >
               <template v-for="item in TIME_ZONES">
@@ -63,7 +68,7 @@
               </template>
             </select>
             <IconArrow
-              class="w-4 h-4 text-slate-600 absolute right-12 sm:right-2 top-2.5"
+              class="w-4 h-4 text-slate-600 absolute right-2 top-2.5"
             ></IconArrow>
           </div>
           <!--  -->
@@ -182,6 +187,14 @@
         </div>
         <!--  -->
       </div>
+
+      <button
+        class="min-w-60 lg:hidden text-white text-sm font-medium bg-slate-500 p-2 border rounded-md"
+        @click="reset()"
+      >
+        <span v-if="!branch_data?._id">Khôi phục mặc định</span>
+        <span v-else>Khôi phục theo Doanh nghiệp</span>
+      </button>
     </div>
     <!--  -->
   </div>

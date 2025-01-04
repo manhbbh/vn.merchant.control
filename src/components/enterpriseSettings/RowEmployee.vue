@@ -9,14 +9,14 @@
     </td>
     <!-- tên viết tắt -->
     <td class="text-left px-3 py-2 items-center space-x-4">
-      <p class="w-40 truncate">
+      <p class="w-28 lg:w-40 truncate">
         {{ employee.name }}
       </p>
     </td>
 
     <!-- địa chỉ -->
     <td class="text-left px-3 py-2">
-      <p>{{ employee.email }}</p>
+      <p class="w-28 lg:w-40 truncate">{{ employee.email }}</p>
     </td>
 
     <!-- chi nhánh đang hoạt đông -->

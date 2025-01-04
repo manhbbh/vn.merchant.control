@@ -38,10 +38,8 @@
               </select>
             </div>
           </div>
-          <div class="flex">
-            <div
-              class="flex items-center border border-gray-300 rounded-md"
-            >
+          <div class="flex gap-4">
+            <div class="flex items-center border border-gray-300 rounded-md">
               <p class="text-muted w-28">Ngày kết thúc</p>
               <div
                 class="border-l w-12 rounded-e-md border-gray-300 flex items-center justify-center py-2"

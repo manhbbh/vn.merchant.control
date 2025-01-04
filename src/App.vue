@@ -14,6 +14,7 @@
 </template>
 
 <script setup lang="ts">
+import { useGetData } from '@/hook.ts'
 import { useCommonStore } from '@/stores'
 import { getBusinessInfo, getSetting, getUserInfo } from '@/service/api/api'
 import { Toast } from '@/service/helper/toast'
@@ -21,13 +22,16 @@ import { queryString } from '@/service/helper/queryString'
 
 // * libraries
 import { onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 // * components
 import Loading from '@/components/Loading.vue'
 import Network from '@/components/Network.vue'
 import AdBlocker from '@/components/AdBlocker.vue'
 import Template401 from '@/components/Template401.vue'
-import { useRouter } from 'vue-router'
+
+// * hook
+const { getBusinessInfos } = useGetData()
 
 // * store
 const commonStore = useCommonStore()
@@ -35,9 +39,11 @@ const commonStore = useCommonStore()
 // * toast
 const $toast = new Toast()
 
-const is_authenticated = ref(false)
-
+// * router
 const router = useRouter()
+
+// * có token hay không
+const is_authenticated = ref(false)
 
 onMounted(() => {
   getDataFromUrl()
@@ -90,57 +96,6 @@ async function getSettings() {
         return
       }
     })
-  } catch (e) {
-    $toast.error(e)
-  }
-}
-
-/** lấy thông tin doanh nghiệp */
-async function getBusinessInfos() {
-  try {
-    const RES = await getBusinessInfo({
-      body: {
-        business_id: commonStore.business_id,
-      },
-    })
-
-    // nếu không có dữ liệu thì thôi
-    if (!RES.data) return
-    // nếu có thông tin doanh nghiệp thì lưu lại
-    if (RES.data?.business) commonStore.business_data = RES.data?.business
-    // nếu có danh sách chi nhanh thì lưu lại
-    if (RES.data?.branches) {
-      commonStore.branches = RES.data?.branches
-
-      commonStore.branches_ids = RES.data?.branches?.reduce(
-        (acc: any, curr: any) => {
-          acc[curr._id] = curr
-          return acc
-        },
-        {}
-      )
-    }
-    // nếu có danh sách nhân viên thì lưu lại
-    if (RES.data?.users) commonStore.users = RES.data?.users
-    // nếu có danh sách nhân sự thì lưu lại
-    if (RES.data?.employees) {
-      commonStore.employees_user_ids = RES.data?.employees?.reduce(
-        (acc: any, curr: any) => {
-          acc[curr.user_id] = curr
-          return acc
-        },
-        {}
-      )
-      commonStore.employees_ids = RES.data?.employees?.reduce(
-        (acc: any, curr: any) => {
-          acc[curr._id] = curr
-          return acc
-        },
-        {}
-      )
-    }
-    // nếu có thôn tin nhân sự hiện tại thì lưu lại
-    if (RES?.data?.user) commonStore.user = RES?.data?.user
   } catch (e) {
     $toast.error(e)
   }

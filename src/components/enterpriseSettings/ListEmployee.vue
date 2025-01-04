@@ -5,7 +5,7 @@
     <!-- icon -->
     <IconEmploye class="w-5 h-5"></IconEmploye>
     <!--content  -->
-    <div class="flex flex-col gap-2 w-full">
+    <div class="flex flex-col gap-2 w-full overflow-hidden">
       <div class="flex h-5 items-center justify-between mb-3">
         <h4 class="flex justify-start text-sm font-medium">Nhân sự công ty</h4>
         <!-- <div
@@ -18,7 +18,7 @@
         </div> -->
       </div>
       <!-- danh sách nhân viên -->
-      <table class="min-w-full border-none bg-white rounded-lg z-10">
+      <table class="w-full lg:w-auto border-none bg-white rounded-lg z-10">
         <thead
           class="bg-slate-200 h-7 text-sm font-semibold sticky top-0 text-customDarkBlue flex-shrink-0 z-10"
         >
@@ -217,7 +217,7 @@ interface Employee extends EmployeeData, FullEmployeeData {}
 
 // * store
 const commonStore = useCommonStore()
-const { employees_ids, branch_data, users, branches_ids } =
+const { employees_ids, branch_data, users, branches_ids, is_get_data } =
   storeToRefs(commonStore)
 
 // * toast
@@ -260,12 +260,16 @@ async function handleActive(employee: FullEmployeeData) {
         },
       })
     }
+
+    // cập nhật trong mảng nhân sự hiện tại
     if (employee._id)
       employees_ids.value[employee._id] = {
         ...employee,
         archive: !employee.archive,
       }
-    console.log(employees_ids.value)
+
+    // bật cờ gọi lại dữ liệu để cập nhật danh sách nhân sự ở BM hoặc chi nhánh
+    is_get_data.value = true
   } catch (e) {
     $toast.error(e)
   }
@@ -301,11 +305,10 @@ async function handleActiveBM(employee: EmployeeData) {
       }
     }
 
-    Object.values(employees_ids.value).forEach((item) => {
-      if (item?.user_id === employee?._id && item?._id) {
-        employees_ids.value[item._id].archive = !item.archive
-      }
-    })
+    // bật cờ gọi lại dữ liệu để cập nhật danh sách nhân sự ở BM hoặc chi nhánh
+    is_get_data.value = true
+
+    // cập nhật trong mảng nhân sự hiện tại
     if (employee?._id) users.value[employee?._id].active = !employee.active
   } catch (e) {
     $toast.error(e)

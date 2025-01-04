@@ -10,9 +10,9 @@
         <h4 class="flex justify-start text-sm font-medium">Thông tin chung</h4>
       </div>
       <!-- phần các ô input  -->
-      <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
         <!-- Tên viết tắt -->
-        <div class="md:col-span-1 text-left h-16">
+        <div class="col-span-2 md:col-span-1 text-left h-16">
           <label
             for="shortName"
             class="block text-sm font-medium text-gray-700 h-5.5"
@@ -28,7 +28,7 @@
           />
         </div>
         <!-- Tên đầy đủ Doanh nghiệp -->
-        <div class="md:col-span-2 text-left h-16">
+        <div class="col-span-2 text-left h-16">
           <label
             for="fullName"
             class="block text-sm font-medium text-gray-700 h-5.5"
@@ -44,7 +44,7 @@
           />
         </div>
         <!-- Mã số thuế -->
-        <div class="md:col-span-1 text-left h-16">
+        <div class="col-span-2 md:col-span-1 text-left h-16">
           <label
             for="taxCode"
             class="block text-sm font-medium text-gray-700 h-5.5"
@@ -60,7 +60,7 @@
           />
         </div>
         <!-- Ngày thành lập-->
-        <div class="md:col-span-1 text-left h-16">
+        <div class="col-span-2 md:col-span-1 text-left h-16">
           <label
             for="taxCode"
             class="block text-sm font-medium text-gray-700 h-5.5"
@@ -77,7 +77,7 @@
           />
         </div>
         <!-- Địa chỉ -->
-        <div class="md:col-span-3 text-left h-16">
+        <div class="col-span-2 md:col-span-3 text-left h-16">
           <label
             for="taxCode"
             class="block text-sm font-medium text-gray-700 h-5.5"
@@ -93,11 +93,8 @@
           />
         </div>
         <!-- Trạng thái-->
-        <div class="md:col-span-1 text-left h-16">
-          <label
-            for="taxCode"
-            class="block text-sm font-medium text-gray-700 h-5.5"
-          >
+        <div class="text-left">
+          <label for="taxCode" class="block text-sm font-medium text-gray-700">
             Trạng thái
           </label>
           <div
@@ -118,11 +115,8 @@
           </div>
         </div>
         <!-- Thao tác-->
-        <div class="md:col-span-1 text-left h-16">
-          <label
-            for="taxCode"
-            class="block text-sm font-medium text-gray-700 h-5.5"
-          >
+        <div class="text-left">
+          <label for="taxCode" class="block text-sm font-medium text-gray-700">
             Thao tác
           </label>
           <button
@@ -150,7 +144,7 @@
             </template>
             <template v-else>
               <IconPause class="h-5 w-5"></IconPause>
-              <p class="text-sm">Tạm dừng hoạt động</p>
+              <p class="text-sm">Tạm dừng</p>
             </template>
           </button>
         </div>

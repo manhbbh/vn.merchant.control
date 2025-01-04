@@ -5,10 +5,10 @@
     <!-- icon -->
     <IconBackground class="w-5 h-5 flex-shrink-0"></IconBackground>
     <!--content  -->
-    <div class="flex-col flex-1">
-      <div class="flex h-9 items-start justify-between">
+    <div class="flex flex-col flex-1 gap-2 lg:gap-3">
+      <div class="flex items-start justify-between">
         <h4 class="flex justify-start text-sm font-medium">Hình nền</h4>
-        <div class="flex items-center gap-2.5">
+        <div class="hidden lg:flex items-center gap-2.5">
           <button
             class="text-sm font-medium text-slate-500 h-9 px-2 sm:px-6 sm:py-2"
             @click="reset()"
@@ -176,23 +176,24 @@
         </div>
       </div>
       <!--  -->
-      <div class="flex flex-col py-2" v-if="is_show_add">
-        <div class="flex flex-col sm:h-9 gap-4 sm:flex-row">
+      <div class="flex flex-col py-2 text-start" v-if="is_show_add">
+        <div class="flex flex-col gap-2 lg:gap-4 sm:flex-row">
           <div class="flex items-center justify-between gap-4">
-            <p class="text-sm font-medium">Link</p>
+            <p class="text-sm font-medium w-28 flex-shrink-0 lg:w-auto">Link</p>
             <input
               v-model="form_add.link"
               type="text"
-              class="w-67 h-9 border rounded-md px-2 border-slate-300 outline-none"
+              class="w-full lg:w-67 border rounded-md px-3 py-2 border-slate-300 outline-none"
               placeholder="https://"
             />
           </div>
           <div class="flex items-center gap-4">
-            <p class="text-sm font-medium flex-shrink-0">Loại hình nền</p>
+            <p class="text-sm font-medium flex-shrink-0 w-28 lg:w-auto">
+              Loại hình nền
+            </p>
             <select
-              id="from-time"
               v-model="form_add.type"
-              class="mr-0 flex items-center h-9 w-full sm:w-30 rounded-md border px-3 py-2"
+              class="mr-0 flex items-center w-full sm:w-30 rounded-md border px-3 py-2"
             >
               <option value="pc">Web PC</option>
               <option value="mobile">Mobie App</option>
@@ -209,6 +210,20 @@
           Lưu ý: Kích thước ảnh Web PC (2560 x 1440), Mobile App (440 x 956),
           loại File (.png , .jpg). Sử dụng https://imgbb.com để upload ảnh.
         </p>
+      </div>
+      <div class="flex lg:hidden items-center gap-2.5 text-white">
+        <button
+          class="min-w-60 text-sm font-medium bg-slate-500 p-2 border rounded-md"
+          @click="reset()"
+        >
+          Khôi phục mặc định
+        </button>
+        <button
+          class="flex-1 text-sm font-medium text-white rounded-md bg-black p-2"
+          @click="is_show_add = true"
+        >
+          Thêm
+        </button>
       </div>
     </div>
     <!--  -->

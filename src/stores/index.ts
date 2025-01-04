@@ -79,7 +79,11 @@ export const useCommonStore = defineStore('common_store', () => {
   /** dữ liệu thời gian làm việc chi nhánh */
   const branch_working_time = ref<WorkingTimeSetting>({})
 
+  /** gọi lại dữ liệu */
+  const is_get_data = ref(false)
+
   return {
+    is_get_data,
     user_token,
     business_id,
     is_loading_full_screen,

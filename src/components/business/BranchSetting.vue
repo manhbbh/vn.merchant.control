@@ -28,7 +28,7 @@
       @click="saveSetting()"
     >
       <button
-        class="h-9 text-sm font-medium bg-blue-700 px-4 py-2 flex justify-center items-center rounded-lg text-white"
+        class="w-full lg:w-auto h-9 text-sm font-medium bg-blue-700 px-4 py-2 flex justify-center items-center rounded-lg text-white"
       >
         Lưu thiết lập
       </button>

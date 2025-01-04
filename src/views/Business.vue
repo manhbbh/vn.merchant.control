@@ -147,14 +147,15 @@
   </div>
 </template>
 <script setup lang="ts">
+import { useGetData } from '@/hook.ts'
 import { useCommonStore } from '@/stores'
 import { copy } from '@/service/helper/format'
 import { Toast } from '@/service/helper/toast'
 import { getSettingBranch } from '@/service/api/api'
 
 // * libraries
-import { provide, ref } from 'vue'
 import { storeToRefs } from 'pinia'
+import { provide, ref, watch } from 'vue'
 
 /**compomnet con*/
 import Avatar from '@/components/avartar/Avatar.vue'
@@ -175,16 +176,30 @@ import { isEmpty } from 'lodash'
 import { UserCircleIcon } from '@heroicons/vue/24/solid'
 import { ArrowRightStartOnRectangleIcon } from '@heroicons/vue/24/outline'
 
+// * hook
+const { getBusinessInfos } = useGetData()
+
 // * store
 const commonStore = useCommonStore()
-const { branches, branch_data, employees_user_ids, user } =
+const { branches, branch_data, employees_user_ids, user, is_get_data } =
   storeToRefs(commonStore)
-
-// * toast
-const $toast = new Toast()
 
 /**Biến kiểm tra hiện doanh nghiệp hay ứng dụng */
 const is_business = ref(true)
+
+const is_show_dropbox = ref(false)
+
+watch(
+  () => is_business.value,
+  async (value) => {
+    // nếu cần gọi là thì mới gọi lại
+    if (is_get_data.value) {
+      await getBusinessInfos()
+      // tắt cờ gọi dữ liệu
+      is_get_data.value = false
+    }
+  }
+)
 
 /** reset dữ liệu thiết lập của branch */
 function resetBranch() {

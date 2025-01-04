@@ -1,6 +1,7 @@
 <template>
-  <div class="py-3 px-2 sm:px-4 bg-white rounded-lg flex text-black items-start gap-2 sm:gap-3">
-
+  <div
+    class="py-3 px-2 sm:px-4 bg-white rounded-lg flex text-black items-start gap-2 sm:gap-3"
+  >
     <!-- icon -->
     <IconInformation class="w-5 h-5"></IconInformation>
     <!--content  -->
@@ -9,9 +10,9 @@
         <h4 class="flex justify-start text-sm font-medium">Thông tin chung</h4>
       </div>
       <!-- phần các ô input  -->
-      <div class="grid grid-cols-1 md:grid-cols-6 gap-3">
+      <div class="grid grid-cols-2 md:grid-cols-6 gap-3">
         <!-- Tên viết tắt -->
-        <div class="md:col-span-1 text-left h-16">
+        <div class="col-span-2 md:col-span-1 text-left h-16">
           <label
             for="shortName"
             class="block text-sm font-medium text-gray-700 h-5.5"
@@ -27,7 +28,7 @@
           />
         </div>
         <!-- Tên viết tắt -->
-        <div class="md:col-span-2 text-left h-16">
+        <div class="col-span-2 text-left h-16">
           <label
             for="shortName"
             class="block text-sm font-medium text-gray-700 h-5.5"
@@ -43,7 +44,7 @@
           />
         </div>
         <!-- Địa chỉ -->
-        <div class="md:col-span-2 text-left">
+        <div class="col-span-2 text-left">
           <label
             for="taxCode"
             class="block text-sm font-medium text-gray-700 h-5.5"
@@ -59,7 +60,7 @@
           />
         </div>
         <!-- Ngày thành lập-->
-        <div class="md:col-span-1 text-left h-16">
+        <div class="col-span-2 md:col-span-1 text-left h-16">
           <label
             for="taxCode"
             class="block text-sm font-medium text-gray-700 h-5.5"
@@ -76,7 +77,7 @@
           />
         </div>
         <!-- Trạng thái-->
-        <div class="md:col-span-1 text-left h-16">
+        <div class="text-left h-16">
           <label
             for="taxCode"
             class="block text-sm font-medium text-gray-700 h-5.5"
@@ -101,7 +102,7 @@
           </div>
         </div>
         <!-- Thao tác-->
-        <div class="md:col-span-1 text-left h-16">
+        <div class="text-left h-16">
           <label
             for="taxCode"
             class="block text-sm font-medium text-gray-700 h-5.5"
@@ -145,32 +146,32 @@
 </template>
 
 <script setup lang="ts">
-import { useCommonStore } from "@/stores";
-import { Toast } from "@/service/helper/toast";
-import { confirm } from "@/service/helper/alert";
-import { businessUpdate } from "@/service/api/api";
+import { useCommonStore } from '@/stores'
+import { Toast } from '@/service/helper/toast'
+import { confirm } from '@/service/helper/alert'
+import { businessUpdate } from '@/service/api/api'
 
 // * libraries
-import { ref } from "vue";
-import { storeToRefs } from "pinia";
+import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
 
 // * components
-import CustomVuePicker from "@/components/CustomVuePicker.vue";
+import CustomVuePicker from '@/components/CustomVuePicker.vue'
 
 // * icons
-import IconTick from "@/components/icons/IconTick.vue";
-import IconPause from "@/components/icons/IconPause.vue";
-import IconInformation from "@/components/icons/IconInformation.vue";
+import IconTick from '@/components/icons/IconTick.vue'
+import IconPause from '@/components/icons/IconPause.vue'
+import IconInformation from '@/components/icons/IconInformation.vue'
 
 // * interfaces
-import { BranchData } from "@/service/interface";
+import { BranchData } from '@/service/interface'
 
 // * store
-const commonStore = useCommonStore();
-const { branch_data, branches } = storeToRefs(commonStore);
+const commonStore = useCommonStore()
+const { branch_data, branches } = storeToRefs(commonStore)
 
 // * toast
-const $toast = new Toast();
+const $toast = new Toast()
 
 /** lưu thông tin doanh nghiệp */
 async function saveBusinessInfo() {
@@ -178,17 +179,16 @@ async function saveBusinessInfo() {
     await businessUpdate({
       body: {
         ...branch_data.value,
-        id: branch_data.value?._id
+        id: branch_data.value?._id,
       },
     })
 
     branches.value = branches.value.map((item: BranchData) => {
-      if(item._id === branch_data.value?._id) return branch_data.value
+      if (item._id === branch_data.value?._id) return branch_data.value
       return item
     })
   } catch (e) {
     $toast.error(e)
   }
 }
-
 </script>

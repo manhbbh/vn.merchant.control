@@ -6,9 +6,9 @@
     <IconCalendar class="w-5 h-5 flex-shrink-0"></IconCalendar>
     <!--content  -->
     <div class="flex flex-col gap-2.5 w-full">
-      <div class="flex h-9 items-start justify-between">
+      <div class="flex items-start justify-between">
         <h4 class="flex justify-start text-sm font-medium">Nghỉ lễ</h4>
-        <div class="flex items-center gap-2.5">
+        <div class="hidden lg:flex items-center gap-2.5">
           <button
             class="text-sm font-medium text-slate-500 h-9 px-6 py-2"
             @click="reset()"
@@ -127,27 +127,30 @@
         </tbody>
       </table>
       <!--  -->
-      <div class="flex flex-col gap-4 sm:flex-row" v-if="is_show_add">
+      <div
+        class="grid grid-cols-2 lg:flex flex-col gap-4 sm:flex-row"
+        v-if="is_show_add"
+      >
         <!-- Ngày thành lập-->
-        <div class="flex text-left h-9 items-center gap-4">
+        <div class="flex flex-col lg:flex-row text-left gap-1 lg:gap-4">
           <label
             for="taxCode"
-            class="block text-sm font-medium flex-shrink-0 texet-black px-1"
+            class="block text-sm font-medium flex-shrink-0 text-start px-1"
           >
             Tiêu đề
           </label>
           <input
             v-model="add_form.title"
-            class="border border-gray-300 px-3 rounded-md w-67 h-9"
+            class="border border-gray-300 px-3 rounded-md lg:w-67 py-2"
             placeholder="Nhập tiêu đề ngày nghỉ"
             type="text"
           />
         </div>
         <!-- Ngày thành lập-->
-        <div class="flex text-lefth-9 items-center gap-7 sm:gap-4">
+        <div class="flex flex-col lg:flex-row text-left gap-1 lg:gap-4">
           <label
             for="taxCode"
-            class="block text-sm font-medium text-gray-700 px-1 h-5.5"
+            class="block text-sm font-medium text-gray-700 px-1"
           >
             Ngày
           </label>
@@ -156,16 +159,32 @@
             placeholder="Chọn ngày"
             :handle-date="() => {}"
             :input_class="'!border-transparent'"
-            class="border border-gray-300 w-40"
+            class="border border-gray-300 w-full lg:w-40"
           />
         </div>
 
         <!--  -->
         <button
-          class="h-9 bg-green-600 text-sm font-medium text-white rounded-md px-4 py-2"
+          class="col-span-2 bg-green-600 text-sm font-medium text-white rounded-md px-4 py-2"
           @click="handleAdd"
         >
           Lưu
+        </button>
+      </div>
+
+      <div class="flex lg:hidden items-center gap-2.5 text-white">
+        <button
+          class="min-w-60 text-sm font-medium bg-slate-500 p-2 border rounded-md"
+          @click="reset()"
+        >
+          <span v-if="!branch_data?._id">Khôi phục mặc định</span>
+          <span v-else>Khôi phục theo Doanh nghiệp</span>
+        </button>
+        <button
+          class="flex-1 text-sm font-medium text-white rounded-md bg-black p-2"
+          @click="is_show_add = true"
+        >
+          Thêm
         </button>
       </div>
     </div>

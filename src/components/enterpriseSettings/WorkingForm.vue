@@ -1,18 +1,18 @@
 <template>
   <div
-    class="py-3 px-2 sm:px-4 bg-white rounded-lg flex text-black items-start gap-2 sm:gap-3"
+    class="py-3 px-2 lg:px-4 bg-white rounded-lg flex text-black items-start gap-2 lg:gap-3"
   >
     <!-- icon -->
     <IconPapers class="w-5 h-5 flex-shrink-0"></IconPapers>
     <!--content  -->
     <div class="flex flex-col gap-2.5 w-full">
-      <div class="flex h-9 items-start justify-between">
+      <div class="flex items-start justify-between">
         <h4 class="flex justify-start text-sm font-medium">
           Hình thức làm việc
         </h4>
-        <div class="flex items-center gap-1 sm:gap-2.5">
+        <div class="hidden lg:flex items-center gap-1 lg:gap-2.5">
           <button
-            class="text-sm font-medium text-slate-500 h-9 px-0 sm:px-6 sm:py-2"
+            class="text-sm font-medium text-slate-500 h-9 px-0 lg:px-6 lg:py-2"
             @click="reset()"
           >
             <span v-if="!branch_data?._id">Khôi phục mặc định</span>
@@ -34,17 +34,17 @@
           <tr class="h-7">
             <th class="px-2 w-18 text-left font-semibold">ID|Ngày</th>
             <th class="w-30 text-left font-semibold">Tiêu đề</th>
-            <th class="w-25 text-center font-semibold hidden md:table-cell">
+            <th class="w-25 text-center font-semibold hidden lg:table-cell">
               Số giờ làm / Tuần
             </th>
-            <th class="w-25 text-left font-semibold hidden md:table-cell">
+            <th class="w-25 text-left font-semibold hidden lg:table-cell">
               Thời gian
             </th>
-            <th class="w-30 text-left font-semibold hidden md:table-cell">
+            <th class="w-30 text-left font-semibold hidden lg:table-cell">
               Người tạo
             </th>
             <th class="w-25 text-center font-semibold">Thao tác</th>
-            <th class="w-25 text-left font-semibold hidden md:table-cell"></th>
+            <th class="w-25 text-left font-semibold hidden lg:table-cell"></th>
           </tr>
         </thead>
         <!--  -->
@@ -70,11 +70,11 @@
             </td>
 
             <!-- số giờ làm -->
-            <td class="text-center hidden md:table-cell font-medium py-2">
+            <td class="text-center hidden lg:table-cell font-medium py-2">
               <p>{{ form_of_work?.setting_data?.[holiday]?.working_hours }}</p>
             </td>
             <!-- Thời gian -->
-            <td class="text-left font-medium py-2 hidden md:table-cell">
+            <td class="text-left font-medium py-2 hidden lg:table-cell">
               <!-- <p v-for="time in list_day">{{ time}}</p> -->
               <div class="flex gap-1">
                 <p
@@ -102,7 +102,7 @@
             </td>
 
             <!-- Người tạo -->
-            <td class="text-left py-2 text-customGray hidden md:table-cell">
+            <td class="text-left py-2 text-customGray hidden lg:table-cell">
               <div class="flex items-center gap-1 h-5">
                 <Avatar
                   class="w-4 h-4"
@@ -145,7 +145,7 @@
 
             <!-- Thao tác -->
             <td class="text-center py-2">
-              <div class="flex gap-1 sm:gap-2.5 justify-center">
+              <div class="flex gap-1 lg:gap-2.5 justify-center">
                 <button
                   @click="
                     showModal(form_of_work?.setting_data?.[holiday], holiday)
@@ -163,11 +163,27 @@
               </div>
             </td>
             <!-- stt-->
-            <td class="text-left py-2 hidden md:table-cell"></td>
+            <td class="text-left py-2 hidden lg:table-cell"></td>
           </tr>
         </tbody>
       </table>
       <!--  -->
+      <!-- button mobile -->
+      <div class="flex lg:hidden items-center gap-2.5 text-white">
+        <button
+          class="min-w-60 text-sm font-medium bg-slate-500 p-2 border rounded-md"
+          @click="reset()"
+        >
+          <span v-if="!branch_data?._id">Khôi phục mặc định</span>
+          <span v-else>Khôi phục theo Doanh nghiệp</span>
+        </button>
+        <button
+          class="flex-1 text-sm font-medium text-white rounded-md bg-black p-2"
+          @click="showModal()"
+        >
+          Thêm
+        </button>
+      </div>
     </div>
     <!--  -->
   </div>
@@ -178,10 +194,11 @@
     :auto-focus="false"
     @ok="handleOk"
     :footer="null"
+    class="!w-dvw"
   >
     <div class="flex flex-col w-full">
-      <header class="flex items-center justify-between h-10 px-6 py-2">
-        <h3 class="h-6 text-base font-semibold">Hình thức làm việc</h3>
+      <header class="flex items-center justify-between px-6 py-2">
+        <h3 class="text-base font-semibold">Hình thức làm việc</h3>
         <button
           @click="open = false"
           class="p-1 rounded-md hover:bg-gray-300 hover:text-black"
@@ -190,11 +207,13 @@
         </button>
       </header>
       <!--  -->
-      <main class="flex flex-col p-6 border-b border-t gap-2 border-gray-200">
-        <div class="flex items-center gap-4 py-2">
+      <main
+        class="max-h-[80dvh] flex flex-col py-2 lg:p-6 border-b border-t gap-2 border-gray-200 overflow-hidden"
+      >
+        <div class="flex items-center gap-4 py-2 px-3 lg:px-0">
           <label
             for="shortName"
-            class="block text-sm font-medium text-gray-700 h-5 flex-shrink-0"
+            class="block text-sm font-medium text-gray-700 flex-shrink-0"
           >
             Tiêu đề
           </label>
@@ -203,11 +222,11 @@
             v-model="form_of_work_value.name"
             id="shortName"
             placeholder="Nhập tiêu đề"
-            class="h-9 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            class="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
           />
         </div>
         <!--  -->
-        <div class="flex items-center justify-between">
+        <div class="flex items-center justify-between px-3 lg:px-0">
           <div class="flex items-center gap-2">
             <IconPapers class="w-5 h-5 flex-shrink-0"></IconPapers>
             <p class="text-sm font-medium">Thời gian làm việc trong ngày</p>
@@ -216,25 +235,31 @@
           <!-- <Toggle /> -->
         </div>
         <!-- Vòng lặp qua mảng -->
-        <div class="pl-8 overflow-hidden">
+        <div class="lg:pl-8 overflow-y-auto w-full px-3 lg:px-0">
           <div
             v-for="(day, index) in form_of_work_value.working_time"
             :key="index"
-            class="flex flex-col text-sm border-b border-slate-200 items-center py-3 md:justify-between text-customDark md:flex-row last:border-none"
+            class="w-full flex flex-col text-sm border-b border-slate-200 items-center py-3 lg:justify-between lg:flex-row last:border-none"
           >
-            <div
-              class="h-9 flex sm:pb-0 pb-4 w-full items-center justify-between"
-            >
-              <div class="sm: flex">
-                <div class="sm:w-32 flex-none py-2 pr-3 font-medium sm:pr-0">
+            <div class="flex lg:pb-0 pb-2 w-full items-center justify-between">
+              <div class="lg: flex">
+                <div class="lg:w-32 flex-none py-2 pr-3 font-medium lg:pr-0">
                   {{ day.title }}
                 </div>
                 <!-- select -->
-                <Toggle v-model="day.active" class="sm:hidden" />
+                <Toggle
+                  v-model="day.active"
+                  @update:model-value="(value: boolean) => {
+                    if(!value) day.work_status = 'day_off';
+                    else day.work_status = 'full_time';
+                  }"
+                  class="lg:hidden"
+                />
               </div>
               <select
+                v-if="day.active"
                 v-model="day.work_status"
-                class="outline-none mr-0 h-9 w-34 flex flex-none sm:hidden rounded-md border px-3 py-1.5"
+                class="outline-none flex flex-none lg:hidden rounded-md border px-3 py-1.5"
               >
                 <option value="full_time">Cố định</option>
                 <option value="part_time">Không cố định</option>
@@ -242,19 +267,21 @@
             </div>
             <!--  -->
             <div
-              class="h-9 text-sm text-black flex flex-colflex-1 flex-shrink-0 items-center sm:flex-row sm:justify-end"
-              :class="{ 'gap-1': !day.active, 'gap-4': day.active }"
+              class="text-sm text-black gap-y-3 gap-x-4 grid grid-cols-2 lg:flex flex-col flex-1 flex-shrink-0 items-center lg:flex-row lg:justify-end"
+              :class="{ 'lg:gap-1': !day.active, 'lg:gap-4': day.active }"
             >
-              <div class="flex items-center flex-shrink-0 gap-4">
+              <div
+                class="hidden lg:flex items-center flex-shrink-0 gap-2 lg:gap-4"
+              >
                 <!-- giờ làm -->
-                <p class="flex-shrink-0 hidden sm:flex">
+                <p class="flex-shrink-0 flex">
                   {{ day.active ? 'Giờ làm' : 'Ngày nghỉ' }}
                 </p>
                 <!-- cố định -->
                 <select
                   v-if="day.active"
                   v-model="day.work_status"
-                  class="outline-none mr-0 h-9 w-34 flex-none hidden sm:flex rounded-md border px-3 py-1.5"
+                  class="outline-none mr-0 w-34 flex-none hidden lg:flex rounded-md border px-3 py-1.5"
                 >
                   <option value="full_time">Cố định</option>
                   <option value="part_time">Không cố định</option>
@@ -263,39 +290,37 @@
               <!--từ  -->
               <div
                 v-if="day.work_status === 'full_time' && day.active"
-                class="flex items-center flex-shrink-0 gap-4"
+                class="flex items-center flex-shrink-0 gap-2 lg:gap-4"
               >
-                <p class="text-center flex-shrink-0">từ</p>
+                <p class="text-center flex-shrink-0 min-w-8">từ</p>
                 <!-- giờ bắt đầu -->
-                <div>
-                  <select
-                    :value="`${day?.checkin?.hour
-                      ?.toString()
-                      .padStart(2, '0')}:${day?.checkin?.minute
-                      ?.toString()
-                      .padStart(2, '0')}`"
-                    class="mr-0 flex h-9 w-30 rounded-md border px-3 py-2"
-                    @change="($event:Event)=>{
+                <select
+                  :value="`${day?.checkin?.hour
+                    ?.toString()
+                    .padStart(2, '0')}:${day?.checkin?.minute
+                    ?.toString()
+                    .padStart(2, '0')}`"
+                  class="flex w-full rounded-md border px-3 py-2"
+                  @change="($event:Event)=>{
                       const TARGET = $event.target as HTMLSelectElement
                       if(!day.checkin) return
                       day.checkin.hour = parseInt(TARGET.value.split(':')[0]);
                       day.checkin.minute = parseInt(TARGET.value.split(':')[1]);
                     }"
-                  >
-                    <template v-for="i in 24">
-                      <option :value="`${i?.toString().padStart(2, '0')}:00`">
-                        {{ `${i?.toString().padStart(2, '0')}:00` }}
-                      </option>
-                      <option
-                        v-if="i < 24"
-                        :value="`${i?.toString().padStart(2, '0')}:30`"
-                      >
-                        {{ `${i?.toString().padStart(2, '0')}:30` }}
-                      </option>
-                    </template>
-                    <!-- Add more options as needed -->
-                  </select>
-                </div>
+                >
+                  <template v-for="i in 24">
+                    <option :value="`${i?.toString().padStart(2, '0')}:00`">
+                      {{ `${i?.toString().padStart(2, '0')}:00` }}
+                    </option>
+                    <option
+                      v-if="i < 24"
+                      :value="`${i?.toString().padStart(2, '0')}:30`"
+                    >
+                      {{ `${i?.toString().padStart(2, '0')}:30` }}
+                    </option>
+                  </template>
+                  <!-- Add more options as needed -->
+                </select>
               </div>
               <!-- nghỉ trưa -->
               <div
@@ -305,63 +330,57 @@
                 <!--Nghỉ  -->
                 <p class="text-center">Nghỉ</p>
                 <!-- thời gian nghỉ trưa -->
-                <div>
-                  <select
-                    v-model="day.rest_hours"
-                    id="from-time"
-                    class="mr-0 flex h-9 w-34 items-center rounded-md border px-3 py-1"
-                  >
-                    <option v-for="i in [0, 0.5, 1, 1.5, 2, 2.5]" :value="i">
-                      {{ convertDecimalHoursToHoursAndMinutes(i) }}
-                    </option>
-                    <!-- <option value="0.5">30 phút</option>
-                    <option value="1">1 giờ</option>
-                    <option value="1.5">1 giờ 30 phút</option>
-                    <option value="2">2 giờ</option>
-                    <option value="2.5">2 giờ 30 phút</option> -->
-                  </select>
-                </div>
+                <select
+                  v-model="day.rest_hours"
+                  class="flex w-full items-center rounded-md border px-3 py-1.5"
+                >
+                  <option v-for="i in [0, 0.5, 1, 1.5, 2, 2.5]" :value="i">
+                    {{ convertDecimalHoursToHoursAndMinutes(i) }}
+                  </option>
+                </select>
               </div>
               <!--đến  -->
               <div
                 v-if="day.work_status === 'full_time' && day.active"
-                class="flex items-center flex-shrink-0 gap-4"
+                class="flex items-center flex-shrink-0 gap-2 lg:gap-4"
               >
-                <p class="text-center">đến</p>
+                <p class="text-center min-w-8">đến</p>
                 <!-- thời gian kết thúc -->
-                <div>
-                  <select
-                    :value="`${day?.checkout?.hour
-                      ?.toString()
-                      .padStart(2, '0')}:${day?.checkout?.minute
-                      ?.toString()
-                      .padStart(2, '0')}`"
-                    class="mr-0 flex h-9 w-30 rounded-md border px-3 py-2"
-                    @change="($event:Event)=>{
+                <select
+                  :value="`${day?.checkout?.hour
+                    ?.toString()
+                    .padStart(2, '0')}:${day?.checkout?.minute
+                    ?.toString()
+                    .padStart(2, '0')}`"
+                  class="flex w-full rounded-md border px-3 py-2"
+                  @change="($event:Event)=>{
                       const TARGET = $event.target as HTMLSelectElement
                       if(!day.checkout) return
                       day.checkout.hour = parseInt(TARGET.value.split(':')[0]);
                       day.checkout.minute = parseInt(TARGET.value.split(':')[1]);
                     }"
-                  >
-                    <template v-for="i in 24">
-                      <option :value="`${i?.toString().padStart(2, '0')}:00`">
-                        {{ `${i?.toString().padStart(2, '0')}:00` }}
-                      </option>
-                      <option
-                        v-if="i < 24"
-                        :value="`${i?.toString().padStart(2, '0')}:30`"
-                      >
-                        {{ `${i?.toString().padStart(2, '0')}:30` }}
-                      </option>
-                    </template>
-                    <!-- Add more options as needed -->
-                  </select>
-                </div>
+                >
+                  <template v-for="i in 24">
+                    <option :value="`${i?.toString().padStart(2, '0')}:00`">
+                      {{ `${i?.toString().padStart(2, '0')}:00` }}
+                    </option>
+                    <option
+                      v-if="i < 24"
+                      :value="`${i?.toString().padStart(2, '0')}:30`"
+                    >
+                      {{ `${i?.toString().padStart(2, '0')}:30` }}
+                    </option>
+                  </template>
+                  <!-- Add more options as needed -->
+                </select>
               </div>
-              <!--  -->
-              <div class="flex items-center flex-shrink-0 gap-4">
-                <!-- số giờ làm  -->
+              <!-- số giờ làm  -->
+              <div
+                class="flex items-center flex-shrink-0 gap-1 lg:gap-4"
+                :class="{
+                  'col-span-2 gap-3': day.work_status === 'part_time',
+                }"
+              >
                 <p
                   v-if="day.active && day.work_status === 'full_time'"
                   class="text-center flex-shrink-0"
@@ -382,7 +401,7 @@
                 ></IconNext>
                 <!-- tổng số giờ làm -->
                 <div v-if="day.active">
-                  <p v-if="day.work_status === 'full_time'" class="w-24">
+                  <p v-if="day.work_status === 'full_time'" class="lg:w-24">
                     {{
                       convertDecimalHoursToHoursAndMinutes(
                         Number(day?.checkout?.hour || 0) +
@@ -397,7 +416,7 @@
                     v-if="day.work_status !== 'full_time'"
                     id="from-time"
                     v-model="day.working_hours"
-                    class="mr-0 flex h-9 w-34 rounded-md border px-3 py-1"
+                    class="flex rounded-md border px-3 py-2"
                   >
                     <template v-for="i in 10">
                       <option :value="i + 2">
@@ -412,7 +431,14 @@
                 </div>
               </div>
               <!-- select -->
-              <Toggle v-model="day.active" class="hidden sm:flex" />
+              <Toggle
+                v-model="day.active"
+                @update:model-value="(value: boolean) => {
+                  if(!value) day.work_status = 'day_off';
+                  else day.work_status = 'full_time';
+                }"
+                class="hidden lg:flex"
+              />
             </div>
             <!--  -->
           </div>
