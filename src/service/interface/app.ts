@@ -1,4 +1,4 @@
-import type { WorkingTimeSetting } from "./business_setting"
+import type { WorkingTimeSetting } from './business_setting'
 
 /** Thông tin phân quyền theo business */
 export interface BusinessData {
@@ -27,69 +27,69 @@ export interface BranchData2 {
 /** Dữ liệu nhân viên */
 export interface FullEmployeeData extends BusinessData {
   /** ID nhân viên mongo */
-  _id: string;
+  _id?: string
   /** ID nhân viên rút gọn */
-  id: string;
+  id?: string
   /** Tên họ */
-  first_name: string;
+  first_name?: string
   /** Tên chính thức */
-  last_name: string;
+  last_name?: string
   /** Email */
-  email: string;
+  email?: string
   /** Id quản lý */
-  manager_id?: string;
+  manager_id?: string
   /** Avatar */
-  avatar: string;
+  avatar?: string
   /** ID facebook của nhân viên */
-  fb_staff_id: string;
+  fb_staff_id?: string
   /** Số điện thoại công ty */
-  company_phone_number: string;
+  company_phone_number?: string
   /** ID tài khoản telegram */
-  telegram_id: string;
+  telegram_id?: string
   /** Trạng thái hoạt động */
-  working: boolean
+  working?: boolean
   /** Thông tin cá nhân */
-  personal_information: {
-      /** Số điện thoại */
-      phone_number: string;
-      /** Ngày sinh */
-      birth_day: string;
-      /** Số chứng minh nhân dân */
-      cccd: string;
-      /** Ngày cấp chứng minh nhân dân */
-      cccd_release_date: string;
-      /** Địa chỉ thường trú */
-      permanent_address: string;
-      /** Địa chỉ hiện tại */
-      current_address: string;
-  };
+  personal_information?: {
+    /** Số điện thoại */
+    phone_number?: string
+    /** Ngày sinh */
+    birth_day?: string
+    /** Số chứng minh nhân dân */
+    cccd?: string
+    /** Ngày cấp chứng minh nhân dân */
+    cccd_release_date?: string
+    /** Địa chỉ thường trú */
+    permanent_address?: string
+    /** Địa chỉ hiện tại */
+    current_address?: string
+  }
   /** Thông tin tại công ty */
-  work_information: {
-      /** Ngày thử việc */
-      probationary_day: string;
-      /** Ngày chính thức */
-      official_working_day: string;
-      /** Ngày nghỉ việc */
-      day_off: string;
-      /** Số tài khoản ngân hàng */
-      bank_account_number: string;
-      /** Tên ngân hàng */
-      bank_name: string;
-      /** Số bảo hiểm xã hội */
-      social_insurance_book: string;
-      /** Số hợp đồng */
-      contract_number: string;
-      /** Loại hợp đồng */
-      contract_type: string;
-      /** Thời hạn hợp đồng */
-      contract_duration: string;
-      /** Link hợp đồng */
-      contract_link: string;
-      /** Dạng làm việc partime or fulltime */
-      type_of_shift: string;
-  };
+  work_information?: {
+    /** Ngày thử việc */
+    probationary_day: string
+    /** Ngày chính thức */
+    official_working_day: string
+    /** Ngày nghỉ việc */
+    day_off: string
+    /** Số tài khoản ngân hàng */
+    bank_account_number: string
+    /** Tên ngân hàng */
+    bank_name: string
+    /** Số bảo hiểm xã hội */
+    social_insurance_book: string
+    /** Số hợp đồng */
+    contract_number: string
+    /** Loại hợp đồng */
+    contract_type: string
+    /** Thời hạn hợp đồng */
+    contract_duration: string
+    /** Link hợp đồng */
+    contract_link: string
+    /** Dạng làm việc partime or fulltime */
+    type_of_shift: string
+  }
   /** Thiết lập chấm công của nhân viên */
-  working_time_setting: WorkingTimeSetting[]
+  working_time_setting?: WorkingTimeSetting[]
 
   /** Trạng thái nhân viên đang được chọn hay không */
   selected?: boolean
@@ -98,8 +98,12 @@ export interface FullEmployeeData extends BusinessData {
   branch?: BranchData2
 
   /** id nhân viên */
-  user_id?:string
+  user_id?: string
 
   /** id chatbox */
-  chatbox_user_id?:string
-};
+  chatbox_user_id?: string
+
+  createdAt?: Date
+
+  archive?: boolean
+}

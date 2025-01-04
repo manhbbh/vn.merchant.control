@@ -203,7 +203,7 @@ const props = defineProps({
 
 // * store
 const commonStore = useCommonStore()
-const { employees, user, branch_data } = storeToRefs(commonStore)
+const { employees_user_ids, user, branch_data } = storeToRefs(commonStore)
 
 /** dữ liệu thiết lập nghỉ lễ */
 const holidays = defineModel<HolidaySetting>({ default: {} })
@@ -223,7 +223,7 @@ function getInfo(id?: string, type?: string) {
   if (!id) return
 
   /** thông tin nhân viên */
-  const EMPLOYEE = employees.value?.[id]
+  const EMPLOYEE = employees_user_ids.value?.[id]
 
   // nếu lấy tên thì trả tên
   if (type === 'name')

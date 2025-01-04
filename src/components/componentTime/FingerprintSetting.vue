@@ -8,7 +8,11 @@
     <div class="flex-col flex-1 gap-3">
       <div class="flex h-9 items-center justify-between mb-3">
         <h4 class="flex justify-start text-sm font-medium">Vân tay</h4>
-        <button class="h-9 px-4 py-2 text-sm font-medium text-white rounded-md bg-black">Thêm</button>
+        <button
+          class="h-9 px-4 py-2 text-sm font-medium text-white rounded-md bg-black"
+        >
+          Thêm
+        </button>
       </div>
       <!-- phần các ô input  -->
       <table
@@ -19,14 +23,14 @@
         >
           <tr class="h-7 flex gap-x-12 items-center">
             <th class="w-18 text-center font-semibold">ID|Ngày</th>
-            <th class=" w-15 sm:w-25 text-left font-semibold">ID Thiết bi</th>
+            <th class="w-15 sm:w-25 text-left font-semibold">ID Thiết bi</th>
             <th class="w-25 text-left font-semibold hidden md:block">
               Trạng thái
             </th>
             <th class="w-50 text-left font-semibold hidden md:block">
               Nhân sự
             </th>
-            <th class="w-10 sm:w-25 text-left font-semibold ">Xóa</th>
+            <th class="w-10 sm:w-25 text-left font-semibold">Xóa</th>
           </tr>
         </thead>
         <tbody>
@@ -72,13 +76,17 @@
             </td>
 
             <!-- xóa -->
-            <td class="w-10 sm:w-25 text-left py-2 text-customGray ">
-              <button class="px-2 py-0.5 bg-red-50 text-red-500 rounded-md text-xs font-medium">Xóa</button>
+            <td class="w-10 sm:w-25 text-left py-2 text-customGray">
+              <button
+                class="px-2 py-0.5 bg-red-50 text-red-500 rounded-md text-xs font-medium"
+              >
+                Xóa
+              </button>
             </td>
           </tr>
         </tbody>
       </table>
-     
+
       <!--  -->
       <!--  -->
       <div class="flex py-4 flex-col gap-4 sm:flex-row">
@@ -104,14 +112,18 @@
           >
             Nhân sự
           </label>
-        <input type="text" class="outline-none text-muted border border-gray-300 h-9 w-39 p-2 rounded-md" placeholder="Chọn nhân sự">
+          <input
+            type="text"
+            class="outline-none text-muted border border-gray-300 h-9 w-39 p-2 rounded-md"
+            placeholder="Chọn nhân sự"
+          />
         </div>
 
         <!--  -->
         <button
           class="h-9 bg-green-600 text-sm font-medium text-white rounded-md px-4 py-2"
         >
-         Thêm 
+          Thêm
         </button>
       </div>
     </div>
@@ -120,42 +132,42 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref } from 'vue'
 
 /**ICon*/
-import IconFingerprint from "@/components/icons/iconMenu/IconFingerprint.vue";
+import IconFingerprint from '@/components/icons/iconMenu/IconFingerprint.vue'
 
 /**img*/
-import avarta from "@/assets/imgs/Avatar.png";
+import avarta from '@/assets/imgs/Avatar.png'
 /**Biến*/
 /**Danh sách */
 const list_employee = ref([
   {
-    working_form: "sale",
-    dat_fingerprint: "28/4",
-    id_device: "D123",
-    name_create_holiday: "Nguyễn Đình Tùng",
+    working_form: 'sale',
+    dat_fingerprint: '28/4',
+    id_device: 'D123',
+    name_create_holiday: 'Nguyễn Đình Tùng',
     avatar_employee: avarta,
-    status_fing: "Đã kích hoạt",
+    status_fing: 'Đã kích hoạt',
   },
   {
-    working_form: "sale",
-    dat_fingerprint: "28/4",
-    id_device: "D123",
-    name_create_holiday: "Nguyễn Đình Tùng",
+    working_form: 'sale',
+    dat_fingerprint: '28/4',
+    id_device: 'D123',
+    name_create_holiday: 'Nguyễn Đình Tùng',
     avatar_employee: avarta,
-    status_fing: "Đã kích hoạt",
+    status_fing: 'Đã kích hoạt',
   },
   {
-    working_form: "sale",
-    dat_fingerprint: "28/4",
-    id_device: "D123",
-    name_create_holiday: "Nguyễn Đình Tùng",
+    working_form: 'sale',
+    dat_fingerprint: '28/4',
+    id_device: 'D123',
+    name_create_holiday: 'Nguyễn Đình Tùng',
     avatar_employee: avarta,
-    status_fing: "Đã kích hoạt",
+    status_fing: 'Đã kích hoạt',
   },
-]);
-const list_day = ref([1, 2, 3, 4, 5, 6, 7, "C"]);
+])
+const list_day = ref([1, 2, 3, 4, 5, 6, 7, 'C'])
 </script>
 
 <style lang="scss" scoped></style>

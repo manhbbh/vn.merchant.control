@@ -5,7 +5,7 @@
     >
       <!-- phần trên -->
       <header
-        class="static top-0 sm:h-16 py-3  flex justify-between items-center flex-shrink-0"
+        class="static top-0 sm:h-16 py-3 flex justify-between items-center flex-shrink-0"
       >
         <!-- back và cài đặt chấm công -->
         <div class="flex gap-2.5 items-center h-7.5 justify-start">
@@ -77,61 +77,66 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref } from 'vue'
 /**compomnet con*/
-import Business from "@/components/ingredients/Business.vue";
-import Application from "@/components/ingredients/Application.vue";
-import DetailTimekeeping from "@/components/timekeeping/DetailTimekeeping.vue";
+import Business from '@/components/ingredients/Business.vue'
+import Application from '@/components/ingredients/Application.vue'
+import DetailTimekeeping from '@/components/timekeeping/DetailTimekeeping.vue'
 /**Icon*/
 
-import IconBack from "@/components/icons/IconBack.vue";
-import IconCopy from "@/components/icons/IconCopy.vue";
+import IconBack from '@/components/icons/IconBack.vue'
+import IconCopy from '@/components/icons/IconCopy.vue'
 /**Icon ở menu*/
-import IconEmployee from "@/components/icons/iconMenu/IconEmployee.vue";
-import IconSettings from "@/components/icons/iconMenu/IconSettings.vue";
-import IconHistory from "@/components/icons/iconMenu/IconHistory.vue";
-import IconFingerprint from "@/components/icons/iconMenu/IconFingerprint.vue";
+import IconEmployee from '@/components/icons/iconMenu/IconEmployee.vue'
+import IconSettings from '@/components/icons/iconMenu/IconSettings.vue'
+import IconHistory from '@/components/icons/iconMenu/IconHistory.vue'
+import IconFingerprint from '@/components/icons/iconMenu/IconFingerprint.vue'
 
 /**Biến*/
 /**Biến kiểm tra mở component con nào */
-const is_conponent = ref(1); 
+const is_conponent = ref(1)
 /**Biến kiểm tra hiện doanh nghiệp hay ứng dụng */
-const is_business = ref(true);
+const is_business = ref(true)
 /**Biến danh sách menu*/
 const list_menu = ref([
   {
     id_menu: 1,
-    name_item: "Thiết lập chung",
+    name_item: 'Thiết lập chung',
     icon: IconSettings,
     active: true,
   },
   {
     id_menu: 2,
-    name_item: "Nhân sự",
+    name_item: 'Nhân sự',
     icon: IconEmployee,
     active: false,
   },
   {
     id_menu: 3,
-    name_item: "Vân tay",
+    name_item: 'Vân tay',
     icon: IconFingerprint,
     active: false,
   },
   {
     id_menu: 4,
-    name_item: "Lịch sử thiết lập",
+    name_item: 'Lịch sử thiết lập',
     icon: IconHistory,
     active: false,
   },
-]);
+])
 /**Hàm*/
-function redirect(selectedMenu: {id_menu: number, name_item: string; icon: any; active: boolean }) {
-  list_menu.value.forEach(menu => {
-        menu.active = false; // Tắt tất cả các mục
-      });
-      selectedMenu.active = true; // Bật mục được chọn
-      console.log('Selected menu:', selectedMenu);
-      is_conponent.value = selectedMenu.id_menu
+function redirect(selectedMenu: {
+  id_menu: number
+  name_item: string
+  icon: any
+  active: boolean
+}) {
+  list_menu.value.forEach((menu) => {
+    menu.active = false // Tắt tất cả các mục
+  })
+  selectedMenu.active = true // Bật mục được chọn
+  console.log('Selected menu:', selectedMenu)
+  is_conponent.value = selectedMenu.id_menu
 }
 </script>
 <style scoped lang="scss"></style>

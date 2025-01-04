@@ -186,7 +186,7 @@
           @click="open = false"
           class="p-1 rounded-md hover:bg-gray-300 hover:text-black"
         >
-          <XMarkIcon class="w-5 h-5"/>
+          <XMarkIcon class="w-5 h-5" />
         </button>
       </header>
       <!--  -->
@@ -481,7 +481,7 @@ const props = defineProps({
 
 // * store
 const commonStore = useCommonStore()
-const { employees, user, branch_data } = storeToRefs(commonStore)
+const { employees_user_ids, user, branch_data } = storeToRefs(commonStore)
 
 /** dữ liệu thiết lập hình thức làm việc */
 const form_of_work = defineModel<FormOfWork>({
@@ -603,7 +603,7 @@ function getInfo(id?: string, type?: string) {
   if (!id) return
 
   /** thông tin nhân viên */
-  const EMPLOYEE = employees.value?.[id]
+  const EMPLOYEE = employees_user_ids.value?.[id]
 
   if (type === 'name')
     return `${EMPLOYEE?.first_name || ''} ${EMPLOYEE?.last_name || ''}`?.trim()

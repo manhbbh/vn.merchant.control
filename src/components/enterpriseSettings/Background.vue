@@ -78,16 +78,14 @@
                   <!--  -->
                   <td class="">
                     <!-- select -->
-                    <Toggle 
-                      v-model="holiday.active"
-                    />
+                    <Toggle v-model="holiday.active" />
                   </td>
 
                   <!-- xóa -->
                   <td class="">
                     <div
                       class="h-6 inline-flex text-red-500 bg-red-50 font-medium text-xs rounded-md px-2 py-0.5 items-center justify-center"
-                      @click="handleDelete(index,'pc')"
+                      @click="handleDelete(index, 'pc')"
                     >
                       Xóa
                     </div>
@@ -103,7 +101,9 @@
         <div class="flex flex-1 gap-1 flex-col">
           <p class="text-left text-xs font-medium">Mobie App</p>
           <div>
-            <table class="min-w-full h-fit border-none bg-white flex-1 rounded-lg z-10">
+            <table
+              class="min-w-full h-fit border-none bg-white flex-1 rounded-lg z-10"
+            >
               <thead
                 class="bg-slate-200 h-7 text-xs font-semibold sticky top-0 text-customDarkBlue flex-shrink-0 z-10"
               >
@@ -150,22 +150,20 @@
                   <!--tên -->
                   <!--tên -->
                   <td class="text-left hidden md:table-cell">
-                    <p>{{ getInfo(holiday?.created_by, 'name')  }}</p>
+                    <p>{{ getInfo(holiday?.created_by, 'name') }}</p>
                   </td>
 
                   <!--  -->
                   <td class="">
                     <!-- select -->
-                    <Toggle 
-                      v-model="holiday.active"
-                    />
+                    <Toggle v-model="holiday.active" />
                   </td>
 
                   <!-- xóa -->
                   <td class="">
                     <div
                       class="h-6 inline-flex text-red-500 bg-red-50 font-medium text-xs rounded-md px-2 py-0.5 items-center justify-center"
-                      @click="handleDelete(index,'mobile')"
+                      @click="handleDelete(index, 'mobile')"
                     >
                       Xóa
                     </div>
@@ -178,9 +176,7 @@
         </div>
       </div>
       <!--  -->
-      <div class="flex flex-col py-2"
-        v-if="is_show_add"
-      >
+      <div class="flex flex-col py-2" v-if="is_show_add">
         <div class="flex flex-col sm:h-9 gap-4 sm:flex-row">
           <div class="flex items-center justify-between gap-4">
             <p class="text-sm font-medium">Link</p>
@@ -220,41 +216,41 @@
 </template>
 
 <script setup lang="ts">
-import { useCommonStore } from "@/stores";
-import { confirm } from "@/service/helper/alert";
+import { useCommonStore } from '@/stores'
+import { confirm } from '@/service/helper/alert'
 
 // * libraries
-import { ref } from "vue";
-import { storeToRefs } from "pinia";
+import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
 
 /**ICon*/
-import IconBackground from "@/components/icons/IconBackground.vue";
-import Toggle from "../Toggle.vue";
+import IconBackground from '@/components/icons/IconBackground.vue'
+import Toggle from '../Toggle.vue'
 
 // * store
 const commonStore = useCommonStore()
-const { background, employees, user } = storeToRefs(commonStore)
+const { background, employees_user_ids, user } = storeToRefs(commonStore)
 
 /** ẩn hiệm form thêm */
 const is_show_add = ref(false)
 
 /** form thêm mới background */
 const form_add = ref<{
-  link: string,
+  link: string
   type: 'pc' | 'mobile'
 }>({
   link: '',
-  type: 'pc'
+  type: 'pc',
 })
 
 /** lấy thông tin nhân viên */
-function getInfo(id?: string, type?:string) {
-  if(!id) return
+function getInfo(id?: string, type?: string) {
+  if (!id) return
 
   /** thông tin nhân viên */
-  const EMPLOYEE = employees.value?.[id]
+  const EMPLOYEE = employees_user_ids.value?.[id]
 
-  if(type === 'name')
+  if (type === 'name')
     return `${EMPLOYEE?.first_name || ''} ${EMPLOYEE?.last_name || ''}`?.trim()
 
   return EMPLOYEE?.avatar
@@ -263,77 +259,79 @@ function getInfo(id?: string, type?:string) {
 /** thêm background */
 function handleAdd() {
   // nếu không có dữ liệu thì thôi
-  if(!background.value.setting_data) return
+  if (!background.value.setting_data) return
 
   // nếu thêm pc
-  if(form_add.value.type === 'pc'){
+  if (form_add.value.type === 'pc') {
     background.value.setting_data = {
       ...background.value.setting_data,
-      pc: [ 
-        ...background.value.setting_data?.pc || [], 
+      pc: [
+        ...(background.value.setting_data?.pc || []),
         {
           link: form_add.value.link,
           active: false,
-          created_by: user.value?._id
-        }
-      ]
+          created_by: user.value?._id,
+        },
+      ],
     }
   }
 
   // nếu thêm mobile
-  if(form_add.value.type === 'mobile'){
+  if (form_add.value.type === 'mobile') {
     background.value.setting_data = {
       ...background.value.setting_data,
-      mobile: [ 
-        ...background.value.setting_data?.mobile || [], 
+      mobile: [
+        ...(background.value.setting_data?.mobile || []),
         {
           link: form_add.value.link,
           active: false,
-          created_by: user.value?._id
-        }
-      ]
+          created_by: user.value?._id,
+        },
+      ],
     }
   }
 
   form_add.value = {
     link: '',
-    type: 'pc'
+    type: 'pc',
   }
 
   is_show_add.value = false
 }
 
 /** xử lý xóa ngày lễ */
-function handleDelete(index:number, type: 'pc' | 'mobile') {
+function handleDelete(index: number, type: 'pc' | 'mobile') {
   confirm('warning', 'Xác nhận xóa hình nền?', '', (is_cancel: boolean) => {
-    if(is_cancel) return
+    if (is_cancel) return
 
     // nếu không có dữ liệu thì thôi
-    if(!background.value.setting_data) return
+    if (!background.value.setting_data) return
 
     // nếu là xóa pc
-    if(type === 'pc'){
+    if (type === 'pc') {
       background.value.setting_data?.pc?.splice(index, 1)
     }
 
     // nếu là xóa mobile
-    if(type === 'mobile'){
+    if (type === 'mobile') {
       background.value.setting_data?.mobile?.splice(index, 1)
     }
-    
   })
-  
 }
 
 /** khôi phục mặc định */
-function reset(){
-  confirm('warning', 'Xác nhận khôi phục mặc định?', '', (is_cancel: boolean) => {
-    if(is_cancel) return
-    background.value.setting_data = {
-      pc: [],
-      mobile: []
+function reset() {
+  confirm(
+    'warning',
+    'Xác nhận khôi phục mặc định?',
+    '',
+    (is_cancel: boolean) => {
+      if (is_cancel) return
+      background.value.setting_data = {
+        pc: [],
+        mobile: [],
+      }
     }
-  })
+  )
 }
-
 </script>

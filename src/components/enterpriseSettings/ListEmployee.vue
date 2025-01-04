@@ -26,7 +26,10 @@
             <th class="px-3 text-left font-semibold">#</th>
             <th class="px-3 text-left font-semibold">Họ và tên</th>
             <th class="px-3 text-left font-semibold">Email</th>
-            <th class="px-3 text-left font-semibold hidden md:table-cell">
+            <th
+              v-if="!branch_data?._id"
+              class="px-3 text-left font-semibold hidden md:table-cell"
+            >
               Chi nhánh đang hoạt động
             </th>
             <th class="px-3 text-left font-semibold hidden md:table-cell">
@@ -42,49 +45,70 @@
         </thead>
         <!--  -->
         <tbody>
-          <tr
-            v-for="(employee, index) in employees"
+          <RowEmployee
+            v-for="(employee, index) in employee_list"
+            :key="index"
+            :employee="{
+              name: `${employee.first_name || ''} ${
+                employee.last_name || ''
+              }`?.trim(),
+              email: employee.email,
+              active: !branch_data?._id ? employee.active : !employee.archive,
+              createdAt: employee.createdAt,
+              branches: employee.branches,
+            }"
+            :handle-active="
+              () => {
+                if (branch_data?._id) handleActive(employee)
+                else handleActiveBM(employee)
+              }
+            "
+            :index="index"
+            :is_show_branch="!branch_data?._id"
+          />
+          <!-- stt-->
+          <!-- tên viết tắt -->
+          <!-- địa chỉ -->
+          <!-- chi nhánh đang hoạt đông -->
+          <!-- <tr
+            v-for="(employee, index) in employee_list"
             :key="index"
             class="hover:bg-slate-100 text-black h-9 cursor-pointer text-sm overflow-y-auto"
           >
-            <!-- stt-->
             <td class="py-2 text-left px-3 items-center space-x-4">
               <p>{{ index + 1 }}</p>
             </td>
-            <!-- tên viết tắt -->
+
             <td class="text-left px-3 py-2 items-center space-x-4">
               <p class="w-40 truncate">
                 {{ employee.first_name || '' }} {{ employee.last_name || '' }}
               </p>
             </td>
 
-            <!-- địa chỉ -->
             <td class="text-left px-3 py-2">
               <p>{{ employee.email }}</p>
             </td>
 
-            <!-- chi nhánh đang hoạt đông -->
             <td
               class="text-left px-3 py-2 text-customGray hidden md:table-cell"
+              v-if="!branch_data?._id"
             >
               <div class="flex max-w-48 gap-2 truncate">
-              <div
-                class="h-5 py-0.5 rounded bg-zinc-100 px-2 text-customDark text-xs font-medium"
-                v-for="branch in employee.branches"
-              >
-                {{ branch?.name }}
-              </div>
+                <div
+                  class="h-5 py-0.5 rounded bg-zinc-100 px-2 text-customDark text-xs font-medium"
+                  v-for="branch in employee?.branches"
+                >
+                  {{ branch?.name }}
+                </div>
               </div>
             </td>
 
-            <!-- ngày tạo -->
             <td class="text-left px-3 py-2 hidden md:table-cell">
               <p class="text-sm" v-if="employee.createdAt">
                 {{ format(employee.createdAt, 'dd/MM/yyyy') }}
               </p>
             </td>
 
-            <!-- trạng thái -->
             <td class="text-left px-3 py-2 hidden md:table-cell">
               <p
                 class="text-sm"
@@ -93,21 +117,22 @@
                 {{ employee?.active ? 'Đang hoạt động' : 'Không hoạt động' }}
               </p>
             </td>
-            <!-- thao tác -->
+
             <td class="text-left px-2 py-0.5 hidden md:table-cell">
-              <div
+              <button
                 :class="{
                   'bg-green-500': employee?.active,
                   'bg-red-500': !employee.active,
                 }"
                 class="h-5 inline-flex items-center px-2 text-white rounded-md py-0.5"
+                @click="handleActive(employee)"
               >
                 <p class="text-xs flex items-center font-medium">
-                  {{ employee.active ? 'Kích hoạt' : 'Tạm dừng' }}
+                  {{ employee.active ? 'Kích hoạt' : 'Tạm ngừng' }}
                 </p>
-              </div>
+              </button>
             </td>
-          </tr>
+          </tr> -->
         </tbody>
       </table>
     </div>
@@ -128,7 +153,7 @@
             @click="open = false"
             class="p-1 rounded-md hover:bg-gray-300 hover:text-black"
           >
-            <XMarkIcon class="w-5 h-5"/>
+            <XMarkIcon class="w-5 h-5" />
           </button>
         </header>
         <!--  -->
@@ -167,7 +192,11 @@
 <script setup lang="ts">
 import { useCommonStore } from '@/stores'
 import { Toast } from '@/service/helper/toast'
-import { businessAddEmployee } from '@/service/api/api'
+import {
+  activeEmployee,
+  businessAddEmployee,
+  inactiveEmployee,
+} from '@/service/api/api'
 
 // * libraries
 import { format } from 'date-fns'
@@ -180,11 +209,16 @@ import { XMarkIcon } from '@heroicons/vue/24/outline'
 import IconEmploye from '@/components/icons/IconEmploye.vue'
 
 // * interfaces
-import { EmployeeData } from '@/service/interface'
+import { EmployeeData, FullEmployeeData } from '@/service/interface'
+import { Row } from 'ant-design-vue'
+import RowEmployee from './RowEmployee.vue'
+
+interface Employee extends EmployeeData, FullEmployeeData {}
 
 // * store
 const commonStore = useCommonStore()
-const { users, branch_data } = storeToRefs(commonStore)
+const { employees_ids, branch_data, users, branches_ids } =
+  storeToRefs(commonStore)
 
 // * toast
 const $toast = new Toast()
@@ -196,13 +230,87 @@ const open = ref(false)
 const form_add = ref<{ email?: string }>({})
 
 /** danh sách nhân viên */
-const employees = computed(() => {
-  return Object.values(users.value)?.filter(
-    (user: EmployeeData) =>
-      !branch_data.value?._id ||
-      user?.branch_ids?.includes(branch_data.value?._id)
+const employee_list = computed<Employee[]>(() => {
+  if (!branch_data.value?._id)
+    return Object.keys(users.value)?.map((id) => {
+      return {
+        ...users.value[id],
+        _id: id,
+      }
+    })
+
+  return Object.values(employees_ids.value)?.filter(
+    (user: FullEmployeeData) => user?.branch_id === branch_data.value?._id
   )
 })
+
+/** hàm active/inactive nhân viên chi nhánh */
+async function handleActive(employee: FullEmployeeData) {
+  try {
+    if (employee?.archive) {
+      await activeEmployee({
+        body: {
+          email: employee?.email,
+        },
+      })
+    } else {
+      await inactiveEmployee({
+        body: {
+          email: employee?.email,
+        },
+      })
+    }
+    if (employee._id)
+      employees_ids.value[employee._id] = {
+        ...employee,
+        archive: !employee.archive,
+      }
+    console.log(employees_ids.value)
+  } catch (e) {
+    $toast.error(e)
+  }
+}
+
+/** hàm active/inactive nhân viên BM */
+async function handleActiveBM(employee: EmployeeData) {
+  try {
+    const BRANCH_IDS = employee?.branch_ids || []
+
+    for (let i = 0; i < BRANCH_IDS.length || 0; i++) {
+      const BRANCH_ID = BRANCH_IDS[i]
+      if (!employee?.active) {
+        // thêm nhân viên
+        await activeEmployee({
+          body: {
+            email: employee?.email,
+          },
+          headers: {
+            'token-business': branches_ids.value[BRANCH_ID]?.access_token,
+          },
+        })
+      } else {
+        // xóa nhân viên
+        await inactiveEmployee({
+          body: {
+            email: employee?.email,
+          },
+          headers: {
+            'token-business': branches_ids.value[BRANCH_ID]?.access_token,
+          },
+        })
+      }
+    }
+
+    Object.values(employees_ids.value).forEach((item) => {
+      if (item?.user_id === employee?._id && item?._id) {
+        employees_ids.value[item._id].archive = !item.archive
+      }
+    })
+    if (employee?._id) users.value[employee?._id].active = !employee.active
+  } catch (e) {
+    $toast.error(e)
+  }
+}
 
 /** hàm mở modal */
 function openModal() {
@@ -225,25 +333,27 @@ async function handleOk() {
     const USER = users.value?.[RES.data.user_id]
 
     //chưa có thì thêm vào danh sách
-    if(!USER){
+    if (!USER) {
       users.value = {
         ...users.value,
         [RES.data.user_id]: RES.data,
       }
     }
     // có rồi thì bổ sung chi nhánh hiện tại
-    else{
+    else {
       users.value[RES.data.user_id] = {
         ...USER,
-        branch_ids: [...USER?.branch_ids || [], branch_data.value?._id || ''],
-        branches: [...USER?.branches || [], {
-          _id: branch_data.value?._id,
-          name: branch_data.value?.name,
-        }],
+        branch_ids: [...(USER?.branch_ids || []), branch_data.value?._id || ''],
+        branches: [
+          ...(USER?.branches || []),
+          {
+            _id: branch_data.value?._id,
+            name: branch_data.value?.name,
+          },
+        ],
       }
     }
     $toast.success('Thêm nhân sự thành công')
-    
   } catch (e) {
     $toast.error(e)
   } finally {

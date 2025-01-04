@@ -21,7 +21,7 @@
           <Avatar
             class="h-9 w-9 cursor-pointer"
             :text_class="'text-lg font-semibold'"
-            :src="employees[user?._id || '']?.avatar"
+            :src="employees_user_ids[user?._id || '']?.avatar"
             :text="`${user?.first_name || ''} ${user?.last_name || ''}`"
           />
           <div
@@ -35,7 +35,7 @@
                   {{ user?.first_name || '' }} {{ user?.last_name || '' }}
                 </div>
                 <div class="font-medium text-xs text-slate-500 truncate">
-                  {{ employees[user?._id || '']?.email }}
+                  {{ employees_user_ids[user?._id || '']?.email }}
                 </div>
               </div>
               <hr class="border-1 border-slate-200" />
@@ -177,7 +177,8 @@ import { ArrowRightStartOnRectangleIcon } from '@heroicons/vue/24/outline'
 
 // * store
 const commonStore = useCommonStore()
-const { branches, branch_data, employees, user } = storeToRefs(commonStore)
+const { branches, branch_data, employees_user_ids, user } =
+  storeToRefs(commonStore)
 
 // * toast
 const $toast = new Toast()

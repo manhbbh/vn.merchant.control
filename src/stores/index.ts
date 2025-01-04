@@ -26,19 +26,25 @@ export const useCommonStore = defineStore('common_store', () => {
   const business_id = ref('')
 
   /** dữ liệu nhân viên hiện tại */
-  const user = ref<{ _id?: string; first_name?: string; last_name?: string }>({})
+  const user = ref<{ _id?: string; first_name?: string; last_name?: string }>(
+    {}
+  )
 
   /** danh sách nhân viên */
   const users = ref<{ [key: string]: EmployeeData }>({})
 
   /** danh sách nhân viên */
-  const employees = ref<{ [key: string]: FullEmployeeData }>({})
+  const employees_user_ids = ref<{ [key: string]: FullEmployeeData }>({})
+
+  const employees_ids = ref<{ [key: string]: FullEmployeeData }>({})
 
   /** danh sách nhân viên của 1 chi nhánh */
   const employees_branch = ref<FullEmployeeData[]>([])
 
   /** danh sách chi nhánh */
   const branches = ref<BranchData[]>([])
+
+  const branches_ids = ref<{ [key: string]: BranchData }>({})
 
   /** dữ liệu của doanh nghiệp */
   const business_data = ref<CompanyData>({})
@@ -79,9 +85,11 @@ export const useCommonStore = defineStore('common_store', () => {
     is_loading_full_screen,
     user,
     users,
-    employees,
+    employees_user_ids,
+    employees_ids,
     employees_branch,
     branches,
+    branches_ids,
     business_data,
     branch_data,
     monthly_business_period,

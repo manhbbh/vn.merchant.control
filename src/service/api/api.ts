@@ -24,6 +24,7 @@ function getBusinessID() {
 async function apiMerchantRequest({
   end_point,
   body,
+  headers,
   access_token,
 }: InputRequestApi) {
   try {
@@ -33,6 +34,7 @@ async function apiMerchantRequest({
       headers: {
         'token-user': getTokenUser(),
         'token-business': getBusinessToken(),
+        ...headers,
       },
       body,
     })
@@ -50,7 +52,6 @@ async function apiProductRequest({
   access_token,
 }: InputRequestApi) {
   try {
-
     const RES = await requestAxios({
       uri: `${$env.host.product}/${end_point}`,
       method: 'POST',
@@ -156,7 +157,7 @@ export async function businessAddEmployee(params: InputRequestApi) {
 }
 
 /** lấy danh sách nhân viên */
-export async function getEmployee(params:InputRequestApi) {
+export async function getEmployee(params: InputRequestApi) {
   try {
     return await apiMerchantRequest({
       ...params,
@@ -185,6 +186,30 @@ export async function getSettingBranch(params: InputRequestApi) {
     return await apiMerchantRequest({
       ...params,
       end_point: 'systems/branchsetting/get_setting',
+    })
+  } catch (e) {
+    throw e
+  }
+}
+
+/** kích hoạt nhân viên */
+export async function activeEmployee(params: InputRequestApi) {
+  try {
+    return await apiMerchantRequest({
+      ...params,
+      end_point: 'systems/employee/create_employee',
+    })
+  } catch (e) {
+    throw e
+  }
+}
+
+/** tạm ngừng nhân viên */
+export async function inactiveEmployee(params: InputRequestApi) {
+  try {
+    return await apiMerchantRequest({
+      ...params,
+      end_point: 'systems/employee/delete_employee',
     })
   } catch (e) {
     throw e
@@ -228,8 +253,8 @@ export const getWard = async (data: {}) => {
 }
 
 /**
- * @deprecated 
- * Nhận diện địa chỉ cũ 
+ * @deprecated
+ * Nhận diện địa chỉ cũ
  * */
 export const detectAddress = async (data: {}) => {
   try {
