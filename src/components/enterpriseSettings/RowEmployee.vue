@@ -27,7 +27,7 @@
       class="text-left px-3 py-2 text-customGray hidden md:table-cell"
       v-if="is_show_branch"
     >
-      <div class="flex gap-2">
+      <div class="flex gap-2 w-[360px] flex-wrap">
         <div
           class="h-5 py-0.5 rounded bg-zinc-100 px-2 text-customDark text-xs font-medium"
           v-for="branch in employee?.branches"
@@ -48,8 +48,7 @@
     <td class="text-left px-3 py-2">
       <p class="text-sm" v-if="employee.last_time_login">
         {{
-          // formatDistanceToNowStrict(employee.last_time_login, { locale: vi })
-          employee.last_time_login
+          formatDistanceToNowStrict(employee.last_time_login, { locale: vi })
         }}
         trước
       </p>
@@ -68,14 +67,14 @@
     <td class="text-left px-2 py-0.5 hidden md:table-cell">
       <button
         :class="{
-          'bg-green-500': employee?.active,
-          'bg-red-500': !employee.active,
+          'bg-green-500': !employee?.active,
+          'bg-red-500': employee.active,
         }"
         class="h-5 inline-flex items-center px-2 text-white rounded-md py-0.5"
         @click="handleActive(employee)"
       >
         <p class="text-xs flex items-center font-medium">
-          {{ employee.active ? 'Kích hoạt' : 'Tạm ngừng' }}
+          {{ !employee.active ? 'Kích hoạt' : 'Tạm ngừng' }}
         </p>
       </button>
     </td>

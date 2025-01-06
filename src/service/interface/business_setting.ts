@@ -1,7 +1,7 @@
 import { LocationDetail } from './location'
 
 /** Thiết lập chấm công và làm việc của nhân viên */
-export interface WorkingTimeSetting {
+export interface WorkingTimeSettingData {
   /** Trạng thái làm việc */
   work_status?: 'day_off' | 'full_time' | 'part_time'
   /** Tình trạng hoạt động */
@@ -117,7 +117,7 @@ export interface FormOfWorkData {
     /** Tổng thời gian làm việc */
     working_hours?: number
     /** Thời gian */
-    working_time?: WorkingTimeSetting[]
+    working_time?: WorkingTimeSettingData[]
     /** Người tạo */
     created_by?: string
     /** Thời gian tạo */
