@@ -327,6 +327,15 @@ export interface EmployeeData {
   first_name?: string
   /** Tên của người dùng */
   last_name?: string
+  /** lần truy cập gần nhất */
+  last_time_login?:
+    | {
+        [key: string]: {
+          branch_name?: string
+          last_time_login?: number
+        }
+      }
+    | number
 }
 
 /** dữ liệu doanh nghiệp */

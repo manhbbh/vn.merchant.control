@@ -16,9 +16,11 @@
 <script setup lang="ts">
 import { useGetData } from '@/hook.ts'
 import { useCommonStore } from '@/stores'
-import { getBusinessInfo, getSetting, getUserInfo } from '@/service/api/api'
 import { Toast } from '@/service/helper/toast'
+import { copy } from '@/service/helper/format'
 import { queryString } from '@/service/helper/queryString'
+import { setting } from '@/service/constant/setting_default'
+import { getBusinessInfo, getSetting, getUserInfo } from '@/service/api/api'
 
 // * libraries
 import { onMounted, ref } from 'vue'
@@ -31,7 +33,16 @@ import AdBlocker from '@/components/AdBlocker.vue'
 import Template401 from '@/components/Template401.vue'
 
 // * hook
-const { getBusinessInfos } = useGetData()
+const {
+  getBusinessInfos,
+  saveBusinessInfo,
+  savesSettingBackground,
+  savesSettingFormOfWork,
+  savesSettingHolidays,
+  savesSettingPeriodMonthly,
+  savesSettingPeriodYearly,
+  savesSettingTimeworking,
+} = useGetData()
 
 // * store
 const commonStore = useCommonStore()
@@ -63,37 +74,108 @@ async function getSettings() {
     // nếu không có dữ liệu thì thôi
     if (!RES.data) return
 
-    console.log(RES.data)
+    const HAD_DATA = {
+      monthly_business_period: false,
+      year_business_period: false,
+      holidays: false,
+      form_of_work: false,
+      background: false,
+      working_time: false,
+    }
 
     RES.data?.forEach((item: any) => {
       if (item.setting_type === 'monthly_business_period') {
         commonStore.monthly_business_period = item
+        HAD_DATA['monthly_business_period'] = true
         return
       }
 
       if (item.setting_type === 'year_business_period') {
         commonStore.year_business_period = item
+        HAD_DATA['year_business_period'] = true
         return
       }
 
       if (item.setting_type === 'holiday') {
         commonStore.holidays = item
+        HAD_DATA['holidays'] = true
         return
       }
 
       if (item.setting_type === 'form_of_work') {
         commonStore.form_of_work = item
+        HAD_DATA['form_of_work'] = true
         return
       }
 
       if (item.setting_type === 'background') {
         commonStore.background = item
+        HAD_DATA['background'] = true
         return
       }
 
       if (item.setting_type === 'working_time') {
         commonStore.working_time = item
+        HAD_DATA['working_time'] = true
         return
+      }
+    })
+
+    console.log(HAD_DATA)
+
+    // lặp qua xem dữ liệu nào chưa có thì lấy dữ liệu mặc định
+    Object.keys(HAD_DATA).forEach((key: string) => {
+      switch (key) {
+        case 'monthly_business_period':
+          if (!HAD_DATA['monthly_business_period']) {
+            commonStore.monthly_business_period = {
+              setting_data: copy(setting.monthly_business_period),
+            }
+            savesSettingPeriodMonthly()
+          }
+          break
+        case 'year_business_period':
+          if (!HAD_DATA['year_business_period']) {
+            commonStore.year_business_period = {
+              setting_data: copy(setting.year_business_period),
+            }
+            savesSettingPeriodYearly()
+          }
+          break
+        case 'holidays':
+          if (!HAD_DATA['holidays']) {
+            commonStore.holidays = {
+              setting_data: copy(setting.holidays),
+            }
+            savesSettingHolidays()
+          }
+          break
+        case 'form_of_work':
+          if (!HAD_DATA['form_of_work']) {
+            commonStore.form_of_work = {
+              setting_data: copy(setting.form_of_work),
+            }
+            savesSettingFormOfWork()
+          }
+          break
+        case 'background':
+          if (!HAD_DATA['background']) {
+            commonStore.background = {
+              setting_data: copy(setting.background),
+            }
+            savesSettingBackground()
+          }
+          break
+        case 'working_time':
+          if (!HAD_DATA['working_time']) {
+            commonStore.working_time = {
+              setting_data: copy(setting.working_time),
+            }
+            savesSettingTimeworking()
+          }
+          break
+        default:
+          break
       }
     })
   } catch (e) {

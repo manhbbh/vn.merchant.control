@@ -8,14 +8,17 @@
         class="rounded-xl static top-0 bg-white py-2 px-5 flex justify-between items-center flex-shrink-0"
       >
         <!-- logo and name -->
-        <div class="flex gap-2 items-center justify-start">
+        <a
+          class="flex gap-2 items-center justify-star cursor-pointer"
+          href="https://merchant.vn/bm"
+        >
           <img
             src="@/assets/imgs/merchant-icon.png"
             class="h-9 w-9"
             alt="logoMerchant"
           />
           <h2 class="text-2xl font-semibold">Merchant</h2>
-        </div>
+        </a>
         <!-- avatar -->
         <div class="relative text-start group">
           <Avatar
@@ -154,6 +157,7 @@ import { Toast } from '@/service/helper/toast'
 import { getSettingBranch } from '@/service/api/api'
 
 // * libraries
+import { isEmpty } from 'lodash'
 import { storeToRefs } from 'pinia'
 import { provide, ref, watch } from 'vue'
 
@@ -166,18 +170,22 @@ import BusinessSetting from '@/components/business/BusinessSetting.vue'
 /**Icon*/
 import IconHome from '@/components/icons/IconHome.vue'
 import IconStar from '@/components/icons/IconStar.vue'
+import { UserCircleIcon } from '@heroicons/vue/24/solid'
 import IconBusiness from '@/components/icons/IconBusiness.vue'
+import { ArrowRightStartOnRectangleIcon } from '@heroicons/vue/24/outline'
 
 /**ảnh */
 
 // * interface
 import { BranchData } from '@/service/interface'
-import { isEmpty } from 'lodash'
-import { UserCircleIcon } from '@heroicons/vue/24/solid'
-import { ArrowRightStartOnRectangleIcon } from '@heroicons/vue/24/outline'
 
 // * hook
-const { getBusinessInfos } = useGetData()
+const {
+  getBusinessInfos,
+  saveBranchSettingFormOfWork,
+  saveBranchSettingHolidays,
+  saveBranchSettingTimeworking,
+} = useGetData()
 
 // * store
 const commonStore = useCommonStore()
@@ -257,16 +265,19 @@ async function detaiBranch(branch: BranchData) {
     // nếu chưa thiết lập ngày lễ thì lấy dữ liệu ở thiết lập doanh nghiệp
     if (isEmpty(commonStore.branch_holidays)) {
       commonStore.branch_holidays = copy(commonStore.holidays)
+      saveBranchSettingHolidays()
     }
 
     // nếu chưa thiết lập hình thức làm việc thì lấy dữ liệu ở thiết lập doanh nghiệp
     if (isEmpty(commonStore.branch_form_of_work)) {
       commonStore.branch_form_of_work = copy(commonStore.form_of_work)
+      saveBranchSettingFormOfWork()
     }
 
     // nếu chưa thiết lập thời gian làm việc thì lấy dữ liệu ở thiết lập doanh nghiệp
     if (isEmpty(commonStore.branch_working_time)) {
       commonStore.branch_working_time = copy(commonStore.working_time)
+      saveBranchSettingTimeworking()
     }
   } catch (e) {}
 }

@@ -11,7 +11,7 @@
           Danh sách chi nhánh
         </h4>
         <div
-          @click="showModal()"
+          @click="()=>showModal()"
           class="flex items-center gap-2 bg-slate-100 py-3 px-3 h-5 cursor-pointer rounded-md"
         >
           <!-- icon -->
@@ -51,7 +51,7 @@
         </thead>
         <tbody>
           <tr
-            v-for="(branch, index) in branches"
+            v-for="(branch, index) in sortedBranches"
             :key="index"
             class="hover:bg-slate-100 text-black text-sm overflow-y-auto h-full"
           >
@@ -112,11 +112,10 @@
   <a-modal
     centered
     :style="{ width: '720px' }"
-    v-model:open="open"
     :auto-focus="false"
-    @ok="handleOk"
+    v-model:open="open"
     :footer="null"
-    v-if="open"
+    @ok="handleOk"
   >
     <div class="flex flex-col w-full">
       <header class="flex items-center justify-between h-10 px-6 py-2">
@@ -196,7 +195,7 @@
         </button>
         <button
           class="px-4 py-2 text-sm text-white font-medium bg-primary rounded-md"
-          @click="handleOk"
+          @click="handleOk()"
         >
           Tạo chi nhánh
         </button>
@@ -211,7 +210,7 @@ import { Toast } from '@/service/helper/toast'
 import { businessAddBranch } from '@/service/api/api'
 
 // * libraries
-import { inject, ref } from 'vue'
+import { computed, inject, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 
 // * components
@@ -242,6 +241,14 @@ const $toast = new Toast()
 
 /**Biến mở đóng modal*/
 const open = ref(false)
+
+/** danh sách chi nhánh đã được sắp xếp */
+const sortedBranches = computed(() => {
+  return [...branches.value].sort((a, b) => {
+    if(b?.archive) return -1
+    return 1
+  })
+})
 
 /**Hàm mở modal*/
 function showModal() {

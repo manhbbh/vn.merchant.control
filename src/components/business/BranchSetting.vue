@@ -38,7 +38,8 @@
 <script setup lang="ts">
 import { useCommonStore } from '@/stores'
 import { Toast } from '@/service/helper/toast'
-import { branchSaveSetting, businessUpdate } from '@/service/api/api'
+import { businessUpdate } from '@/service/api/api'
+import { useGetData } from '@/hook.ts'
 
 // * libraries
 import { ref } from 'vue'
@@ -50,7 +51,16 @@ import InforBranch from '@/components/enterpriseSettings/InforBranch.vue'
 import Timeworking from '@/components/enterpriseSettings/Timeworking.vue'
 import WorkingForm from '@/components/enterpriseSettings/WorkingForm.vue'
 import ListEmployee from '@/components/enterpriseSettings/ListEmployee.vue'
+
+// * interface
 import { BranchData } from '@/service/interface'
+
+// * hook
+const {
+  saveBranchSettingHolidays,
+  saveBranchSettingFormOfWork,
+  saveBranchSettingTimeworking,
+} = useGetData()
 
 // * store
 const commonStore = useCommonStore()
@@ -67,48 +77,6 @@ const {
 
 // * toast
 const $toast = new Toast()
-
-/** lưu thiết lập ngày nghỉ lễ */
-async function savesSettingHolidays() {
-  try {
-    await branchSaveSetting({
-      body: {
-        setting_type: 'holiday',
-        setting_data: branch_holidays.value?.setting_data,
-      },
-    })
-  } catch (e) {
-    throw e
-  }
-}
-
-/** lưu thiết lập hình thức làm việc */
-async function savesSettingFormOfWork() {
-  try {
-    await branchSaveSetting({
-      body: {
-        setting_type: 'form_of_work',
-        setting_data: branch_form_of_work.value?.setting_data,
-      },
-    })
-  } catch (e) {
-    throw e
-  }
-}
-
-/** lưu thiết lập thời gian làm việc */
-async function savesSettingTimeworking() {
-  try {
-    await branchSaveSetting({
-      body: {
-        setting_type: 'working_time',
-        setting_data: branch_working_time.value?.setting_data,
-      },
-    })
-  } catch (e) {
-    throw e
-  }
-}
 
 /** lưu thông tin doanh nghiệp */
 async function saveBusinessInfo() {
@@ -133,9 +101,9 @@ async function saveSetting() {
   try {
     await Promise.all([
       saveBusinessInfo(),
-      savesSettingHolidays(),
-      savesSettingFormOfWork(),
-      savesSettingTimeworking(),
+      saveBranchSettingHolidays(),
+      saveBranchSettingFormOfWork(),
+      saveBranchSettingTimeworking(),
     ])
     $toast.success('Lưu thiết lập thành công')
   } catch (e) {

@@ -9,22 +9,25 @@
     </td>
     <!-- tên viết tắt -->
     <td class="text-left px-3 py-2 items-center space-x-4">
-      <p class="w-28 lg:w-40 truncate">
-        {{ employee.name }}
-      </p>
+      <div class="w-28 lg:w-44">
+        <p class="truncate">
+          {{ employee.name }}
+        </p>
+        <p class="truncate">{{ employee.email }}</p>
+      </div>
     </td>
 
     <!-- địa chỉ -->
-    <td class="text-left px-3 py-2">
+    <!-- <td class="text-left px-3 py-2">
       <p class="w-28 lg:w-40 truncate">{{ employee.email }}</p>
-    </td>
+    </td> -->
 
     <!-- chi nhánh đang hoạt đông -->
     <td
       class="text-left px-3 py-2 text-customGray hidden md:table-cell"
       v-if="is_show_branch"
     >
-      <div class="flex max-w-48 gap-2 truncate">
+      <div class="flex gap-2">
         <div
           class="h-5 py-0.5 rounded bg-zinc-100 px-2 text-customDark text-xs font-medium"
           v-for="branch in employee?.branches"
@@ -38,6 +41,17 @@
     <td class="text-left px-3 py-2 hidden md:table-cell">
       <p class="text-sm" v-if="employee.createdAt">
         {{ format(employee.createdAt, 'dd/MM/yyyy') }}
+      </p>
+    </td>
+
+    <!-- truy cập lần cuối -->
+    <td class="text-left px-3 py-2">
+      <p class="text-sm" v-if="employee.last_time_login">
+        {{
+          // formatDistanceToNowStrict(employee.last_time_login, { locale: vi })
+          employee.last_time_login
+        }}
+        trước
       </p>
     </td>
 
@@ -69,9 +83,13 @@
 </template>
 
 <script setup lang="ts">
-import { BranchUserData } from '@/service/interface'
-import { format } from 'date-fns'
+// * libraries
 import { PropType } from 'vue'
+import { vi } from 'date-fns/locale/vi'
+import { format, formatDistanceToNowStrict } from 'date-fns'
+
+// * interfaces
+import { BranchUserData } from '@/service/interface'
 
 const props = defineProps({
   employee: {
@@ -81,6 +99,7 @@ const props = defineProps({
       active?: boolean
       email?: string
       branches?: BranchUserData[]
+      last_time_login?: number
     }>,
     default: () => ({}),
     required: true,

@@ -103,7 +103,17 @@ export interface FullEmployeeData extends BusinessData {
   /** id chatbox */
   chatbox_user_id?: string
 
+  /** ngày tạo */
   createdAt?: Date
 
+  /** đã bị xóa hay chưa */
   archive?: boolean
+
+  /** lần truy cập cuối */
+  last_time_login?: {
+    [key: string]: {
+      branch_name?:string
+      last_time_login?: number
+    }
+  } |number
 }

@@ -12,7 +12,7 @@ import {
 export const setting: {
   monthly_business_period: MonthlyBusinessPeriodData
   year_business_period: YearBusinessPeriodData
-  holiday: HolidaySettingData
+  holidays: HolidaySettingData
   working_time: WorkingTimeSettingData
   form_of_work: FormOfWorkData
   background: BackgroundSettingData
@@ -42,7 +42,7 @@ export const setting: {
   },
 
   /** Thiết lập ngày nghỉ lễ */
-  holiday: {
+  holidays: {
     '1/1': {
       name: 'Nghỉ tết dương lịch',
       created_by: '',

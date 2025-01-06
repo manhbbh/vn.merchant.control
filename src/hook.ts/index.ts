@@ -1,10 +1,29 @@
 import { useCommonStore } from '@/stores'
 import { Toast } from '@/service/helper/toast'
-import { getBusinessInfo } from '@/service/api/api'
+import {
+  branchSaveSetting,
+  businessSaveSetting,
+  businessUpdate,
+  getBusinessInfo,
+} from '@/service/api/api'
+
+import { storeToRefs } from 'pinia'
 
 export function useGetData() {
   // * store
   const commonStore = useCommonStore()
+  const {
+    holidays,
+    background,
+    working_time,
+    form_of_work,
+    year_business_period,
+    monthly_business_period,
+    business_data,
+    branch_form_of_work,
+    branch_holidays,
+    branch_working_time
+  } = storeToRefs(commonStore)
 
   // * toast
   const $toast = new Toast()
@@ -59,5 +78,156 @@ export function useGetData() {
     }
   }
 
-  return { getBusinessInfos }
+  /** lưu thiết lập chu kỳ kinh doanh theo tháng */
+  async function savesSettingPeriodMonthly() {
+    try {
+      await businessSaveSetting({
+        body: {
+          setting_type: 'monthly_business_period',
+          setting_data: monthly_business_period.value?.setting_data,
+        },
+      })
+    } catch (e) {
+      throw e
+    }
+  }
+
+  /** lưu thiết lập chu kỳ kinh doanh theo năm */
+  async function savesSettingPeriodYearly() {
+    try {
+      await businessSaveSetting({
+        body: {
+          setting_type: 'year_business_period',
+          setting_data: year_business_period.value?.setting_data,
+        },
+      })
+    } catch (e) {
+      throw e
+    }
+  }
+
+  /** lưu thiết lập ngày nghỉ lễ */
+  async function savesSettingHolidays() {
+    try {
+      await businessSaveSetting({
+        body: {
+          setting_type: 'holiday',
+          setting_data: holidays.value?.setting_data,
+        },
+      })
+    } catch (e) {
+      throw e
+    }
+  }
+
+  /** lưu thiết lập hình thức làm việc */
+  async function savesSettingFormOfWork() {
+    try {
+      await businessSaveSetting({
+        body: {
+          setting_type: 'form_of_work',
+          setting_data: form_of_work.value?.setting_data,
+        },
+      })
+    } catch (e) {
+      throw e
+    }
+  }
+
+  /** lưu thiết lập thời gian làm việc */
+  async function savesSettingTimeworking() {
+    try {
+      await businessSaveSetting({
+        body: {
+          setting_type: 'working_time',
+          setting_data: working_time.value?.setting_data,
+        },
+      })
+    } catch (e) {
+      throw e
+    }
+  }
+
+  /** lưu thiết lập hình nền */
+  async function savesSettingBackground() {
+    try {
+      await businessSaveSetting({
+        body: {
+          setting_type: 'background',
+          setting_data: background.value?.setting_data,
+        },
+      })
+    } catch (e) {
+      throw e
+    }
+  }
+
+  /** lưu thông tin doanh nghiệp */
+  async function saveBusinessInfo() {
+    try {
+      await businessUpdate({
+        body: {
+          ...business_data.value,
+          id: business_data.value?._id,
+        },
+      })
+    } catch (e) {
+      $toast.error(e)
+    }
+  }
+
+  /** lưu thiết lập ngày nghỉ lễ của chi nhánh */
+async function saveBranchSettingHolidays() {
+  try {
+    await branchSaveSetting({
+      body: {
+        setting_type: 'holiday',
+        setting_data: branch_holidays.value?.setting_data,
+      },
+    })
+  } catch (e) {
+    throw e
+  }
+}
+
+/** lưu thiết lập hình thức làm việc của chi nhánh */
+async function saveBranchSettingFormOfWork() {
+  try {
+    await branchSaveSetting({
+      body: {
+        setting_type: 'form_of_work',
+        setting_data: branch_form_of_work.value?.setting_data,
+      },
+    })
+  } catch (e) {
+    throw e
+  }
+}
+
+/** lưu thiết lập thời gian làm việc của chi nhánh */
+async function saveBranchSettingTimeworking() {
+  try {
+    await branchSaveSetting({
+      body: {
+        setting_type: 'working_time',
+        setting_data: branch_working_time.value?.setting_data,
+      },
+    })
+  } catch (e) {
+    throw e
+  }
+}
+  return {
+    getBusinessInfos,
+    savesSettingPeriodMonthly,
+    savesSettingPeriodYearly,
+    savesSettingHolidays,
+    savesSettingFormOfWork,
+    savesSettingTimeworking,
+    savesSettingBackground,
+    saveBusinessInfo,
+    saveBranchSettingFormOfWork,
+    saveBranchSettingHolidays,
+    saveBranchSettingTimeworking
+  }
 }

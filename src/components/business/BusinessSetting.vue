@@ -9,7 +9,7 @@
     <!-- 4 -->
     <BusinessPeriod></BusinessPeriod>
     <!-- 5 -->
-    <Holiday v-model="holidays" :setting_holiday="setting.holiday"></Holiday>
+    <Holiday v-model="holidays" :setting_holiday="setting.holidays"></Holiday>
     <!-- 6 -->
     <WorkingForm
       v-model="form_of_work"
@@ -55,6 +55,7 @@ import Holiday from '@/components/enterpriseSettings/Holiday.vue'
 import WorkingForm from '@/components/enterpriseSettings/WorkingForm.vue'
 import BusinessPeriod from '@/components/enterpriseSettings/BusinessPeriod.vue'
 import Background from '@/components/enterpriseSettings/Background.vue'
+import { useGetData } from '@/hook.ts'
 
 // * store
 const commonStore = useCommonStore()
@@ -68,106 +69,18 @@ const {
   business_data,
 } = storeToRefs(commonStore)
 
+const {
+  saveBusinessInfo,
+  savesSettingPeriodMonthly,
+  savesSettingPeriodYearly,
+  savesSettingHolidays,
+  savesSettingFormOfWork,
+  savesSettingTimeworking,
+  savesSettingBackground,
+} = useGetData()
+
 // * toast
 const $toast = new Toast()
-
-/** lưu thiết lập chu kỳ kinh doanh theo tháng */
-async function savesSettingPeriodMonthly() {
-  try {
-    await businessSaveSetting({
-      body: {
-        setting_type: 'monthly_business_period',
-        setting_data: monthly_business_period.value?.setting_data,
-      },
-    })
-  } catch (e) {
-    throw e
-  }
-}
-
-/** lưu thiết lập chu kỳ kinh doanh theo năm */
-async function savesSettingPeriodYearly() {
-  try {
-    await businessSaveSetting({
-      body: {
-        setting_type: 'year_business_period',
-        setting_data: year_business_period.value?.setting_data,
-      },
-    })
-  } catch (e) {
-    throw e
-  }
-}
-
-/** lưu thiết lập ngày nghỉ lễ */
-async function savesSettingHolidays() {
-  try {
-    await businessSaveSetting({
-      body: {
-        setting_type: 'holiday',
-        setting_data: holidays.value?.setting_data,
-      },
-    })
-  } catch (e) {
-    throw e
-  }
-}
-
-/** lưu thiết lập hình thức làm việc */
-async function savesSettingFormOfWork() {
-  try {
-    await businessSaveSetting({
-      body: {
-        setting_type: 'form_of_work',
-        setting_data: form_of_work.value?.setting_data,
-      },
-    })
-  } catch (e) {
-    throw e
-  }
-}
-
-/** lưu thiết lập thời gian làm việc */
-async function savesSettingTimeworking() {
-  try {
-    await businessSaveSetting({
-      body: {
-        setting_type: 'working_time',
-        setting_data: working_time.value?.setting_data,
-      },
-    })
-  } catch (e) {
-    throw e
-  }
-}
-
-/** lưu thiết lập hình nền */
-async function savesSettingBackground() {
-  try {
-    await businessSaveSetting({
-      body: {
-        setting_type: 'background',
-        setting_data: background.value?.setting_data,
-      },
-    })
-  } catch (e) {
-    throw e
-  }
-}
-
-/** lưu thông tin doanh nghiệp */
-async function saveBusinessInfo() {
-  try {
-    await businessUpdate({
-      body: {
-        ...business_data.value,
-        id: business_data.value?._id,
-      },
-    })
-  } catch (e) {
-    $toast.error(e)
-  }
-}
 
 async function saveSetting() {
   try {

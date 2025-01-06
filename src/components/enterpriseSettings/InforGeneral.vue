@@ -10,7 +10,7 @@
         <h4 class="flex justify-start text-sm font-medium">Thông tin chung</h4>
       </div>
       <!-- phần các ô input  -->
-      <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-2 lg:gap-3">
         <!-- Tên viết tắt -->
         <div class="col-span-2 md:col-span-1 text-left h-16">
           <label
@@ -93,12 +93,12 @@
           />
         </div>
         <!-- Trạng thái-->
-        <div class="text-left">
+        <div class="text-left flex flex-col gap-1.5">
           <label for="taxCode" class="block text-sm font-medium text-gray-700">
             Trạng thái
           </label>
           <div
-            class="flex items-center py-2 text-green-600 gap-2"
+            class="flex items-center text-green-600 gap-2"
             :class="{
               'text-green-600': !business_data.archive,
               'text-red-500': business_data.archive,
@@ -115,12 +115,12 @@
           </div>
         </div>
         <!-- Thao tác-->
-        <div class="text-left">
+        <div class="text-left flex flex-col gap-1.5">
           <label for="taxCode" class="block text-sm font-medium text-gray-700">
             Thao tác
           </label>
           <button
-            class="flex items-center px-2.5 py-2 gap-2 border rounded-md hover:brightness-95"
+            class="flex items-center p-1 lg:px-2.5 lg:py-2 gap-1 lg:gap-2 border rounded-md hover:brightness-95"
             :class="{
               'bg-green-100 text-green-600  border-green-500':
                 business_data.archive,
@@ -141,11 +141,11 @@
           >
             <template v-if="business_data.archive">
               <IconTick class="h-5 w-5"></IconTick>
-              <p class="text-sm">Đang hoạt động</p>
+              <p class="text-sm">Kích hoạt</p>
             </template>
             <template v-else>
               <IconPause class="h-5 w-5"></IconPause>
-              <p class="text-sm">Tạm dừng</p>
+              <p class="text-sm">Tạm dừng hoạt động</p>
             </template>
           </button>
         </div>
