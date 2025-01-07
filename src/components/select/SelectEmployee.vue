@@ -18,7 +18,7 @@
         v-model="search"
         type="text"
         placeholder="Chọn nhân sự"
-        class="outline-none border w-full lg:w-auto rounded-md py-2 px-3 placeholder:text-slate-500"
+        class="outline-none border w-full rounded-md py-2 px-3 placeholder:text-slate-500"
       />
     </template>
     <template v-slot:box>

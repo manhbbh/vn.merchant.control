@@ -2,7 +2,7 @@
   <DropBox :close="() => (is_show_drop_box = false)">
     <template v-slot:trigger>
       <div
-        class="border rounded-md py-2 px-3 w-52 cursor-pointer flex gap-2 justify-between items-center"
+        class="border rounded-md py-2 px-3 min-w-52 cursor-pointer flex gap-2 justify-between items-center"
         @click="is_show_drop_box = true"
       >
         <p v-if="!form_of_work_id" class="text-slate-500 truncate">Chọn hình thức làm việc</p>

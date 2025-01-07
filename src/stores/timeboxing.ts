@@ -1,10 +1,12 @@
-import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import { defineStore } from 'pinia'
+
 import {
   BranchData,
   EmployeeSetting,
   FormOfWorkData,
   FullEmployeeData,
+  HistoryTimeboxingSetting,
 } from '@/service/interface'
 
 export const useTimeboxingStore = defineStore('timeboxing_store', () => {
@@ -26,6 +28,9 @@ export const useTimeboxingStore = defineStore('timeboxing_store', () => {
   /** danh sách thiết lập nhân viên */
   const employee_setting = ref<EmployeeSetting[]>([])
 
+  /** lịch sử thiết lập timeboxing */
+  const history_timeboxing_setting = ref<HistoryTimeboxingSetting[]>([])
+
   return {
     employees_ids,
     business_employees_ids,
@@ -33,5 +38,6 @@ export const useTimeboxingStore = defineStore('timeboxing_store', () => {
     profile,
     form_of_work,
     employee_setting,
+    history_timeboxing_setting
   }
 })

@@ -9,7 +9,9 @@
   >
     <div class="flex flex-col w-full">
       <header class="flex items-center justify-between h-14 px-6 py-2">
-        <h3 class="h-6 text-lg font-semibold">Nguyễn Đình Tùng</h3>
+        <h3 class="h-6 text-lg font-semibold">
+          {{ getInfo(employee_selected?.employee_id, 'name') }}
+        </h3>
       </header>
       <!--  -->
       <main
@@ -38,8 +40,8 @@
             >
               Lương P2
             </label>
-            <input
-              v-model="salary_p2"
+            <Cleave
+              v-model="employee_selected.salary_p2"
               type="text"
               id="shortName"
               placeholder="Nhập tiêu đề"
@@ -200,8 +202,27 @@
 </template>
 
 <script setup lang="ts">
+// * libraries
+import { PropType, ref } from 'vue'
+
+// * icons
 import IconPapers from '@/components/icons/IconPapers.vue'
-import { ref } from 'vue';
+
+// * interface
+import { EmployeeSetting } from '@/service/interface'
+import { useTimeboxingStore } from '@/stores/timeboxing'
+import { storeToRefs } from 'pinia'
+
+// * prop
+const props = defineProps({
+  employee_selected: {
+    type: Object as PropType<EmployeeSetting>,
+    required: true,
+  },
+})
+
+// * store
+const { business_employees_ids } = storeToRefs(useTimeboxingStore())
 
 /**biến*/
 const active = ref(true)
@@ -311,7 +332,9 @@ const LIST_DAYS = [
   },
 ]
 /**Biến mở đóng modal*/
-const open = ref(false)
+const open = defineModel({
+  default: false,
+})
 
 /**Biến*/
 const salary_p2 = ref('8.000.000')
@@ -319,5 +342,18 @@ const salary_p2 = ref('8.000.000')
 /**Hàm đóng modal*/
 function handleOk() {
   open.value = false
+}
+
+/** Lấy thông tin nhân viên */
+function getInfo(id?: string, type?: string) {
+  if (!id) return
+
+  /** thông tin nhân viên */
+  const EMPLOYEE = business_employees_ids.value?.[id]
+
+  if (type === 'name')
+    return `${EMPLOYEE?.first_name || ''} ${EMPLOYEE?.last_name || ''}`?.trim()
+
+  return EMPLOYEE?.avatar
 }
 </script>

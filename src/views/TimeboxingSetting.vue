@@ -2,25 +2,26 @@
   <div class="text-center overflow-y-auto sm:h-screen sm:overflow-hidden">
     <main
       v-if="is_authenticated"
-      class="w-full flex flex-col gap-2 bg-gray-100 px-3 pb-3 h-screen overflow-hidden text-black"
+      class="w-full flex flex-col bg-gray-100 lg:px-3 pb-3 h-screen overflow-hidden text-black"
     >
       <!-- phần trên -->
       <header
-        class="static top-0 sm:h-16 py-3 flex justify-between items-center flex-shrink-0"
+        class="static top-0 py-2 px-2 lg:px-0 flex justify-end items-center flex-shrink-0"
       >
         <!-- back và cài đặt chấm công -->
-        <div class="flex gap-2.5 items-center h-7.5 justify-start">
+        <!-- <div class="flex gap-2.5 items-center h-7.5 justify-start">
           <IconBack class="h-5 w-5 flex-shrink-0"></IconBack>
           <h2 class="text-lg font-medium hidden sm:flex">Cài đặt chấm công</h2>
-        </div>
+        </div> -->
         <!-- copy nút lưu  -->
         <div class="flex gap-7 items-center justify-start h-10">
-          <div class="flex items-center gap-2.5 h-7.5">
+          <!-- <div class="flex items-center gap-2.5 h-7.5">
             <IconCopy class="h-5 w-5 flex-shrink-0"></IconCopy>
             <p class="text-lg text-slate-500 font-medium">Sao chép</p>
-          </div>
+          </div> -->
           <button
             class="bg-blue-500 text-white px-4 py-2 rounded-md text-sm font-medium"
+            @click="handleSave()"
           >
             Lưu lại
           </button>
@@ -102,6 +103,7 @@ import Template401 from '@/components/Template401.vue'
 import {
   getHistorySettingTimeboxing,
   getSettingTimeboxing,
+  saveSettingTimeboxing,
 } from '@/service/api/api_timeboxing'
 import {
   getBusinessEmployee,
@@ -141,7 +143,7 @@ const LIST_MENU: Menu[] = [
 // * store
 const commonStore = useCommonStore()
 const timeboxingStore = useTimeboxingStore()
-const { form_of_work,employee_setting } = storeToRefs(timeboxingStore)
+const { form_of_work,employee_setting, history_timeboxing_setting } = storeToRefs(timeboxingStore)
 
 // * toast
 const $toast = new Toast()
@@ -206,7 +208,7 @@ async function getHistories() {
       },
     })
 
-    // history_setting.value = RES
+    history_timeboxing_setting.value = RES
   } catch (e) {
     $toast.error(e)
   }
@@ -242,6 +244,17 @@ async function getEmployees() {
     const RES = await getEmployee({
       body: {},
     })
+    
+    if(RES?.data){
+      timeboxingStore.employees_ids = RES?.data?.reduce(
+        (acc: any, curr: any) => {
+          acc[curr._id] = curr
+          return acc
+        },
+        {}
+      )
+    }
+
   } catch (e) {
     $toast.error(e)
   }
@@ -275,21 +288,43 @@ async function getBusinessEmployees() {
 /** lấy dữ liệu từ url */
 function getDataFromUrl() {
   /** lấy user_token */
-  const BUSINESS_TOKEN =
-    queryString('business_token') || localStorage.getItem('business_token')
+  const TOKEN_BUSINESS =
+    queryString('token_business') || localStorage.getItem('token_business')
 
   // nếu thiếu dữ liệu thôi
-  if (!BUSINESS_TOKEN) {
+  if (!TOKEN_BUSINESS) {
     return
   }
 
   // lưu lại dữ liệu vào store
-  commonStore.branch_data.access_token = BUSINESS_TOKEN
-  localStorage.setItem('business_token', BUSINESS_TOKEN)
+  commonStore.branch_data.access_token = TOKEN_BUSINESS
+  localStorage.setItem('token_business', TOKEN_BUSINESS)
 
   router.replace({ query: {} })
 
   is_authenticated.value = true
+}
+
+/** hàm lưu thiết lập */
+async function handleSave(){
+  try {
+    await saveSettingTimeboxing({
+      body: {
+        "type": "EMPLOYEE",
+        data: {
+          employees: employee_setting.value?.map(item => {
+            return {
+              ...item,
+              salary_p2: Number(item?.salary_p2 || 0)
+            }
+          })
+        }
+      },
+    })
+    $toast.success('Lưu thiết lập thành công')
+  } catch (e) {
+    $toast.error(e)
+  }
 }
 
 /**Hàm*/

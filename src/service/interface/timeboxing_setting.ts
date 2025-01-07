@@ -52,3 +52,35 @@ export interface TimeboxingSetting {
   /** Ngày cập nhật */
   updatedAt?: string;
 }
+
+/** dữ liệu lịch sử chấm công */
+export interface HistoryTimeboxingSetting {
+  /** ID duy nhất */
+  id?: number;
+  /** Loại bản ghi */
+  type?: string;
+  /** Dữ liệu cũ của bản ghi */
+  old_data?: {
+    employees?: EmployeeSetting[]
+  };
+  /** Dữ liệu mới của bản ghi */
+  new_data?: {
+    employees?: EmployeeSetting[]
+  };
+  /** ID của nhân viên */
+  employee_id?: string;
+  /** ID của nhóm */
+  team_id?: string | null;
+  /** ID của phòng ban */
+  department_id?: string;
+  /** ID của chi nhánh */
+  branch_id?: string;
+  /** ID của doanh nghiệp */
+  business_id?: string;
+  /** ID của người dùng */
+  user_id?: string;
+  /** Thời gian tạo bản ghi */
+  createdAt?: string;
+  /** Thời gian cập nhật bản ghi */
+  updatedAt?: string;
+}

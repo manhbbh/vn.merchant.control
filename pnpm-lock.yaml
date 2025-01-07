@@ -68,6 +68,9 @@ importers:
       vue:
         specifier: ^3.2.45
         version: 3.5.13(typescript@4.7.4)
+      vue-cleave-component:
+        specifier: ^3.0.2
+        version: 3.0.2(vue@3.5.13(typescript@4.7.4))
       vue-i18n:
         specifier: 9.13.1
         version: 9.13.1(vue@3.5.13(typescript@4.7.4))
@@ -696,6 +699,9 @@ packages:
   chokidar@4.0.3:
     resolution: {integrity: sha512-Qgzu8kfBvo+cA4962jnP1KkS6Dop5NS6g7R5LFYJr4b8Ub94PPQXUksCw9PvXoeXPRRddRNC5C1JQUR2SMGtnA==}
     engines: {node: '>= 14.16.0'}
+
+  cleave.js@1.6.0:
+    resolution: {integrity: sha512-ivqesy3j5hQVG3gywPfwKPbi/7ZSftY/UNp5uphnqjr25yI2CP8FS2ODQPzuLXXnNLi29e2+PgPkkiKUXLs/Nw==}
 
   color-convert@1.9.3:
     resolution: {integrity: sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==}
@@ -1683,6 +1689,12 @@ packages:
       terser:
         optional: true
 
+  vue-cleave-component@3.0.2:
+    resolution: {integrity: sha512-brQGSDQF1e2gfpd4J3eojz5kWc267DL+20TIHY6Pla2IahcMZEd56zoyaKjkxB+F9gsXSoPnqVIh2sb6pbuTjQ==}
+    engines: {node: '>=12.13.0'}
+    peerDependencies:
+      vue: ^3.2.0
+
   vue-demi@0.14.10:
     resolution: {integrity: sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==}
     engines: {node: '>=12'}
@@ -2348,6 +2360,8 @@ snapshots:
   chokidar@4.0.3:
     dependencies:
       readdirp: 4.0.2
+
+  cleave.js@1.6.0: {}
 
   color-convert@1.9.3:
     dependencies:
@@ -3418,6 +3432,11 @@ snapshots:
       '@types/node': 18.19.68
       fsevents: 2.3.3
       sass: 1.83.0
+
+  vue-cleave-component@3.0.2(vue@3.5.13(typescript@4.7.4)):
+    dependencies:
+      cleave.js: 1.6.0
+      vue: 3.5.13(typescript@4.7.4)
 
   vue-demi@0.14.10(vue@3.5.13(typescript@4.7.4)):
     dependencies:
