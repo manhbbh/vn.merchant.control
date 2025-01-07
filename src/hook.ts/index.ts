@@ -218,16 +218,27 @@ async function saveBranchSettingTimeworking() {
   }
 }
   return {
+    /** hàm lấy thông tin doanh nghiệp và chi nhánh */
     getBusinessInfos,
+    /** lưu thiết lập chu kỳ kinh doanh theo tháng */
     savesSettingPeriodMonthly,
+    /** lưu thiết lập chu kỳ kinh doanh theo năm */
     savesSettingPeriodYearly,
+    /** lưu thiết lập ngày nghỉ lễ */
     savesSettingHolidays,
+    /** lưu thiết lập hình thức làm việc */
     savesSettingFormOfWork,
+    /** lưu thiết lập thời gian làm việc */
     savesSettingTimeworking,
+    /** lưu thiết lập hình nền */
     savesSettingBackground,
+    /** lưu thông tin doanh nghiệp */
     saveBusinessInfo,
+    /** lưu thiết lập ngày nghỉ lễ của chi nhánh */
     saveBranchSettingFormOfWork,
+    /** lưu thiết lập hình thức làm việc của chi nhánh */
     saveBranchSettingHolidays,
+    /** lưu thiết lập thời gian làm việc của chi nhánh */
     saveBranchSettingTimeworking
   }
 }

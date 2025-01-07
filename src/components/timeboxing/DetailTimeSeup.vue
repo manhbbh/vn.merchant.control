@@ -1,11 +1,11 @@
 <template>
   <!-- các phần con -->
   <div class="flex-1 flex flex-col gap-2 overflow-y-auto">
-    <GeneralSettings></GeneralSettings>
+    <GeneralSettings id="general"></GeneralSettings>
     <!-- 2 -->
-    <EmployeeSettings></EmployeeSettings>
+    <EmployeeSettings id="employee"></EmployeeSettings>
     <!-- 3-->
-    <HistorySetting></HistorySetting>
+    <HistorySetting id="history"></HistorySetting>
   </div>
 </template>
 

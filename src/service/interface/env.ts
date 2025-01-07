@@ -12,5 +12,7 @@ export interface Env {
     merchant: string
     /**máy chủ product */
     product: string
+    /**máy chủ timeboxing */
+    timeboxing: string
   }
 }

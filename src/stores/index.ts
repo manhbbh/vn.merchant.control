@@ -36,6 +36,7 @@ export const useCommonStore = defineStore('common_store', () => {
   /** danh sách nhân viên */
   const employees_user_ids = ref<{ [key: string]: FullEmployeeData }>({})
 
+  /** danh sách nhân viên dạng object*/
   const employees_ids = ref<{ [key: string]: FullEmployeeData }>({})
 
   /** danh sách nhân viên của 1 chi nhánh */
@@ -44,6 +45,7 @@ export const useCommonStore = defineStore('common_store', () => {
   /** danh sách chi nhánh */
   const branches = ref<BranchData[]>([])
 
+  /** danh sách chi nhánh dạng object */
   const branches_ids = ref<{ [key: string]: BranchData }>({})
 
   /** dữ liệu của doanh nghiệp */

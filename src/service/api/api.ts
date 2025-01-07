@@ -1,6 +1,7 @@
-import { requestAxios } from '@/service/api/request'
-import type { InputRequestApi } from '@/service/interface'
 import { useCommonStore } from '@/stores'
+import { requestAxios } from '@/service/api/request'
+
+import type { InputRequestApi } from '@/service/interface'
 
 /** Lấy token business từ store */
 function getTokenUser() {
@@ -81,6 +82,30 @@ export async function getUserInfo(params: InputRequestApi) {
   }
 }
 
+/** lấy danh sách nhân viên của chi nhánh */
+export async function getEmployee(params: InputRequestApi) {
+  try {
+    return await apiMerchantRequest({
+      ...params,
+      end_point: 'systems/employee/get_employee',
+    })
+  } catch (e) {
+    throw e
+  }
+}
+
+/** lấy dữ liệu phòng ban, nhân viên, chi nhánh của toàn bộ BM */
+export async function getBusinessEmployee(params: InputRequestApi) {
+  try {
+    return await apiMerchantRequest({
+      ...params,
+      end_point: 'apps/info/business_employees',
+    })
+  } catch (e) {
+    throw e
+  }
+}
+
 // * Thiết lập doanh nghiệp
 /** lấy danh sách thiết lập */
 export async function getSetting(params: InputRequestApi) {
@@ -150,18 +175,6 @@ export async function businessAddEmployee(params: InputRequestApi) {
     return await apiMerchantRequest({
       ...params,
       end_point: 'systems/employee/create_employee',
-    })
-  } catch (e) {
-    throw e
-  }
-}
-
-/** lấy danh sách nhân viên */
-export async function getEmployee(params: InputRequestApi) {
-  try {
-    return await apiMerchantRequest({
-      ...params,
-      end_point: 'systems/employee/get_employee',
     })
   } catch (e) {
     throw e

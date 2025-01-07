@@ -1,8 +1,8 @@
 <template>
-  <div class="w-4 h-4 rounded-full bg-blue-700 flex justify-center items-center">
+  <div class="w-4 h-4 rounded-full bg-blue-700 flex justify-center items-center overflow-hidden">
     <img
-      v-if="image_src"
-      :src="image_src"
+      v-if="$props.src && !image_src_err"
+      :src="$props.src"
       @error="onImageError"
       class="image"
     />
@@ -31,8 +31,9 @@ const $props = defineProps({
   }
 })
 
+
 /** link ảnh */
-const image_src = ref($props.src)
+const image_src_err = ref(false)
 
 /** đoạn text hiện khi ảnh lỗi */
 const fallback_text = computed(() => {
@@ -41,6 +42,6 @@ const fallback_text = computed(() => {
 
 /** hàm chạy khi load ảnh lỗi */
 function onImageError() {
-  image_src.value = ""
+  image_src_err.value = true
 }
 </script>
