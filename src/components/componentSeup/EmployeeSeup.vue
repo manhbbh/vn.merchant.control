@@ -59,8 +59,8 @@
               </td>
 
               <!-- nhân sự -->
-              <!-- @click="showModal(holiday)" -->
-              <td class="w-45 text-left py-2 text-customGray">
+              <!--  -->
+              <td @click="showModal(holiday)" class="w-45 text-left py-2 text-customGray">
                 <div class="flex w-full items-center gap-1 h-5">
                   <Avatar
                     :src="getInfo(holiday.employee_id, 'avatar')"
@@ -253,6 +253,7 @@ import Cleave from 'vue-cleave-component'
 
 // * components
 import Avatar from '@/components/avartar/Avatar.vue'
+import SelectEmployee from '@/components/select/SelectEmployee.vue'
 import SelectTimeWorking from '@/components/select/SelectTimeWorking.vue'
 import ModalDetailEmployeeSetting from '@/components/componentSeup/ModalDetailEmployeeSetting.vue'
 
@@ -260,8 +261,9 @@ import ModalDetailEmployeeSetting from '@/components/componentSeup/ModalDetailEm
 import IconEmployee from '@/components/icons/iconMenu/IconEmployee.vue'
 import IconTicks from '@/components/icons/IconTicks.vue'
 import IconArrow from '@/components/icons/IconArrow.vue'
+
+// * interfaces
 import { EmployeeSetting } from '@/service/interface'
-import SelectEmployee from '../select/SelectEmployee.vue'
 
 /** Cấu hình cleave */
 const cleave_options = {
