@@ -46,147 +46,143 @@
             </tr>
           </thead>
           <tbody>
-            <template v-for="i in 5">
-              <tr
-                v-for="(holiday, index) in employee_setting"
-                :key="index"
-                class="flex items-center gap-x-4 text-black h-15 cursor-pointer text-sm border-b border-gray-200"
-              >
-                <!-- STT -->
-                <td class="w-18 text-center items-start justify-center">
-                  <p
-                    class="flex px-4 text-blue-500 justify-center font-semibold"
-                  >
-                    {{ index + 1 }}
-                  </p>
-                </td>
+            <tr
+              v-for="(holiday, index) in employee_setting"
+              :key="index"
+              class="flex items-center gap-x-4 text-black h-15 cursor-pointer text-sm border-b border-gray-200"
+            >
+              <!-- STT -->
+              <td class="w-18 text-center items-start justify-center">
+                <p class="flex px-4 text-blue-500 justify-center font-semibold">
+                  {{ index + 1 }}
+                </p>
+              </td>
 
-                <!-- nhân sự -->
-                <!-- @click="showModal(holiday)" -->
-                <td class="w-45 text-left py-2 text-customGray">
-                  <div class="flex w-full items-center gap-1 h-5">
-                    <Avatar
-                      :src="getInfo(holiday.employee_id, 'avatar')"
-                      :text="getInfo(holiday.employee_id, 'name') || ''"
-                    />
-                    <!--  -->
-                    <div class="flex gap-1 items-center justify-between">
-                      <p class="text-sm">
-                        {{ getInfo(holiday.employee_id, 'name') || '' }}
-                      </p>
-                      <IconTicks class="w-4 h-4"></IconTicks>
-                    </div>
-                  </div>
-                  <!--  -->
-                  <div
-                    class="flex gap-1 ml-5 h-2.5"
-                    v-if="holiday.working_time_id"
-                  >
-                    <p
-                      v-for="(time, index) in form_of_work?.[
-                        holiday.working_time_id
-                      ]?.working_time"
-                      :class="{
-                        'bg-green-500':
-                          Number(time?.working_hours || 0) >= 5 && time?.active,
-                        'bg-orange-500':
-                          Number(time?.working_hours || 0) < 5 && time?.active,
-                        'bg-slate-500': !time?.active,
-                      }"
-                      class="w-2.5 text-ss text-white flex items-center justify-center h-2.5 rounded-full"
-                      v-tooltip="
-                        !time?.active
-                          ? 'Nghỉ'
-                          : Number(time?.working_hours || 0) >= 5
-                          ? 'Toàn thời gian'
-                          : 'Bán thời gian'
-                      "
-                    >
-                      {{ index < 6 ? index + 2 : 'C' }}
-                    </p>
-                  </div>
-                </td>
-
-                <!-- Hình thức làm việc -->
-                <td class="w-52 text-left hidden md:block">
-                  <!-- select -->
-                  <SelectTimeWorking v-model="holiday.working_time_id" />
-                </td>
-
-                <!-- Lương P1 -->
-                <td class="w-42 text-left hidden md:block">
-                  <Cleave
-                    v-model="holiday.salary_p2"
-                    :options="cleave_options"
-                    class="w-full px-3 py-2 outline-none border rounded-md placeholder:text-slate-500"
+              <!-- nhân sự -->
+              <!-- @click="showModal(holiday)" -->
+              <td class="w-45 text-left py-2 text-customGray">
+                <div class="flex w-full items-center gap-1 h-5">
+                  <Avatar
+                    :src="getInfo(holiday.employee_id, 'avatar')"
+                    :text="getInfo(holiday.employee_id, 'name') || ''"
                   />
-                </td>
-                <!-- chủ động -->
-                <td class="w-25 text-left hidden md:block">
-                  <div
-                    class="flex items-center border border-gray-300 h-9 py-2 rounded-md"
+                  <!--  -->
+                  <div class="flex gap-1 items-center justify-between">
+                    <p class="text-sm">
+                      {{ getInfo(holiday.employee_id, 'name') || '' }}
+                    </p>
+                    <IconTicks class="w-4 h-4"></IconTicks>
+                  </div>
+                </div>
+                <!--  -->
+                <div
+                  class="flex gap-1 ml-5 h-2.5"
+                  v-if="holiday.working_time_id"
+                >
+                  <p
+                    v-for="(time, index) in form_of_work?.[
+                      holiday.working_time_id
+                    ]?.working_time"
+                    :class="{
+                      'bg-green-500':
+                        Number(time?.working_hours || 0) >= 5 && time?.active,
+                      'bg-orange-500':
+                        Number(time?.working_hours || 0) < 5 && time?.active,
+                      'bg-slate-500': !time?.active,
+                    }"
+                    class="w-2.5 text-ss text-white flex items-center justify-center h-2.5 rounded-full"
+                    v-tooltip="
+                      !time?.active
+                        ? 'Nghỉ'
+                        : Number(time?.working_hours || 0) >= 5
+                        ? 'Toàn thời gian'
+                        : 'Bán thời gian'
+                    "
                   >
-                    <input
-                      @input="(e:Event) => {
+                    {{ index < 6 ? index + 2 : 'C' }}
+                  </p>
+                </div>
+              </td>
+
+              <!-- Hình thức làm việc -->
+              <td class="w-52 text-left hidden md:block">
+                <!-- select -->
+                <SelectTimeWorking v-model="holiday.working_time_id" />
+              </td>
+
+              <!-- Lương P1 -->
+              <td class="w-42 text-left hidden md:block">
+                <Cleave
+                  v-model="holiday.salary_p2"
+                  :options="cleave_options"
+                  class="w-full px-3 py-2 outline-none border rounded-md placeholder:text-slate-500"
+                />
+              </td>
+              <!-- chủ động -->
+              <td class="w-25 text-left hidden md:block">
+                <div
+                  class="flex items-center border border-gray-300 h-9 py-2 rounded-md"
+                >
+                  <input
+                    @input="(e:Event) => {
                       const VALUE = Number(holiday.proactive_percent || 0)
                       if(VALUE > 100 ) holiday.proactive_percent = 100
                       if(VALUE < 0 ) holiday.proactive_percent = 0
                     }"
-                      @change="
-                        () => {
-                          holiday.passive_percent =
-                            100 - Number(holiday.proactive_percent || 0)
-                        }
-                      "
-                      type="text"
-                      class="outline-none text-customDark pl-3 w-full text-sm"
-                      v-model="holiday.proactive_percent"
-                    />
-                    <div
-                      class="border-l border-gray-300 text-muted flex-shrink-0 flex items-center justify-center w-9 h-9"
-                    >
-                      %
-                    </div>
-                  </div>
-                </td>
-                <!-- bị đọng -->
-                <td class="w-25 text-left hidden md:block">
+                    @change="
+                      () => {
+                        holiday.passive_percent =
+                          100 - Number(holiday.proactive_percent || 0)
+                      }
+                    "
+                    type="text"
+                    class="outline-none text-customDark pl-3 w-full text-sm"
+                    v-model="holiday.proactive_percent"
+                  />
                   <div
-                    class="flex bg-slate-100 items-center border border-gray-300 h-9 py-2 rounded-md"
+                    class="border-l border-gray-300 text-muted flex-shrink-0 flex items-center justify-center w-9 h-9"
                   >
-                    <input
-                      type="text"
-                      class="outline-none text-customDark pl-3 bg-slate-100 w-full text-sm"
-                      v-model="holiday.passive_percent"
-                    />
-                    <div
-                      class="border-l border-gray-300 text-muted flex-shrink-0 flex items-center justify-center w-9 h-9"
-                    >
-                      %
-                    </div>
+                    %
                   </div>
-                </td>
+                </div>
+              </td>
+              <!-- bị đọng -->
+              <td class="w-25 text-left hidden md:block">
+                <div
+                  class="flex bg-slate-100 items-center border border-gray-300 h-9 py-2 rounded-md"
+                >
+                  <input
+                    type="text"
+                    class="outline-none text-customDark pl-3 bg-slate-100 w-full text-sm"
+                    v-model="holiday.passive_percent"
+                  />
+                  <div
+                    class="border-l border-gray-300 text-muted flex-shrink-0 flex items-center justify-center w-9 h-9"
+                  >
+                    %
+                  </div>
+                </div>
+              </td>
 
-                <!-- xóa -->
-                <td class="w-50 text-left py-2 text-customGray hidden md:block">
-                  <div class="flex items-center gap-1 h-5">
-                    <!--  -->
-                    <div class="flex gap-1 items-center justify-between">
-                      <p class="text-sm">
-                        {{ getInfo(holiday.updated_by, 'name') || '' }}
-                      </p>
-                      <IconTicks class="w-4 h-4"></IconTicks>
-                    </div>
-                  </div>
+              <!-- xóa -->
+              <td class="w-50 text-left py-2 text-customGray hidden md:block">
+                <div class="flex items-center gap-1 h-5">
                   <!--  -->
-                  <div class="h5 flex ml-5 text-xs items-center justify-start">
-                    <p v-if="holiday.updated_time">
-                      {{ format(holiday.updated_time, 'HH:mm - dd/MM/yyyy') }}
+                  <div class="flex gap-1 items-center justify-between">
+                    <p class="text-sm">
+                      {{ getInfo(holiday.updated_by, 'name') || '' }}
                     </p>
+                    <IconTicks class="w-4 h-4"></IconTicks>
                   </div>
-                </td>
-              </tr>
-            </template>
+                </div>
+                <!--  -->
+                <div class="h5 flex ml-5 text-xs items-center justify-start">
+                  <p v-if="holiday.updated_time">
+                    {{ format(holiday.updated_time, 'HH:mm - dd/MM/yyyy') }}
+                  </p>
+                </div>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
