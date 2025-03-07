@@ -106,6 +106,18 @@ export async function getBusinessEmployee(params: InputRequestApi) {
   }
 }
 
+/** Upload ảnh */
+export async function uploadImage(params: InputRequestApi) {
+  try {
+    return await apiMerchantRequest({
+      ...params,
+      end_point: 'internals/attachment/upload',
+    })
+  } catch (e) {
+    throw e
+  }
+}
+
 // * Thiết lập doanh nghiệp
 /** lấy danh sách thiết lập */
 export async function getSetting(params: InputRequestApi) {
@@ -303,3 +315,5 @@ export const getAddress = async (data: {}) => {
     throw e
   }
 }
+
+

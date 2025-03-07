@@ -39,3 +39,34 @@ export const TIME_ZONES = [
   "GMT +13:00 Nukuʻalofa, Samoa",
   "GMT +14:00 Kiritimati Island"
 ]
+
+/** các đơn vị tiền tệ */
+export const CURRENCIES: Record<string, string> = {
+  VND: 'Việt Nam Đồng',
+  JPY: 'Yên Nhật',
+  USD: 'Đô la Mỹ',
+  EUR: 'Euro',
+  GBP: 'Bảng Anh',
+  CNY: 'Nhân dân tệ',
+  KRW: 'Won Hàn Quốc',
+}
+
+/** các quốc gia và mã code aplha-2 */
+export const COUNTRIES: Record<string, string> = {
+  // Đông Nam Á
+  VN: "Việt Nam",
+  TH: "Thái Lan",
+  MY: "Malaysia",
+  SG: "Singapore",
+  ID: "Indonesia",
+  PH: "Philippines",
+  KH: "Campuchia",
+  LA: "Lào",
+  MM: "Myanmar",
+  US: "Hoa Kỳ",
+  GB: "Vương quốc Anh",
+  JP: "Nhật Bản",
+  KR: "Hàn Quốc",
+  CN: "Trung Quốc",
+  AU: "Úc",
+};
