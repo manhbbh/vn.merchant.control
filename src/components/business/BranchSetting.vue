@@ -13,6 +13,9 @@
       :setting_holiday="holidays.setting_data || {}"
     ></Holiday>
     <!-- 4 -->
+     <!--  -->
+    <!-- <AnnualLeave></AnnualLeave> -->
+    <!--  -->
     <WorkingForm
       v-model="branch_form_of_work"
       :setting_form_of_work="form_of_work.setting_data || {}"
@@ -47,6 +50,7 @@ import { storeToRefs } from 'pinia'
 
 /**component */
 import Holiday from '@/components/enterpriseSettings/Holiday.vue'
+import AnnualLeave from '@/components/enterpriseSettings/AnnualLeave.vue'
 import InforBranch from '@/components/enterpriseSettings/InforBranch.vue'
 import Timeworking from '@/components/enterpriseSettings/Timeworking.vue'
 import WorkingForm from '@/components/enterpriseSettings/WorkingForm.vue'

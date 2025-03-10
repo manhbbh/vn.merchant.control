@@ -11,25 +11,19 @@
     <!-- 5 -->
     <Holiday v-model="holidays" :setting_holiday="setting.holidays"></Holiday>
     <!-- 6 -->
-    <WorkingForm
-      v-model="form_of_work"
-      :setting_form_of_work="setting.form_of_work"
-    ></WorkingForm>
+    <!--  -->
+    <AnnualLeave></AnnualLeave>
+    <!--  -->
+    <WorkingForm v-model="form_of_work" :setting_form_of_work="setting.form_of_work"></WorkingForm>
     <!-- 7 -->
-    <Timeworking
-      v-model="working_time"
-      :setting_working_time="setting.working_time"
-    ></Timeworking>
+    <Timeworking v-model="working_time" :setting_working_time="setting.working_time"></Timeworking>
     <!-- 8 -->
     <Background></Background>
     <!-- nút lưu -->
-    <div
-      class="py-2 px-3 sticky bottom-0 bg-white rounded-lg flex items-center justify-end z-30"
-    >
+    <div class="py-2 px-3 sticky bottom-0 bg-white rounded-lg flex items-center justify-end z-30">
       <button
         class="w-full lg:w-auto h-9 text-sm font-medium bg-blue-700 px-4 py-2 flex justify-center items-center rounded-lg text-white"
-        @click="saveSetting()"
-      >
+        @click="saveSetting()">
         Lưu thiết lập
       </button>
     </div>
@@ -55,6 +49,7 @@ import Holiday from '@/components/enterpriseSettings/Holiday.vue'
 import WorkingForm from '@/components/enterpriseSettings/WorkingForm.vue'
 import BusinessPeriod from '@/components/enterpriseSettings/BusinessPeriod.vue'
 import Background from '@/components/enterpriseSettings/Background.vue'
+import AnnualLeave from '@/components/enterpriseSettings/AnnualLeave.vue'
 import { useGetData } from '@/hook.ts'
 
 // * store
