@@ -416,6 +416,12 @@ async function detaiBranch(branch: BranchData) {
     // không có data thì thôi
     if (!RES.data) return
 
+    // clear data cũ
+    commonStore.branch_holidays = {}
+    commonStore.branch_form_of_work = {}
+    commonStore.branch_working_time = {}
+    commonStore.branch_annual_leave_year = {}
+
     // lặp qua các dữ liệu thiết lập để lưu lại
     RES.data?.forEach((item: any) => {
       if (item.setting_type === 'holiday') {
