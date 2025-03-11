@@ -432,6 +432,12 @@ async function detaiBranch(branch: BranchData) {
         commonStore.branch_working_time = item
         return
       }
+
+      if (item.setting_type === 'annual_leave_year') {
+        commonStore.branch_annual_leave_year = item
+        return
+      }
+
     })
 
     // nếu chưa thiết lập ngày lễ thì lấy dữ liệu ở thiết lập doanh nghiệp
