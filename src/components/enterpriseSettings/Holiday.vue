@@ -1,5 +1,7 @@
 <template>
-  <div class="py-3 px-2 sm:px-4 bg-white rounded-lg flex text-black items-start gap-2 sm:gap-3">
+  <div
+    class="py-3 px-2 sm:px-4 bg-white rounded-lg flex text-black items-start gap-2 sm:gap-3"
+  >
     <!-- icon -->
     <IconCalendar class="w-5 h-5 flex-shrink-0"></IconCalendar>
     <!--content  -->
@@ -7,34 +9,52 @@
       <div class="flex items-start justify-between">
         <h4 class="flex justify-start text-sm font-medium">Nghỉ lễ</h4>
         <div class="hidden lg:flex items-center gap-2.5">
-          <button class="text-sm font-medium text-slate-500 h-9 px-6 py-2" @click="reset()">
+          <button
+            class="text-sm font-medium text-slate-500 h-9 px-6 py-2"
+            @click="reset()"
+          >
             <span v-if="!branch_data?._id">Khôi phục mặc định</span>
             <span v-else>Khôi phục theo Doanh nghiệp</span>
           </button>
-          <button class="h-9 w-18 text-sm font-medium text-white rounded-md bg-black" @click="is_show_add = true">
+          <button
+            class="h-9 w-18 text-sm font-medium text-white rounded-md bg-black"
+            @click="is_show_add = true"
+          >
             Thêm
           </button>
         </div>
       </div>
       <!--  -->
       <div class="grid grid-cols-3">
-        <div class="flex gap-1 items-center w-full">
+        <div class="flex gap-3 items-center w-full">
           <label class="flex-shrink-0 text-sm font-medium" for="">
             Tính lương nghỉ lễ
           </label>
           <div class="relative w-full flex justify-start">
-            <select class="appearance-none w-full outline-none rounded-lg border-border border text-sm px-3 py-2">
-              <option value="">Tính cả P1 và P2</option>
-              <option value="p1">Tính P1</option>
-              <option value="p1">Tính P2</option>
+            <select
+              class="appearance-none w-full outline-none rounded-lg border-border border text-sm px-3 py-2"
+              :class="{
+                'text-slate-500': !holidays.calculate_holiday_pay,
+              }"
+              v-model="holidays.calculate_holiday_pay"
+            >
+              <option class="text-black" value="undefined" hidden>-- Chọn cách tính --</option>
+              <option class="text-black" value="P1_AND_P2">Tính cả P1 và P2</option>
+              <option class="text-black" value="ONLY_P1">Tính P1</option>
+              <option class="text-black" value="ONLY_P2">Tính P2</option>
+              <option class="text-black" value="NONE">Không tính</option>
             </select>
-            <IconDown class="w-5 h-5 text-down absolute right-3 top-2 "></IconDown>
+            <IconDown
+              class="w-5 h-5 text-down absolute right-3 top-2"
+            ></IconDown>
           </div>
         </div>
       </div>
       <!--  -->
       <table class="min-w-full border-none bg-white rounded-lg z-10">
-        <thead class="bg-slate-200 h-7 text-xs font-semibold sticky top-0 text-customDarkBlue flex-shrink-0 z-10">
+        <thead
+          class="bg-slate-200 h-7 text-xs font-semibold sticky top-0 text-customDarkBlue flex-shrink-0 z-10"
+        >
           <tr class="h-7">
             <th class="w-18 px-2 text-left font-semibold">ID|Ngày</th>
             <th class="w-50 text-left font-semibold">Tiêu đề</th>
@@ -43,15 +63,20 @@
               Người tạo
             </th>
             <th class="w-25 text-center sm:text-left font-semibold">Xóa</th>
-            <th class="w-[170px] text-left font-semibold hidden md:table-cell"></th>
+            <th
+              class="w-[170px] text-left font-semibold hidden md:table-cell"
+            ></th>
           </tr>
         </thead>
         <!--  -->
         <tbody>
-          <tr v-for="(holiday, index) in Object.keys(
-                  holidays?.setting_data || {}
-                )" :key="index"
-            class="hover:bg-slate-100 text-black h-15 cursor-pointer text-sm border-b border-gray-200 overflow-y-auto">
+          <tr
+            v-for="(holiday, index) in Object.keys(
+              holidays?.setting_data || {}
+            )"
+            :key="index"
+            class="hover:bg-slate-100 text-black h-15 cursor-pointer text-sm border-b border-gray-200 overflow-y-auto"
+          >
             <!-- stt-->
             <td class="py-2 text-left items-start justify-center">
               <p class="flex px-4 text-blue-500 font-semibold">
@@ -64,29 +89,35 @@
                 {{ holidays?.setting_data?.[holiday]?.name }}
               </p>
             </td>
-  
+
             <!-- Ngày lễ -->
             <td class="font-medium py-2">
               <p class="fex items-center">{{ holiday }}</p>
             </td>
-  
+
             <!-- Người tạo -->
-            <td class="text-left py-2 text-customGray flex-col text-15px hidden md:flex">
+            <td
+              class="text-left py-2 text-customGray flex-col text-15px hidden md:flex"
+            >
               <div class="flex items-center gap-1 h-5">
-                <Avatar class="w-4 h-4" :src="getInfo(holidays?.setting_data?.[holiday]?.created_by)" :text="
-                        getInfo(
-                          holidays?.setting_data?.[holiday]?.created_by,
-                          'name'
-                        ) || ''
-                      "></Avatar>
+                <Avatar
+                  class="w-4 h-4"
+                  :src="getInfo(holidays?.setting_data?.[holiday]?.created_by)"
+                  :text="
+                    getInfo(
+                      holidays?.setting_data?.[holiday]?.created_by,
+                      'name'
+                    ) || ''
+                  "
+                ></Avatar>
                 <!--  -->
                 <div class="flex gap-1 items-end justify-between">
                   <p class="text-sm">
                     {{
-                    getInfo(
-                    holidays?.setting_data?.[holiday]?.created_by,
-                    'name'
-                    )
+                      getInfo(
+                        holidays?.setting_data?.[holiday]?.created_by,
+                        'name'
+                      )
                     }}
                   </p>
                   <IconTicks class="w-4 h-4"></IconTicks>
@@ -96,59 +127,89 @@
               <div class="h5 flex ml-5 items-center justify-start text-xs">
                 <p v-if="holidays?.setting_data?.[holiday]?.created_time">
                   {{
-                  format(
-                  holidays?.setting_data?.[holiday]?.created_time as Date,
-                  'HH:mm - dd/MM/yyyy'
-                  )
+                    format(
+                      holidays?.setting_data?.[holiday]?.created_time as Date,
+                      'HH:mm - dd/MM/yyyy'
+                    )
                   }}
                 </p>
               </div>
             </td>
-  
+
             <!-- xóa -->
             <td class="text-center sm:text-left py-2">
               <div
                 class="h-5 inline-flex text-red-500 bg-red-50 font-medium text-xs rounded-md px-2 py-0.5 items-center justify-center"
-                @click="handleDelete(holiday)">
+                @click="handleDelete(holiday)"
+              >
                 Xóa
               </div>
             </td>
             <!-- stt-->
-            <td class="py-2 text-left px-3 w-18 items-center justify-center hidden md:flex"></td>
+            <td
+              class="py-2 text-left px-3 w-18 items-center justify-center hidden md:flex"
+            ></td>
           </tr>
         </tbody>
       </table>
       <!--  -->
-      <div class="grid grid-cols-2 lg:flex flex-col gap-4 sm:flex-row" v-if="is_show_add">
+      <div
+        class="grid grid-cols-2 lg:flex flex-col gap-4 sm:flex-row"
+        v-if="is_show_add"
+      >
         <!-- Ngày thành lập-->
         <div class="flex flex-col lg:flex-row text-left gap-1 lg:gap-4">
-          <label for="taxCode" class="block text-sm font-medium flex-shrink-0 text-start px-1">
+          <label
+            for="taxCode"
+            class="block text-sm font-medium flex-shrink-0 text-start px-1"
+          >
             Tiêu đề
           </label>
-          <input v-model="add_form.title" class="border border-gray-300 px-3 rounded-md lg:w-67 py-2"
-            placeholder="Nhập tiêu đề ngày nghỉ" type="text" />
+          <input
+            v-model="add_form.title"
+            class="border border-gray-300 px-3 rounded-md lg:w-67 py-2"
+            placeholder="Nhập tiêu đề ngày nghỉ"
+            type="text"
+          />
         </div>
         <!-- Ngày thành lập-->
         <div class="flex flex-col lg:flex-row text-left gap-1 lg:gap-4">
-          <label for="taxCode" class="block text-sm font-medium text-gray-700 px-1">
+          <label
+            for="taxCode"
+            class="block text-sm font-medium text-gray-700 px-1"
+          >
             Ngày
           </label>
-          <CustomVuePicker v-model="add_form.date" placeholder="Chọn ngày" :handle-date="() => {}"
-            :input_class="'!border-transparent'" class="border border-gray-300 w-full lg:w-40" />
+          <CustomVuePicker
+            v-model="add_form.date"
+            placeholder="Chọn ngày"
+            :handle-date="() => {}"
+            :input_class="'!border-transparent'"
+            class="border border-gray-300 w-full lg:w-40"
+          />
         </div>
-  
+
         <!--  -->
-        <button class="col-span-2 bg-green-600 text-sm font-medium text-white rounded-md px-4 py-2" @click="handleAdd">
+        <button
+          class="col-span-2 bg-green-600 text-sm font-medium text-white rounded-md px-4 py-2"
+          @click="handleAdd"
+        >
           Lưu
         </button>
       </div>
-  
+
       <div class="flex lg:hidden items-center gap-2.5 text-white">
-        <button class="min-w-60 text-sm font-medium bg-slate-500 p-2 border rounded-md" @click="reset()">
+        <button
+          class="min-w-60 text-sm font-medium bg-slate-500 p-2 border rounded-md"
+          @click="reset()"
+        >
           <span v-if="!branch_data?._id">Khôi phục mặc định</span>
           <span v-else>Khôi phục theo Doanh nghiệp</span>
         </button>
-        <button class="flex-1 text-sm font-medium text-white rounded-md bg-black p-2" @click="is_show_add = true">
+        <button
+          class="flex-1 text-sm font-medium text-white rounded-md bg-black p-2"
+          @click="is_show_add = true"
+        >
           Thêm
         </button>
       </div>

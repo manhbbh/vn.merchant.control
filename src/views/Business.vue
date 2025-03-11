@@ -183,7 +183,7 @@ import { ArrowRightStartOnRectangleIcon } from '@heroicons/vue/24/outline'
 /**ảnh */
 
 // * interface
-import { BranchData } from '@/service/interface'
+import { BranchData, CalculationMethod } from '@/service/interface'
 
 // * hook
 const {
@@ -196,6 +196,7 @@ const {
   savesSettingTimeworking,
   saveBranchSettingFormOfWork,
   saveBranchSettingHolidays,
+  saveBranchSettingAnnualLeaveYear,
   saveBranchSettingTimeworking,
 } = useGetData()
 
@@ -449,6 +450,21 @@ async function detaiBranch(branch: BranchData) {
     if (isEmpty(commonStore.branch_working_time)) {
       commonStore.branch_working_time = copy(commonStore.working_time)
       saveBranchSettingTimeworking()
+    }
+
+    // nếu chưa có thiết lập phép năm thì khởi tạo
+    if (isEmpty(commonStore.branch_annual_leave_year)) {
+      commonStore.branch_annual_leave_year = {
+        calculate_holiday_pay: 'NONE' as CalculationMethod,
+        setting_data: {
+          /** Số ngày nghỉ */
+          annual_leave_days: 12,
+          /** Tự động xóa */
+          auto_clear: false
+        }
+      }
+
+      saveBranchSettingAnnualLeaveYear()
     }
   } catch (e) {}
 }

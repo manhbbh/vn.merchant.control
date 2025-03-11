@@ -11,9 +11,6 @@
     <!-- 5 -->
     <Holiday v-model="holidays" :setting_holiday="setting.holidays"></Holiday>
     <!-- 6 -->
-    <!--  -->
-    <AnnualLeave></AnnualLeave>
-    <!--  -->
     <WorkingForm v-model="form_of_work" :setting_form_of_work="setting.form_of_work"></WorkingForm>
     <!-- 7 -->
     <Timeworking v-model="working_time" :setting_working_time="setting.working_time"></Timeworking>
@@ -31,26 +28,23 @@
 </template>
 
 <script setup lang="ts">
+import { useGetData } from '@/hook.ts'
 import { useCommonStore } from '@/stores'
 import { Toast } from '@/service/helper/toast'
 import { setting } from '@/service/constant/setting_default'
-import { businessSaveSetting, businessUpdate } from '@/service/api/api'
 
 // * libraries
-import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 
 /**Component*/
-import InforGeneral from '@/components/enterpriseSettings/InforGeneral.vue'
-import ListBrach from '@/components/enterpriseSettings/ListBrach.vue'
-import ListEmployee from '@/components/enterpriseSettings/ListEmployee.vue'
-import Timeworking from '@/components/enterpriseSettings/Timeworking.vue'
 import Holiday from '@/components/enterpriseSettings/Holiday.vue'
-import WorkingForm from '@/components/enterpriseSettings/WorkingForm.vue'
-import BusinessPeriod from '@/components/enterpriseSettings/BusinessPeriod.vue'
+import ListBrach from '@/components/enterpriseSettings/ListBrach.vue'
 import Background from '@/components/enterpriseSettings/Background.vue'
-import AnnualLeave from '@/components/enterpriseSettings/AnnualLeave.vue'
-import { useGetData } from '@/hook.ts'
+import Timeworking from '@/components/enterpriseSettings/Timeworking.vue'
+import WorkingForm from '@/components/enterpriseSettings/WorkingForm.vue'
+import ListEmployee from '@/components/enterpriseSettings/ListEmployee.vue'
+import InforGeneral from '@/components/enterpriseSettings/InforGeneral.vue'
+import BusinessPeriod from '@/components/enterpriseSettings/BusinessPeriod.vue'
 
 // * store
 const commonStore = useCommonStore()

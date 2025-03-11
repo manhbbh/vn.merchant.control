@@ -22,6 +22,7 @@ export function useGetData() {
     business_data,
     branch_form_of_work,
     branch_holidays,
+    branch_annual_leave_year,
     branch_working_time
   } = storeToRefs(commonStore)
 
@@ -113,6 +114,7 @@ export function useGetData() {
         body: {
           setting_type: 'holiday',
           setting_data: holidays.value?.setting_data,
+          calculate_holiday_pay: holidays.value?.calculate_holiday_pay,
         },
       })
     } catch (e) {
@@ -183,6 +185,22 @@ async function saveBranchSettingHolidays() {
       body: {
         setting_type: 'holiday',
         setting_data: branch_holidays.value?.setting_data,
+        calculate_holiday_pay: branch_holidays.value?.calculate_holiday_pay,
+      },
+    })
+  } catch (e) {
+    throw e
+  }
+}
+
+/** lưu thiết lập phép năm của chi nhánh*/
+async function saveBranchSettingAnnualLeaveYear() {
+  try {
+    await branchSaveSetting({
+      body: {
+        setting_type: 'annual_leave_year',
+        setting_data: branch_annual_leave_year.value?.setting_data,
+        calculate_holiday_pay: branch_annual_leave_year.value?.calculate_holiday_pay,
       },
     })
   } catch (e) {
@@ -238,6 +256,8 @@ async function saveBranchSettingTimeworking() {
     saveBranchSettingFormOfWork,
     /** lưu thiết lập hình thức làm việc của chi nhánh */
     saveBranchSettingHolidays,
+    /** lưu thiết lập phép năm của chi nhánh*/
+    saveBranchSettingAnnualLeaveYear,
     /** lưu thiết lập thời gian làm việc của chi nhánh */
     saveBranchSettingTimeworking
   }

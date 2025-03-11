@@ -13,8 +13,10 @@
       :setting_holiday="holidays.setting_data || {}"
     ></Holiday>
     <!-- 4 -->
-     <!--  -->
-    <!-- <AnnualLeave></AnnualLeave> -->
+    <AnnualLeave
+      v-model="branch_annual_leave_year"
+      :setting_annual_leave_year="branch_annual_leave_year.setting_data || {}"
+    ></AnnualLeave>
     <!--  -->
     <WorkingForm
       v-model="branch_form_of_work"
@@ -39,13 +41,12 @@
   </div>
 </template>
 <script setup lang="ts">
+import { useGetData } from '@/hook.ts'
 import { useCommonStore } from '@/stores'
 import { Toast } from '@/service/helper/toast'
 import { businessUpdate } from '@/service/api/api'
-import { useGetData } from '@/hook.ts'
 
 // * libraries
-import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 
 /**component */
@@ -64,6 +65,7 @@ const {
   saveBranchSettingHolidays,
   saveBranchSettingFormOfWork,
   saveBranchSettingTimeworking,
+  saveBranchSettingAnnualLeaveYear
 } = useGetData()
 
 // * store
@@ -71,6 +73,7 @@ const commonStore = useCommonStore()
 const {
   branch_data,
   branch_holidays,
+  branch_annual_leave_year,
   branch_form_of_work,
   branch_working_time,
   branches,
@@ -108,6 +111,7 @@ async function saveSetting() {
       saveBranchSettingHolidays(),
       saveBranchSettingFormOfWork(),
       saveBranchSettingTimeworking(),
+      saveBranchSettingAnnualLeaveYear(),
     ])
     $toast.success('Lưu thiết lập thành công')
   } catch (e) {

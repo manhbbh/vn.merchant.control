@@ -2,6 +2,7 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
 import {
+  AnnualLeaveYear,
   PrimarySettingData,
   type BackgroundSetting,
   type BranchData,
@@ -75,6 +76,9 @@ export const useCommonStore = defineStore('common_store', () => {
   /** dữ liệu nghỉ lễ chi nhánh */
   const branch_holidays = ref<HolidaySetting>({})
 
+  /** dữ liệu phép năm chi nhánh */
+  const branch_annual_leave_year = ref<AnnualLeaveYear>({})
+
   /** dữ liệu hình thức làm việc chi nhánh */
   const branch_form_of_work = ref<FormOfWork>({})
 
@@ -106,6 +110,7 @@ export const useCommonStore = defineStore('common_store', () => {
     background,
     branch_holidays,
     branch_form_of_work,
+    branch_annual_leave_year,
     branch_working_time,
   }
 })

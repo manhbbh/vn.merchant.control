@@ -95,6 +95,14 @@ export interface HolidaySettingData {
   }
 }
 
+/** Dữ liệu thiết lập phép năm */
+export interface AnnualLeaveYearData{
+  /** Số ngày nghỉ */
+  annual_leave_days?: number, 
+  /** Tự động xóa */
+  auto_clear?: boolean
+}
+
 /** Dữ liệu chu kỳ kinh doanh năm */
 export interface YearBusinessPeriodData {
   /** Ngày tháng bắt đầu */
@@ -217,14 +225,33 @@ export interface YearBusinessPeriod extends PrimarySettingData {
   __v?: number
 }
 
+/** Cách tính lương */
+export enum CalculationMethod {
+  /** Tính đủ P1 và P2 */
+  P1_AND_P2 = 'P1_AND_P2',
+  /** Tính P1 */
+  ONLY_P1 = 'ONLY_P1',
+  /** Tính P2 */
+  ONLY_P2 = 'ONLY_P2',
+  /** Không tính */
+  NONE = 'NONE'
+}
+
 /** Thiết lập ngày nghỉ lễ */
 export interface HolidaySetting extends PrimarySettingData {
   setting_data?: HolidaySettingData
+  calculate_holiday_pay?: CalculationMethod
 }
 
 /** thiết lập hình thức làm việc */
 export interface FormOfWork extends PrimarySettingData {
   setting_data?: FormOfWorkData
+}
+
+/** thiếp lập phép năm */
+export interface AnnualLeaveYear extends PrimarySettingData {
+  setting_data?: AnnualLeaveYearData
+  calculate_holiday_pay?: CalculationMethod
 }
 
 /** thiết lập thời gian làm việc */
