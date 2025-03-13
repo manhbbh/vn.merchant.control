@@ -105,7 +105,7 @@
             </li>
           </ul>
           <!-- danh sách chi nhánh  -->
-          <ul v-if="!is_business" class="flex flex-col gap-3 ml-8 pb-2">
+          <ul v-if="!is_business" class="flex flex-col gap-3 ml-8 pb-2 overflow-auto">
             <li
               v-for="control in branches"
               @click="detaiBranch(control)"
