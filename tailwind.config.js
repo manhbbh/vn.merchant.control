@@ -58,6 +58,10 @@ module.exports = {
         "ss":"8px"
 
       },
+
+      gridTemplateColumns: {
+        '16': 'repeat(16, minmax(0, 1fr))', // Custom grid with 16 equal-width columns
+      },
       colors: {
         customDark: '#09090B', 
         muted:'#71717A',

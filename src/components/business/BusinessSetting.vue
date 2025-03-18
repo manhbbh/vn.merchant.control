@@ -13,8 +13,10 @@
     <!-- 6 -->
     <WorkingForm v-model="form_of_work" :setting_form_of_work="setting.form_of_work"></WorkingForm>
     <!-- 7 -->
-    <Timeworking v-model="working_time" :setting_working_time="setting.working_time"></Timeworking>
+     <Synchronous></Synchronous>
     <!-- 8 -->
+    <Timeworking v-model="working_time" :setting_working_time="setting.working_time"></Timeworking>
+    <!-- 9 -->
     <Background></Background>
     <!-- nút lưu -->
     <div class="py-2 px-3 sticky bottom-0 bg-white rounded-lg flex items-center justify-end z-30">
@@ -45,6 +47,7 @@ import WorkingForm from '@/components/enterpriseSettings/WorkingForm.vue'
 import ListEmployee from '@/components/enterpriseSettings/ListEmployee.vue'
 import InforGeneral from '@/components/enterpriseSettings/InforGeneral.vue'
 import BusinessPeriod from '@/components/enterpriseSettings/BusinessPeriod.vue'
+import Synchronous from '@/components/enterpriseSettings/Synchronous.vue'
 
 // * store
 const commonStore = useCommonStore()
