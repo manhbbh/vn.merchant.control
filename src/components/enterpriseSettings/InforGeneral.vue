@@ -20,7 +20,7 @@
           >
             <ArrowUpTrayIcon class="w-4 h-4 text-slate-800" />
           </div>
-          <img v-else :src="business_data.logo" class="rounded-md w-9 h-9 border"/>
+          <img v-else @click="selectFile()" :src="business_data.logo" class="rounded-md w-9 h-9 border"/>
         </div>
         <div class="grid grid-cols-2 lg:grid-cols-5 gap-2 w-full">
           <!-- Tên viết tắt -->

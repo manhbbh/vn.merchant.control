@@ -21,6 +21,7 @@
           </div>
           <img
             v-else
+            @click="selectFile()"
             :src="branch_data.logo"
             class="rounded-md w-9 h-9 border"
           />
