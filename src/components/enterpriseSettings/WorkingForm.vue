@@ -473,6 +473,7 @@
 </template>
 
 <script setup lang="ts">
+import { useGetData } from '@/hook.ts'
 import { useCommonStore } from '@/stores'
 import { copy } from '@/service/helper/format'
 import { confirm } from '@/service/helper/alert'
@@ -508,6 +509,8 @@ const props = defineProps({
 // * store
 const commonStore = useCommonStore()
 const { employees_user_ids, user, branch_data } = storeToRefs(commonStore)
+
+const { savesSettingFormOfWork } = useGetData()
 
 /** dữ liệu thiết lập hình thức làm việc */
 const form_of_work = defineModel<FormOfWork>({
@@ -655,6 +658,7 @@ function handleSave() {
     }
   }
   open.value = false
+  savesSettingFormOfWork()
 }
 
 /** xóa hình thức làm việc */
