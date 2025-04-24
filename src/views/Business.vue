@@ -105,7 +105,10 @@
             </li>
           </ul>
           <!-- danh sách chi nhánh  -->
-          <ul v-if="!is_business" class="flex flex-col gap-3 ml-8 pb-2 overflow-auto">
+          <ul
+            v-if="!is_business"
+            class="flex flex-col gap-3 ml-8 pb-2 overflow-auto"
+          >
             <li
               v-for="control in branches"
               @click="detaiBranch(control)"
@@ -158,7 +161,7 @@ import { copy } from '@/service/helper/format'
 import { Toast } from '@/service/helper/toast'
 import { queryString } from '@/service/helper/queryString'
 import { setting } from '@/service/constant/setting_default'
-import { getSetting, getSettingBranch } from '@/service/api/api'
+import { getBusiness, getSetting, getSettingBranch } from '@/service/api/api'
 
 // * libraries
 import { isEmpty } from 'lodash'
@@ -183,7 +186,7 @@ import { ArrowRightStartOnRectangleIcon } from '@heroicons/vue/24/outline'
 /**ảnh */
 
 // * interface
-import { BranchData, CalculationMethod } from '@/service/interface'
+import { BranchData, BusinessBranchData, BusinessData, CalculationMethod, CompanyData } from '@/service/interface'
 
 // * hook
 const {
@@ -202,8 +205,14 @@ const {
 
 // * store
 const commonStore = useCommonStore()
-const { branches, branch_data, employees_user_ids, user, is_get_data } =
-  storeToRefs(commonStore)
+const {
+  branches,
+  branch_data,
+  employees_user_ids,
+  user,
+  is_get_data,
+  businesses,
+} = storeToRefs(commonStore)
 
 // * toast
 const $toast = new Toast()
@@ -220,6 +229,7 @@ const is_authenticated = ref(false)
 onMounted(() => {
   getDataFromUrl()
   getSettings()
+  getBusinesses()
   getBusinessInfos()
 })
 
@@ -354,6 +364,46 @@ async function getSettings() {
   }
 }
 
+/** lấy dữ liệu doanh nghiệp */
+async function getBusinesses() {
+  try {
+    const RES = await getBusiness({})
+    /** dữ liệu các doanh nghiệp dạng obj */
+    let business_obj: { [key: string]: CompanyData } = {}
+
+    /** lặp qua tất cả các branch */
+    RES.data.branchs?.forEach((item: BusinessBranchData) => {
+      /** id doanh nghiệp */
+      if(!item?.business?._id) return
+
+      // nếu chưa có dữ liệu của doanh nghiệp đó thì lưu lại và thêm chi nhánh đó vào luôn
+      if (!business_obj[item.business._id]) {
+        business_obj[item.business._id] = {
+          ...item.business,
+          branchs: {
+            [item.branch_id]: item,
+          },
+        }
+      } 
+      // nếu đã có rồi thì push thêm vào mảng chi nhánh của doanh nghiệp đó
+      else {
+        business_obj[item.business._id].branchs = {
+          ...business_obj[item.business._id].branchs || {},
+          [item.branch_id]: item,
+        }
+      }
+    })
+
+    console.log(business_obj);
+    
+
+    // lưu lại store
+    businesses.value = business_obj
+  } catch (e) {
+    $toast.error(e)
+  }
+}
+
 /** lấy dữ liệu từ url */
 function getDataFromUrl() {
   /** lấy user_token */
@@ -443,7 +493,6 @@ async function detaiBranch(branch: BranchData) {
         commonStore.branch_annual_leave_year = item
         return
       }
-
     })
 
     // nếu chưa thiết lập ngày lễ thì lấy dữ liệu ở thiết lập doanh nghiệp
@@ -472,8 +521,8 @@ async function detaiBranch(branch: BranchData) {
           /** Số ngày nghỉ */
           annual_leave_days: 12,
           /** Tự động xóa */
-          auto_clear: false
-        }
+          auto_clear: false,
+        },
       }
 
       saveBranchSettingAnnualLeaveYear()

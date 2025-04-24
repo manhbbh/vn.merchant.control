@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 
 import {
   AnnualLeaveYear,
+  BusinessBranchData,
   PrimarySettingData,
   type BackgroundSetting,
   type BranchData,
@@ -88,6 +89,9 @@ export const useCommonStore = defineStore('common_store', () => {
   /** gọi lại dữ liệu */
   const is_get_data = ref(false)
 
+  /** danh sách các doanh nghiệp */
+  const businesses = ref<{[key:string]: CompanyData}>({})
+
   return {
     is_get_data,
     user_token,
@@ -112,5 +116,6 @@ export const useCommonStore = defineStore('common_store', () => {
     branch_form_of_work,
     branch_annual_leave_year,
     branch_working_time,
+    businesses
   }
 })

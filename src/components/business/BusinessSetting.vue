@@ -13,7 +13,7 @@
     <!-- 6 -->
     <WorkingForm v-model="form_of_work" :setting_form_of_work="setting.form_of_work"></WorkingForm>
     <!-- 7 -->
-     <Synchronous></Synchronous>
+    <Synchronous />
     <!-- 8 -->
     <Timeworking v-model="working_time" :setting_working_time="setting.working_time"></Timeworking>
     <!-- 9 -->

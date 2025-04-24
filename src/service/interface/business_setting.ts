@@ -326,6 +326,8 @@ export interface BranchData {
   country_code?: string
   /** tiền tệ */
   currency?: string
+
+  redirect_to?: string
 }
 
 /** dữ liệu chi nhánh trong dữ liệu nhân viên */
@@ -421,4 +423,69 @@ export interface CompanyData {
   country_code?: string
   /** tiền tệ */
   currency?: string
+  redirect_to?: string
+
+  // * CUSTOME
+  /** danh sách các chi nhánh */
+  branchs?: {
+    [key: string]: BusinessBranchData
+  }
+}
+
+/**
+ * Dữ liệu tổng thể của người dùng trong doanh nghiệp/chi nhánh
+ */
+export interface BusinessBranchData {
+  /** ID doanh nghiệp */
+  business_id: string;
+
+  /** ID chi nhánh hiện tại */
+  branch_id: string;
+
+  /** ID phòng ban mà người dùng thuộc về */
+  department_id: string;
+
+  /** ID nhóm (nếu có, có thể để trống) */
+  team_id: string;
+
+  /** ID nhân viên hiện tại */
+  employee_id: string;
+
+  /** ID người dùng hiện tại */
+  user_id: string;
+
+  /** ID quyền hạn người dùng */
+  permission_id: string;
+
+  /** Tên chi nhánh hiện tại */
+  branch_name: string;
+
+  /** Thông tin mở rộng của chi nhánh (có thể rỗng hoặc thêm về sau) */
+  branch_info: Record<string, any>;
+
+  /** Có phải đang hoạt động tại chi nhánh không */
+  is_branch: boolean;
+
+  /** Loại chi nhánh (branch, head_office,...) */
+  branch_type: string;
+
+  /** Chi nhánh đã bị lưu trữ hay chưa */
+  archive: boolean;
+
+  /** Ngày tạo bản ghi */
+  createdAt: string;
+
+  /** Ngày cập nhật gần nhất */
+  updatedAt: string;
+
+  /** Token truy cập cho doanh nghiệp (JWT) */
+  token_business: string;
+
+  /** Người dùng có phải là chủ doanh nghiệp hay không */
+  is_owner_business: boolean;
+
+  /** doanh nghiệp của BU đó */
+  business?: CompanyData
+
+  redirect_to?: string
 }

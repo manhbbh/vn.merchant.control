@@ -168,6 +168,30 @@ export async function businessUpdate(params: InputRequestApi) {
   }
 }
 
+/** lấy danh sách doanh nghiệp */
+export async function getBusiness(params: InputRequestApi) {
+  try {
+    return await apiMerchantRequest({
+      ...params,
+      end_point: 'business/get_business',
+    })
+  } catch (e) {
+    throw e
+  }
+}
+
+/** api cập nhật doanh nghiệp */
+export async function updateBusiness(params: InputRequestApi) {
+  try {
+    return await apiMerchantRequest({
+      ...params,
+      end_point: 'business/update_business',
+    })
+  } catch (e) {
+    throw e
+  }
+}
+
 // * Thiết lập chi nhánh
 /** thêm mới chi nhánh */
 export async function businessAddBranch(params: InputRequestApi) {
