@@ -394,9 +394,6 @@ async function getBusinesses() {
       }
     })
 
-    console.log(business_obj);
-    
-
     // lưu lại store
     businesses.value = business_obj
   } catch (e) {

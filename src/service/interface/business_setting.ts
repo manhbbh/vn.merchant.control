@@ -326,8 +326,18 @@ export interface BranchData {
   country_code?: string
   /** tiền tệ */
   currency?: string
-
+  /** Điều hướng tới BU nào */
   redirect_to?: string
+  /** Danh sách nhân sự hiện tại */
+  current_employees?: {
+    [key: string]: EmployeeData
+  },
+  /** Danh sách nhân sự được điều hướng tới */
+  redirect_employees?: {
+    [key: string]: EmployeeData
+  },
+  /** Token BU sẽ được điều hướng */
+  redirect_tokken?: string
 }
 
 /** dữ liệu chi nhánh trong dữ liệu nhân viên */
@@ -340,6 +350,10 @@ export interface BranchUserData {
 
 /** dữ liệu nhân viên */
 export interface EmployeeData {
+  /** Ảnh đại diện */
+  avatar?: string
+  /** Liên kết tới nhân sự nào */
+  linked_employee_id?: string
   /** Trạng thái hoạt động */
   active?: boolean
   /** Danh sách ID chi nhánh */

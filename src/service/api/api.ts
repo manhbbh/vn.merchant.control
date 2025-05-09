@@ -34,7 +34,7 @@ async function apiMerchantRequest({
       method: 'POST',
       headers: {
         'token-user': getTokenUser(),
-        'token-business': getBusinessToken(),
+        'token-business': access_token || getBusinessToken(),
         ...headers,
       },
       body,
@@ -87,7 +87,21 @@ export async function getEmployee(params: InputRequestApi) {
   try {
     return await apiMerchantRequest({
       ...params,
+      ...params.access_token ? { access_token: params.access_token } : {},
       end_point: 'systems/employee/get_employee',
+    })
+  } catch (e) {
+    throw e
+  }
+}
+
+/** Cập nhật thông tin nhân sự */
+export async function updateEmployee(params: InputRequestApi) {
+  try {
+    return await apiMerchantRequest({
+      ...params,
+      ...params.access_token ? { access_token: params.access_token } : {},
+      end_point: 'systems/employee/update_employee',
     })
   } catch (e) {
     throw e
@@ -289,6 +303,7 @@ export const getDistrict = async (data: {}) => {
     throw e
   }
 }
+
 /** Lấy danh sách xã phường */
 export const getWard = async (data: {}) => {
   try {
