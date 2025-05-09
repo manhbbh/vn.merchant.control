@@ -337,7 +337,7 @@ export interface BranchData {
     [key: string]: EmployeeData
   },
   /** Token BU sẽ được điều hướng */
-  redirect_tokken?: string
+  redirect_token?: string
 }
 
 /** dữ liệu chi nhánh trong dữ liệu nhân viên */
@@ -502,4 +502,13 @@ export interface BusinessBranchData {
   business?: CompanyData
 
   redirect_to?: string
+
+  /** Danh sách nhân sự hiện tại */
+  current_employees?: {
+    [key: string]: EmployeeData
+  },
+  /** Danh sách nhân sự được điều hướng tới */
+  redirect_employees?: {
+    [key: string]: EmployeeData
+  },
 }

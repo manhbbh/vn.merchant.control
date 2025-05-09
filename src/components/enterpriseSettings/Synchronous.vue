@@ -22,20 +22,6 @@
                >
                   Tổ chức
                </label>
-               <p class="text-start py-2 px-3 border border-border bg-slate-50 shadow-sm rounded-md">
-                  {{ business_data?.short_name || business_data?.name }}
-               </p>
-            </div>
-            <div class="py-2 flex justify-center">
-               <IconNexts class="w-5 h-5 shrink-0"></IconNexts>
-            </div>
-            <div class="flex col-span-4 flex-col gap-1">
-               <label
-                  class="text-center py-1 rounded bg-slate-200 text-sm font-medium"
-                  for=""
-               >
-                  Tổ chức
-               </label>
                <DropBox
                   place="bottom"
                   :close="() => (is_open_dropbox = false)"
@@ -47,7 +33,7 @@
                         @click="is_open_dropbox = true"
                      >
                         <p>
-                           {{ businesses?.[business_data.redirect_to || '']?.name || 'Không chọn' }}
+                           {{ businesses?.[business_id || '']?.name || 'Không chọn' }}
                         </p>
                         <IconDown class="w-5 h-5" />
                      </button>
@@ -57,7 +43,7 @@
                         v-if="is_open_dropbox"
                         class="bg-white p-2 border rounded w-full my-1 max-h-80 overflow-auto"
                      >
-                        <li>
+                        <!-- <li>
                            <button
                               class="text-start p-2 w-full truncate rounded-md hover:bg-slate-100"
                               :class="{
@@ -67,14 +53,14 @@
                            >
                               Không chọn
                            </button>
-                        </li>
+                        </li> -->
                         <li v-for="item in Object.values(businesses)">
                            <button
                               class="text-start p-2 w-full truncate rounded-md hover:bg-slate-100"
                               :class="{
-                                 '!bg-blue-700 text-white': business_data.redirect_to === item._id,
+                                 '!bg-blue-700 text-white': business_id === item._id,
                               }"
-                              @click="changeId(business_data?._id, item._id)"
+                              @click="changeBusinessId(item._id, business_data?._id)"
                            >
                               {{ item?.name }}
                            </button>
@@ -83,16 +69,32 @@
                   </template>
                </DropBox>
             </div>
+
+            <div class="py-2 flex justify-center">
+               <IconNexts class="w-5 h-5 shrink-0"></IconNexts>
+            </div>
+
+            <div class="flex col-span-4 flex-col gap-1">
+               <label
+                  class="text-center py-1 rounded bg-slate-200 text-sm font-medium"
+                  for=""
+               >
+                  Tổ chức
+               </label>
+               <p class="text-start py-2 px-3 border border-border bg-slate-50 shadow-sm rounded-md">
+                  {{ business_data?.short_name || business_data?.name }}
+               </p>
+            </div>
             <!--  -->
             <!-- <div class="flex col-span-7 pl-3 items-center gap-1">
-          <div class="py-1.5">
+            <div class="py-1.5">
             <IconWarning class="w-5 h-5 shrink-0"></IconWarning>
-          </div>
-          <p class="text-xs text-left truncate text-red-500">
+            </div>
+            <p class="text-xs text-left truncate text-red-500">
             Bạn không còn là Quản trị viên của Tổ chức Bot Bán Hàng, vui lòng
             kiểm tra lại
-          </p>
-        </div> -->
+            </p>
+         </div> -->
          </div>
          <!--  -->
          <div class="flex flex-col gap-1 w-full">
@@ -118,7 +120,7 @@
             </div>
             <!--Nội dung các input  -->
             <div
-               v-for="(item, index) in branches"
+               v-for="(item, index) in branches_sync"
                :key="index"
                class="border-slate-100 w-full"
                :class="{
@@ -129,7 +131,7 @@
                <div class="grid grid-cols-16 w-full items-end">
                   <div class="flex col-span-4 flex-col">
                      <p class="text-start py-3 px-3 border border-border bg-slate-50 shadow-sm rounded-md">
-                        {{ item?.name }}
+                        {{ item?.branch_name }}
                      </p>
                   </div>
                   <div class="py-2 flex justify-center">
@@ -148,7 +150,7 @@
                               @click="is_open_dropbox = true"
                            >
                               <p class="truncate">
-                                 {{ businesses_sync?.[item?.redirect_to || '']?.branch_name || 'Không chọn' }}
+                                 {{ branches_ids?.[item?.redirect_to || '']?.name || 'Không chọn' }}
                               </p>
                               <IconDown class="w-5 h-5 flex-shrink-0" />
                            </button>
@@ -164,23 +166,23 @@
                                     :class="{
                                        '!bg-blue-700 text-white': !item.redirect_to,
                                     }"
-                                    @click="changeId(item?._id, '')"
+                                    @click="changeBranchId(item?.branch_id, '')"
                                  >
                                     Không chọn
                                  </button>
                               </li>
-                              <li v-for="branch in businesses_sync">
+                              <li v-for="branch in branches">
                                  <button
                                     class="text-start p-2 w-full truncate rounded-md hover:bg-slate-100"
                                     :class="{
-                                       '!bg-blue-700 text-white': item?.redirect_to === branch.branch_id,
+                                       '!bg-blue-700 text-white': item?.redirect_to === branch._id,
                                     }"
                                     @click="
-                                       changeId(item?._id, branch.branch_id),
-                                          getEmployeeData(item, item.access_token, branch.token_business)
+                                       changeBranchId(item?.branch_id, branch._id),
+                                          getEmployeeData(item, branch.access_token, item.token_business)
                                     "
                                  >
-                                    {{ branch?.branch_name }}
+                                    {{ branch?.name }}
                                  </button>
                               </li>
                            </ul>
@@ -196,7 +198,7 @@
                >
                   <p
                      v-tooltip="'Nhấn để xem danh sách nhân sự'"
-                     @click="getEmployeeData(item, item.access_token, getRedirectTokenBusiness(item.redirect_to))"
+                     @click="getEmployeeData(item, item.token_business, getRedirectTokenBusiness(item.redirect_to))"
                      class="text-left flex items-center gap-2 cursor-pointer"
                   >
                      Liên kết nhân sự
@@ -237,8 +239,10 @@
                                  class="flex justify-between border-border border px-3 py-1 w-full truncate rounded-md disabled:bg-slate-100"
                                  :disabled="!business_data?.redirect_to"
                                  :class="{
-                                    'px-3 py-3': !e.linked_employee_id || !item.redirect_employees?.[e.linked_employee_id],
-                                    'px-3 py-1': e.linked_employee_id && item.redirect_employees?.[e.linked_employee_id],
+                                    'px-3 py-3':
+                                       !e.linked_employee_id || !item.redirect_employees?.[e.linked_employee_id],
+                                    'px-3 py-1':
+                                       e.linked_employee_id && item.redirect_employees?.[e.linked_employee_id],
                                  }"
                                  @click="is_open_dropbox = true"
                               >
@@ -361,26 +365,35 @@ import { ArrowsRightLeftIcon } from '@heroicons/vue/24/outline'
 import DropBox from '../DropBox.vue'
 
 /** Interfaces */
-import { BranchData, EmployeeData } from '@/service/interface'
-import { get } from 'lodash'
+import { BranchData, BusinessBranchData, EmployeeData } from '@/service/interface'
+import { get, set } from 'lodash'
 
 // * store
 const commonStore = useCommonStore()
-const { businesses, branches, business_data } = storeToRefs(commonStore)
+const { businesses, branches, business_data, branches_ids } = storeToRefs(commonStore)
 
 /** ẩn hiện dropbox */
 const is_open_dropbox = ref(false)
 
+/** id của tổ chức đang được chọn */
+const business_id = ref('')
+
 /** doanh nghiệp đang được đồng bộ tới */
-const businesses_sync = computed(() => {
-   return businesses.value?.[business_data.value?.redirect_to || '']?.branchs
+const branches_sync = computed<{ [key: string]: BusinessBranchData }>(() => {
+   /** id của danh nghiệp đang được chọn */
+   const ID = business_id.value
+
+   // trả về các chi nhánh của doanh nghiệp đang được chọn
+   return businesses.value[ID]?.branchs || {}
 })
 
 /** thay đổi id doanh nghiệp, chi nhánh */
-async function changeId(id?: string, redirect_to?: string) {
+async function changeIdv1(id?: string, redirect_to?: string) {
    try {
+      // đóng select
       is_open_dropbox.value = false
 
+      // nếu vẫn là giá trị cũ thì thôi
       if (id === business_data.value._id) {
          business_data.value.redirect_to = redirect_to
 
@@ -392,6 +405,7 @@ async function changeId(id?: string, redirect_to?: string) {
          })
       }
 
+      // cập nhật id redirect_to của doanh nghiệp
       await updateBusiness({ body: { id, redirect_to } })
 
       if (id !== business_data.value._id) {
@@ -402,6 +416,40 @@ async function changeId(id?: string, redirect_to?: string) {
       }
    } catch (error) {
       console.log(error)
+   }
+}
+
+/** hàm đổi id doanh nghiệp */
+function changeBusinessId(id?: string, redirect_to?: string) {
+   // đóng select
+   is_open_dropbox.value = false
+
+   // nếu không có id của doanh nghiệp đang chọn thì thôi
+   if (!id) return
+
+   // lấy danh sách các chi nhánh của doanh nghiệp đã chọn
+   business_id.value = id
+}
+
+/** hàm xử lý đổi id chi nhánh */
+async function changeBranchId(id?: string, redirect_to?: string) {
+   try {
+      // nếu không có id của chi nhán đang cần được điều hướng thì thôi
+      if(!id) return
+
+      // đóng select
+      is_open_dropbox.value = false
+      
+      // cập nhật id redirect_to của chi nhánh
+      await updateBusiness({ body: { id, redirect_to } })
+
+      /** id của danh nghiệp đang được chọn */
+      const ID = business_id.value
+
+      // cập nhật field redirect_to của chi nhánh đang cần điều hướng
+      set(businesses.value, `[${ID}].branchs.value[id].redirect_to`, redirect_to)
+   } catch (e) {
+      console.log(e)
    }
 }
 
@@ -448,7 +496,7 @@ async function getRedirectEmployees(branch: BranchData, access_token?: string) {
       branch.redirect_employees = {}
 
       /** Lưu lại token điều hướng */
-      branch.redirect_tokken = access_token
+      branch.redirect_token = access_token
 
       data.map((item: EmployeeData) => {
          if (item._id && branch.redirect_employees) {
@@ -486,8 +534,14 @@ async function updateEmployeeData(branch: BranchData, employee: EmployeeData) {
 
 /** Lấy ra token BU đang điều hướng */
 function getRedirectTokenBusiness(id: string) {
-   const business = businesses_sync.value?.[id]
-   if (business) return business.token_business
+
+   /** chi nhánh đang cần chọn đề điều hướng tới */
+   const BRANCH = branches_ids.value?.[id]
+
+   /** trả về token chi nhánh đang điều hướng tới */
+   if (BRANCH) return BRANCH.access_token
+
+   // nếu không trả về rỗng
    return ''
 }
 </script>
