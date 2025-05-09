@@ -447,7 +447,7 @@ async function changeBranchId(id?: string, redirect_to?: string) {
       const ID = business_id.value
 
       // cập nhật field redirect_to của chi nhánh đang cần điều hướng
-      set(businesses.value, `[${ID}].branchs.value[id].redirect_to`, redirect_to)
+      set(businesses.value, `[${ID}].branchs[${id}].redirect_to`, redirect_to)
    } catch (e) {
       console.log(e)
    }
