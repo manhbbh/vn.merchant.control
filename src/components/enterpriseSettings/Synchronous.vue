@@ -517,14 +517,14 @@ function createShortName(e: EmployeeData) {
 }
 
 /** Cập nhật thông tin nhân sự */
-async function updateEmployeeData(branch: BranchData, employee: EmployeeData) {
+async function updateEmployeeData(branch: BusinessBranchData, employee: EmployeeData) {
    try {
       const { data } = await updateEmployee({
          body: {
             _id: employee._id,
             linked_employee_id: employee.linked_employee_id,
          },
-         access_token: branch.access_token,
+         access_token: branch.token_business,
       })
       is_open_dropbox.value = false
    } catch (error) {
