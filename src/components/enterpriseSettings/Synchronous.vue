@@ -196,9 +196,17 @@
                   class="flex flex-col gap-2 mt-2"
                >
                   <p
+                     v-if="item.redirect_to && !Object.keys(item.current_employees || {})?.length"
                      v-tooltip="'Nhấn để xem danh sách nhân sự'"
                      @click="getEmployeeData(item, item.token_business, getRedirectTokenBusiness(item.redirect_to))"
                      class="text-left flex items-center gap-2 cursor-pointer w-fit"
+                  >
+                     Hiển thị danh sách nhân sự
+                     <ArrowsRightLeftIcon class="h-5 w-5" />
+                  </p>
+                  <p
+                     v-if="item.redirect_to && Object.keys(item.current_employees || {})?.length"
+                     class="text-left flex items-center gap-2 w-fit"
                   >
                      Liên kết nhân sự
                      <ArrowsRightLeftIcon class="h-5 w-5" />
@@ -287,7 +295,11 @@
                                        :class="{
                                           '!bg-slate-100 text-white': !item.redirect_to,
                                        }"
-                                       @click=";(e.linked_employee_id = ''), (is_open_dropbox = false)"
+                                       @click="
+                                          ;(e.linked_employee_id = ''),
+                                             (is_open_dropbox = false),
+                                             updateEmployeeData(item, e)
+                                       "
                                     >
                                        Không chọn
                                     </button>
@@ -432,11 +444,11 @@ function changeBusinessId(id?: string, redirect_to?: string) {
 async function changeBranchId(id?: string, redirect_to?: string) {
    try {
       // nếu không có id của chi nhán đang cần được điều hướng thì thôi
-      if(!id) return
+      if (!id) return
 
       // đóng select
       is_open_dropbox.value = false
-      
+
       // cập nhật id redirect_to của chi nhánh
       await updateBusiness({ body: { id, redirect_to } })
 
@@ -531,7 +543,6 @@ async function updateEmployeeData(branch: BusinessBranchData, employee: Employee
 
 /** Lấy ra token BU đang điều hướng */
 function getRedirectTokenBusiness(id: string) {
-
    /** chi nhánh đang cần chọn đề điều hướng tới */
    const BRANCH = branches_ids.value?.[id]
 
