@@ -4,7 +4,7 @@
       <IconSyn class="w-5 h-5 flex-shrink-0"></IconSyn>
       <!--content  -->
       <div class="flex flex-col items-start flex-1 gap-2 lg:gap-3">
-         <button @click="save()">Lưu</button>
+         <!-- <button @click="save()">Lưu</button> -->
          <div class="flex flex-col">
             <h4 class="flex justify-start text-sm font-medium">
                Đồng bộ Trang - {{ business_data?.short_name || business_data?.name }}
