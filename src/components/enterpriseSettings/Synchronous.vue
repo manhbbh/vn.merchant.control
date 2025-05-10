@@ -250,7 +250,7 @@
                                     'px-3 py-1':
                                        e.linked_employee_id && item.redirect_employees?.[e.linked_employee_id],
                                  }"
-                                 @click="is_open_dropbox = true"
+                                 @click="openDropbox()"
                               >
                                  <p v-if="!e.linked_employee_id || !item.redirect_employees?.[e.linked_employee_id]">
                                     {{ 'Không chọn' }}
@@ -290,6 +290,14 @@
                                  v-if="is_open_dropbox"
                                  class="bg-white p-2 border rounded w-full my-1 max-h-80 overflow-auto"
                               >
+                                 <li class="w-full sticky top-0 bg-white">
+                                    <input
+                                       id="input_search"
+                                       v-model="keyword"
+                                       type="text"
+                                       class="outline-none border w-full py-2 px-3 rounded-md"
+                                    />
+                                 </li>
                                  <li>
                                     <button
                                        class="text-start p-2 w-full truncate rounded-md hover:bg-slate-100"
@@ -307,6 +315,7 @@
                                  </li>
                                  <li v-for="re in item.redirect_employees">
                                     <button
+                                       v-show="checkName(`${re.first_name} ${re.last_name}`)"
                                        class="text-start p-2 w-full truncate rounded-md hover:bg-slate-200 flex items-center gap-3"
                                        :class="{
                                           '!bg-gray-300 text-black': e?.linked_employee_id === re._id,
@@ -363,7 +372,7 @@
 import { get, set } from 'lodash'
 import { storeToRefs } from 'pinia'
 import { useCommonStore } from '@/stores'
-import { computed, ref } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 import { updateBusiness, getEmployee, updateEmployee } from '@/service/api/api'
 
 /** Icon */
@@ -377,6 +386,7 @@ import DropBox from '@/components/DropBox.vue'
 
 /** Interfaces */
 import { BranchData, BusinessBranchData, EmployeeData } from '@/service/interface'
+import { nonAccentVn } from '@/service/helper/format'
 
 /** store */
 const commonStore = useCommonStore()
@@ -388,18 +398,25 @@ const is_open_dropbox = ref(false)
 /** id của tổ chức đang được chọn */
 const business_id = ref('')
 
+/** từ khóa tìm kiếm */
+const keyword = ref('')
+
 /** danh sách các chi nhánh cần được chỉnh sửa */
-const branhes_to_update = ref<{ [key: string]: {
-   id?:string,
-   redirect_to?: string
-} }>({})
+const branhes_to_update = ref<{
+   [key: string]: {
+      id?: string
+      redirect_to?: string
+   }
+}>({})
 
 /** danh sách các nhân sự cần được chỉnh sửa */
-const employees_to_update = ref<{ [key: string]: {
-   _id?:string,
-   linked_employee_id?: string
-   access_token?: string
-} }>({})
+const employees_to_update = ref<{
+   [key: string]: {
+      _id?: string
+      linked_employee_id?: string
+      access_token?: string
+   }
+}>({})
 
 /** doanh nghiệp đang được đồng bộ tới */
 const branches_sync = computed<{ [key: string]: BusinessBranchData }>(() => {
@@ -409,6 +426,33 @@ const branches_sync = computed<{ [key: string]: BusinessBranchData }>(() => {
    // trả về các chi nhánh của doanh nghiệp đang được chọn
    return businesses.value[ID]?.branchs || {}
 })
+
+/** hàm mở dropbox nhân sự */
+function openDropbox() {
+   // bật cờ mở dropbox
+   is_open_dropbox.value = true
+
+   // sau 100ms focus vào input tìm kiếm để đảm bảo input được render ra rồi
+   setTimeout(() => {
+      /** input tìm kiếm */
+      const INPUT = document.getElementById('input_search')
+
+      // focus vào input tìm kiếm
+      INPUT?.focus()
+   }, 100)
+}
+
+/** hàm kiểm tra xem tên có trùng với từ khóa tìm kiếm không */
+function checkName(name: string = ''): boolean {
+   /** tên sau khi được loại bỏ hết dấu khoảng cách và in hoa */
+   const FORMATTED_NAME = nonAccentVn(name?.trim()).replace(/\s/g, '')
+
+   /** từ khóa tìm kiếm sau khi được loại bỏ hết dấu khoảng cách và in hoa */
+   const KEYWORD = nonAccentVn(keyword.value?.trim()).replace(/\s/g, '')
+
+   // kiểm tra xem tên có chứa từ khóa tìm kiếm không
+   return FORMATTED_NAME.includes(KEYWORD)
+}
 
 /** thay đổi id doanh nghiệp, chi nhánh */
 async function changeIdv1(id?: string, redirect_to?: string) {
@@ -483,7 +527,7 @@ async function changeBranchId(id?: string, redirect_to?: string) {
             employees_to_update.value[key] = {
                _id: key,
                linked_employee_id: '',
-               access_token: BRANCH?.token_business
+               access_token: BRANCH?.token_business,
             }
 
             /** đường dẫn đến field linked_employee_id của nhân sự hiện tại */
@@ -603,7 +647,7 @@ function getRedirectTokenBusiness(id: string) {
 }
 
 /** hàm lưu các thay đổi */
-async function save(){
+async function save() {
    try {
       // đổi object mảng chi nhánh cần cập nhật sang array
       const BRANCHES_TO_UPDATE = Object.values(branhes_to_update.value || {})
@@ -615,7 +659,7 @@ async function save(){
       for (let i = 0; i < BRANCHES_TO_UPDATE.length; i++) {
          // call api cập nhật chi nhánh
          await updateBusiness({
-            body: BRANCHES_TO_UPDATE[i]
+            body: BRANCHES_TO_UPDATE[i],
          })
       }
 
@@ -625,15 +669,15 @@ async function save(){
          await updateEmployee({
             body: {
                _id: EMPLOYEES_TO_UPDATE[i]._id,
-               linked_employee_id: EMPLOYEES_TO_UPDATE[i].linked_employee_id
+               linked_employee_id: EMPLOYEES_TO_UPDATE[i].linked_employee_id,
             },
-            access_token: EMPLOYEES_TO_UPDATE[i].access_token
+            access_token: EMPLOYEES_TO_UPDATE[i].access_token,
          })
       }
 
       // reset dữ liệu chi nhánh
       branhes_to_update.value = {}
-      
+
       // reset dữ liệu nhân sự
       employees_to_update.value = {}
    } catch (e) {
