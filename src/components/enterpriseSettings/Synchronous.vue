@@ -105,7 +105,7 @@
                      class="text-center py-1 rounded bg-slate-200 text-sm font-medium"
                      for=""
                   >
-                     Chi nhánh
+                     Trang
                   </label>
                </div>
                <div class="py-2 flex justify-center"></div>
@@ -114,7 +114,7 @@
                      class="text-center py-1 rounded bg-slate-200 text-sm font-medium"
                      for=""
                   >
-                     Trang
+                     Chi nhánh
                   </label>
                </div>
             </div>
@@ -146,7 +146,6 @@
                         <template #trigger>
                            <button
                               class="flex justify-between border-border border px-3 py-3 w-full truncate rounded-md disabled:bg-slate-100"
-                              :disabled="!business_data?.redirect_to"
                               @click="is_open_dropbox = true"
                            >
                               <p class="truncate">
@@ -199,7 +198,7 @@
                   <p
                      v-tooltip="'Nhấn để xem danh sách nhân sự'"
                      @click="getEmployeeData(item, item.token_business, getRedirectTokenBusiness(item.redirect_to))"
-                     class="text-left flex items-center gap-2 cursor-pointer"
+                     class="text-left flex items-center gap-2 cursor-pointer w-fit"
                   >
                      Liên kết nhân sự
                      <ArrowsRightLeftIcon class="h-5 w-5" />
@@ -237,7 +236,6 @@
                            <template #trigger>
                               <button
                                  class="flex justify-between border-border border px-3 py-1 w-full truncate rounded-md disabled:bg-slate-100"
-                                 :disabled="!business_data?.redirect_to"
                                  :class="{
                                     'px-3 py-3':
                                        !e.linked_employee_id || !item.redirect_employees?.[e.linked_employee_id],
@@ -350,9 +348,10 @@
 
 <script setup lang="ts">
 /** Libraries, Services */
-import { computed, ref } from 'vue'
+import { set } from 'lodash'
 import { storeToRefs } from 'pinia'
 import { useCommonStore } from '@/stores'
+import { computed, ref } from 'vue'
 import { updateBusiness, getEmployee, updateEmployee } from '@/service/api/api'
 
 /** Icon */
@@ -362,13 +361,12 @@ import IconNexts from '@/components/icons/IconNexts.vue'
 import { ArrowsRightLeftIcon } from '@heroicons/vue/24/outline'
 
 /** Components */
-import DropBox from '../DropBox.vue'
+import DropBox from '@/components/DropBox.vue'
 
 /** Interfaces */
 import { BranchData, BusinessBranchData, EmployeeData } from '@/service/interface'
-import { get, set } from 'lodash'
 
-// * store
+/** store */
 const commonStore = useCommonStore()
 const { businesses, branches, business_data, branches_ids } = storeToRefs(commonStore)
 
