@@ -4,6 +4,7 @@
       <IconSyn class="w-5 h-5 flex-shrink-0"></IconSyn>
       <!--content  -->
       <div class="flex flex-col items-start flex-1 gap-2 lg:gap-3">
+         <button @click="save()">Lưu</button>
          <div class="flex flex-col">
             <h4 class="flex justify-start text-sm font-medium">
                Đồng bộ Trang - {{ business_data?.short_name || business_data?.name }}
@@ -359,7 +360,7 @@
 
 <script setup lang="ts">
 /** Libraries, Services */
-import { set } from 'lodash'
+import { get, set } from 'lodash'
 import { storeToRefs } from 'pinia'
 import { useCommonStore } from '@/stores'
 import { computed, ref } from 'vue'
@@ -386,6 +387,19 @@ const is_open_dropbox = ref(false)
 
 /** id của tổ chức đang được chọn */
 const business_id = ref('')
+
+/** danh sách các chi nhánh cần được chỉnh sửa */
+const branhes_to_update = ref<{ [key: string]: {
+   id?:string,
+   redirect_to?: string
+} }>({})
+
+/** danh sách các nhân sự cần được chỉnh sửa */
+const employees_to_update = ref<{ [key: string]: {
+   _id?:string,
+   linked_employee_id?: string
+   access_token?: string
+} }>({})
 
 /** doanh nghiệp đang được đồng bộ tới */
 const branches_sync = computed<{ [key: string]: BusinessBranchData }>(() => {
@@ -450,13 +464,40 @@ async function changeBranchId(id?: string, redirect_to?: string) {
       is_open_dropbox.value = false
 
       // cập nhật id redirect_to của chi nhánh
-      await updateBusiness({ body: { id, redirect_to } })
+      // await updateBusiness({ body: { id, redirect_to } })
+      set(branhes_to_update.value, `[${id}]`, { id, redirect_to })
 
       /** id của danh nghiệp đang được chọn */
       const ID = business_id.value
 
+      /** dữ liệu của branch đang chọn */
+      const BRANCH = businesses.value?.[ID]?.branchs?.[id]
+
+      // xóa các nhân sự trong BU này đã thay đổi
+      Object.keys(BRANCH?.current_employees || {}).forEach(key => {
+         // xóa trong mảng cập nhật
+         delete employees_to_update.value?.[key]
+
+         // nếu nhân sự nào đang có linked_employee_id thêm vào danh sách cập nhật về rỗng
+         if (BRANCH?.current_employees?.[key]?.linked_employee_id) {
+            employees_to_update.value[key] = {
+               _id: key,
+               linked_employee_id: '',
+               access_token: BRANCH?.token_business
+            }
+
+            /** đường dẫn đến field linked_employee_id của nhân sự hiện tại */
+            const PATH = `[${ID}].branchs[${id}].current_employees[${key}].linked_employee_id`
+
+            // cập nhật nó về rỗng
+            set(businesses.value, PATH, '')
+         }
+      })
+
       // cập nhật field redirect_to của chi nhánh đang cần điều hướng
       set(businesses.value, `[${ID}].branchs[${id}].redirect_to`, redirect_to)
+
+      // đặt danh sách các nhân sự về rỗng
    } catch (e) {
       console.log(e)
    }
@@ -528,13 +569,21 @@ function createShortName(e: EmployeeData) {
 /** Cập nhật thông tin nhân sự */
 async function updateEmployeeData(branch: BusinessBranchData, employee: EmployeeData) {
    try {
-      const { data } = await updateEmployee({
-         body: {
-            _id: employee._id,
-            linked_employee_id: employee.linked_employee_id,
-         },
+      // const { data } = await updateEmployee({
+      //    body: {
+      //       _id: employee._id,
+      //       linked_employee_id: employee.linked_employee_id,
+      //    },
+      //    access_token: branch.token_business,
+      // })
+
+      // thêm vào mảng nhân sự cần cập nhật
+      set(employees_to_update.value, `[${employee._id}]`, {
+         _id: employee._id,
+         linked_employee_id: employee.linked_employee_id,
          access_token: branch.token_business,
       })
+
       is_open_dropbox.value = false
    } catch (error) {
       console.log(error)
@@ -552,4 +601,45 @@ function getRedirectTokenBusiness(id: string) {
    // nếu không trả về rỗng
    return ''
 }
+
+/** hàm lưu các thay đổi */
+async function save(){
+   try {
+      // đổi object mảng chi nhánh cần cập nhật sang array
+      const BRANCHES_TO_UPDATE = Object.values(branhes_to_update.value || {})
+
+      // đổi object mảng nhân sự cần cập nhật sang array
+      const EMPLOYEES_TO_UPDATE = Object.values(employees_to_update.value || {})
+
+      // lặp qua từng chi nhánh cần cập nhật để cập nhật
+      for (let i = 0; i < BRANCHES_TO_UPDATE.length; i++) {
+         // call api cập nhật chi nhánh
+         await updateBusiness({
+            body: BRANCHES_TO_UPDATE[i]
+         })
+      }
+
+      // lặp qua từng nhân sự cần cập nhật để cập nhật
+      for (let i = 0; i < EMPLOYEES_TO_UPDATE.length; i++) {
+         // call api cập nhật nhân sự
+         await updateEmployee({
+            body: {
+               _id: EMPLOYEES_TO_UPDATE[i]._id,
+               linked_employee_id: EMPLOYEES_TO_UPDATE[i].linked_employee_id
+            },
+            access_token: EMPLOYEES_TO_UPDATE[i].access_token
+         })
+      }
+
+      // reset dữ liệu chi nhánh
+      branhes_to_update.value = {}
+      
+      // reset dữ liệu nhân sự
+      employees_to_update.value = {}
+   } catch (e) {
+      console.log(e)
+   }
+}
+
+defineExpose({ save })
 </script>

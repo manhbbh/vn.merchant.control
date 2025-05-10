@@ -13,7 +13,7 @@
     <!-- 6 -->
     <WorkingForm v-model="form_of_work" :setting_form_of_work="setting.form_of_work"></WorkingForm>
     <!-- 7 -->
-    <Synchronous />
+    <Synchronous ref="synchrononus_ref" />
     <!-- 8 -->
     <Timeworking v-model="working_time" :setting_working_time="setting.working_time"></Timeworking>
     <!-- 9 -->
@@ -36,6 +36,7 @@ import { Toast } from '@/service/helper/toast'
 import { setting } from '@/service/constant/setting_default'
 
 // * libraries
+import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 
 /**Component*/
@@ -61,6 +62,7 @@ const {
   business_data,
 } = storeToRefs(commonStore)
 
+/** hook logic lưu các thiết lập */
 const {
   saveBusinessInfo,
   savesSettingPeriodMonthly,
@@ -71,11 +73,18 @@ const {
   savesSettingBackground,
 } = useGetData()
 
+/** reference tới component đồng bộ trang */
+const synchrononus_ref = ref<typeof Synchronous | null>(null)
+
 // * toast
 const $toast = new Toast()
 
 async function saveSetting() {
   try {
+    // bật loading
+    commonStore.is_loading_full_screen = true
+
+    // call các api lưu thiết lập của doanh nghiệp
     await Promise.all([
       saveBusinessInfo(),
       savesSettingPeriodMonthly(),
@@ -85,9 +94,17 @@ async function saveSetting() {
       savesSettingTimeworking(),
       savesSettingBackground(),
     ])
+
+    // call hàm lưu đồng bộ trang
+    await synchrononus_ref.value?.save()
+
+    // thông báo thành công
     $toast.success('Lưu thiết lập thành công')
   } catch (e) {
     $toast.error(e)
+  } finally {
+    // tắt loading
+    commonStore.is_loading_full_screen = false
   }
 }
 </script>
