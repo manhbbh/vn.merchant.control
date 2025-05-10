@@ -22,9 +22,9 @@
                >
                   Tổ chức
                </label>
+               <!-- :close="() => (is_open_dropbox = false)" -->
                <DropBox
                   place="bottom"
-                  :close="() => (is_open_dropbox = false)"
                   class="w-full"
                >
                   <template #trigger>
@@ -138,9 +138,9 @@
                      <IconNexts class="w-5 h-5 shrink-0"></IconNexts>
                   </div>
                   <div class="flex col-span-4 flex-col gap-1">
+                     <!-- :close="() => (is_open_dropbox = false)" -->
                      <DropBox
                         place="bottom"
-                        :close="() => (is_open_dropbox = false)"
                         class="w-full"
                      >
                         <template #trigger>
@@ -178,7 +178,7 @@
                                     }"
                                     @click="
                                        changeBranchId(item?.branch_id, branch._id),
-                                          getEmployeeData(item, branch.access_token, item.token_business)
+                                          getEmployeeData(item, item.token_business, branch.access_token)
                                     "
                                  >
                                     {{ branch?.name }}
@@ -230,7 +230,6 @@
                      <div class="col-span-4 flex flex-col gap-2">
                         <DropBox
                            place="bottom"
-                           :close="() => (is_open_dropbox = false)"
                            class="w-full"
                         >
                            <template #trigger>
