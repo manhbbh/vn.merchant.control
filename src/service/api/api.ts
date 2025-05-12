@@ -40,6 +40,11 @@ async function apiMerchantRequest({
       body,
     })
 
+    // nếu có lỗi thì throw lỗi ra
+    if(RES?.context_error?.message) {
+      throw RES?.context_error?.message
+    }
+
     return RES
   } catch (e) {
     throw e

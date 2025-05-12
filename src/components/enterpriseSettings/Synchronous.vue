@@ -30,6 +30,9 @@
                      <button
                         class="flex justify-between border-border border px-3 py-2 w-full truncate rounded-md"
                         @click="is_open_dropbox = true"
+                        :class="{
+                           'text-red-500': message_error
+                        }"
                      >
                         <p>
                            {{ 
@@ -77,10 +80,15 @@
                   {{ business_data?.short_name || business_data?.name }}
                </p>
             </div>
+
+            <div v-if="message_error" class="flex gap-2 text-red-500 col-span-7 pl-4 items-center h-full">
+               <ExclamationTriangleIcon class="w-5 h-5 flex-shrink-0" />
+               <p class="text-xs text-wrap">{{ message_error }}</p>
+            </div>
          </div>
 
          <!-- Danh sách nhân sự -->
-         <div v-if="!isEmpty(selected_bm_employees)" class="flex flex-col gap-1 w-full overflow-auto max-h-[50dvh]">
+         <div v-if="!isEmpty(selected_bm_employees) && !message_error" class="flex flex-col gap-1 w-full overflow-auto max-h-[50dvh]">
             <!-- Tiêu đề -->
             <div class="grid grid-cols-16 w-full items-end sticky top-0">
                <div class="flex col-span-4 flex-col gap-1">
@@ -266,7 +274,7 @@
          </div>
 
          <!-- Danh sách các chi nhánh -->
-         <div v-if="!isEmpty(branches_sync)" class="flex flex-col gap-1 w-full overflow-auto max-h-[50dvh]">
+         <div v-if="!isEmpty(branches_sync) && !message_error" class="flex flex-col gap-1 w-full overflow-auto max-h-[50dvh]">
             <!-- Tiêu đề -->
             <div class="grid grid-cols-16 w-full items-end sticky top-0">
                <div class="flex col-span-4 flex-col gap-1">
@@ -382,6 +390,7 @@ import DropBox from '@/components/DropBox.vue'
 
 /** Interfaces */
 import { BusinessBranchData, EmployeeData } from '@/service/interface'
+import { ExclamationTriangleIcon } from '@heroicons/vue/24/solid'
 
 /** store */
 const commonStore = useCommonStore()
@@ -395,6 +404,9 @@ const business_id = ref('')
 
 /** từ khóa tìm kiếm */
 const keyword = ref('')
+
+/** thông báo lỗi */
+const message_error = ref('')
 
 /** danh sách các chi nhánh cần được chỉnh sửa */
 const branhes_to_update = ref<{
@@ -509,6 +521,9 @@ function changeEmployeeId(from_user_id?: string, to_user_id?: string) {
 /** Lấy danh sách nhân sự của tổ chức chatbox đã chọn */
 async function getCurrentEmployees() {
    try {
+      // tắt cờ thông báo lỗi
+      message_error.value = ''
+
       // bật cờ loading
       commonStore.is_loading_full_screen = true
 
@@ -522,8 +537,10 @@ async function getCurrentEmployees() {
 
       // lưu lại danh sách nhân sự của tổ chức chatbox đã chọn
       selected_bm_employees.value = RES.data
-   } catch (error) {
-      console.log(error)
+   } catch (e) {
+      console.log(e)
+      // lưu lại thông báo lỗi
+      message_error.value = e as string
    } finally {
       // tắt cờ loading
       commonStore.is_loading_full_screen = false
