@@ -381,6 +381,9 @@ export interface EmployeeData {
         }
       }
     | number
+
+  /** nhân sự được liên kết */
+  linked_user?: string
 }
 
 /** dữ liệu doanh nghiệp */
@@ -502,13 +505,4 @@ export interface BusinessBranchData {
   business?: CompanyData
 
   redirect_to?: string
-
-  /** Danh sách nhân sự hiện tại */
-  current_employees?: {
-    [key: string]: EmployeeData
-  },
-  /** Danh sách nhân sự được điều hướng tới */
-  redirect_employees?: {
-    [key: string]: EmployeeData
-  },
 }

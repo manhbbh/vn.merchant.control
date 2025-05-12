@@ -132,6 +132,30 @@ export async function uploadImage(params: InputRequestApi) {
   }
 }
 
+/** Lấy danh sách nhân sự liên kết */
+export async function getLinkedUser(params: InputRequestApi) {
+  try {
+    return await apiMerchantRequest({
+      ...params,
+      end_point: 'business/get_linked_users',
+    })
+  } catch (e) {
+    throw e
+  }
+}
+
+/** liên kết user của bm với bm khác */
+export async function linkUser(params: InputRequestApi) {
+  try {
+    return await apiMerchantRequest({
+      ...params,
+      end_point: 'business/link_user',
+    })
+  } catch (e) {
+    throw e
+  }
+}
+
 // * Thiết lập doanh nghiệp
 /** lấy danh sách thiết lập */
 export async function getSetting(params: InputRequestApi) {
