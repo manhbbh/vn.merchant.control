@@ -230,7 +230,7 @@
                               </li>
                               <li v-for="re, user_id in users">
                                  <button
-                                    v-show="checkName(`${re.first_name} ${re.last_name}`)"
+                                    v-show="checkName(`${re.first_name} ${re.last_name}`) && !re.archive"
                                     class="text-start p-2 w-full truncate rounded-md hover:bg-slate-200 flex items-center gap-3"
                                     :class="{
                                        '!bg-gray-300 text-black': e?.linked_user === `${user_id}`,
@@ -241,8 +241,8 @@
                                     }"
                                  >
                                     <object
-                                       v-if="re?.avatar"
-                                       :data="re?.avatar" 
+                                       v-if="re?.avatar && convertAvatarUrl(re?.avatar)"
+                                       :data="convertAvatarUrl(re?.avatar)"
                                        type="image/png"
                                        class="w-9 h-9 rounded-full"
                                     >
@@ -261,7 +261,8 @@
                                     >
                                        {{ createShortName(re) }}
                                     </div>
-                                    {{ re?.first_name }} {{ re?.last_name }}
+                                    {{ re?.first_name }} {{ re?.last_name }} {{ user_id }}
+                                    
                                  </button>
                               </li>
                            </ul>
@@ -305,6 +306,7 @@
                   'border-b , pb-3': index !== branches.length - 1,
                   'pt-3': index !== 0,
                }"
+               v-show="!item.archive"
             >
                <div class="grid grid-cols-16 w-full items-end">
                   <div class="flex col-span-4 flex-col">
@@ -347,7 +349,7 @@
                                     Không chọn
                                  </button>
                               </li>
-                              <li v-for="branch in branches">
+                              <li v-for="branch in branches" v-show="!branch.archive">
                                  <button
                                     class="text-start p-2 w-full truncate rounded-md hover:bg-slate-100"
                                     :class="{

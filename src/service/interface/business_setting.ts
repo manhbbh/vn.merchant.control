@@ -384,6 +384,8 @@ export interface EmployeeData {
 
   /** nhân sự được liên kết */
   linked_user?: string
+  /** Trạng thái xóa nhân sự */
+  archive?: boolean
 }
 
 /** dữ liệu doanh nghiệp */
@@ -504,5 +506,6 @@ export interface BusinessBranchData {
   /** doanh nghiệp của BU đó */
   business?: CompanyData
 
+  /** Điều hướng tới BU nào */
   redirect_to?: string
 }
