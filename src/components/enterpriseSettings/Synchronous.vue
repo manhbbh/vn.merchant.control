@@ -261,7 +261,7 @@
                                     >
                                        {{ createShortName(re) }}
                                     </div>
-                                    {{ re?.first_name }} {{ re?.last_name }} {{ user_id }}
+                                    {{ re?.first_name }} {{ re?.last_name }}
                                     
                                  </button>
                               </li>
@@ -559,6 +559,7 @@ function createShortName(e: EmployeeData) {
 
 /** đổi lại link avatar nhân sự */
 function convertAvatarUrl(old_url: string): string {
+   if(old_url.includes('merchant')) return old_url
    /** regex tìm kiếm id avatar */
    const REGEX = /\/avatar\/([a-f0-9]{32})/;
    /** danh sách các ID được lấy ra */
