@@ -516,7 +516,7 @@ watch(
       // gọi hàm changeBusinessId khi redirect_to giống với _id của doanh nghiệp hiện tại 
       // chỉ gọi với phần tử match đầu tiên
       for(const key in value) {
-         if (value[key].redirect_to === business_id.value) {
+         if (value[key].redirect_to === business_data.value._id) {
             changeBusinessId(key)
             return
          }
