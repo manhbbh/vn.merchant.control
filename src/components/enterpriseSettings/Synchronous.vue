@@ -108,6 +108,15 @@
                      Nhân viên
                   </label>
                </div>
+               <div class="py-2 flex justify-center"></div>
+               <div class="flex col-span-4 flex-col gap-1">
+                  <label
+                     class="text-center py-1 rounded bg-slate-200 text-sm font-medium"
+                     for=""
+                  >
+                     Chọn BU Nhân viên làm việc
+                  </label>
+               </div>
             </div>
             <!-- Danh sách nhân sự -->
             <div
@@ -150,6 +159,7 @@
                   <div class="pb-3 flex justify-center">
                      <IconNexts class="w-5 h-5 shrink-0"></IconNexts>
                   </div>
+
                   <!-- Thông tin nhân sự điều hướng tới -->
                   <div class="col-span-4 flex flex-col gap-2">
                      <DropBox
@@ -268,6 +278,64 @@
                         </template>
                      </DropBox>
                   </div>
+
+                  <div class="pb-3 flex justify-center">
+                     <IconNexts class="w-5 h-5 shrink-0"></IconNexts>
+                  </div>
+
+                  <div class="col-span-4 flex flex-col gap-2">
+                     <DropBox
+                        place="bottom"
+                        class="w-full"
+                     >
+                        <template #trigger>
+                           <button
+                              class="flex justify-between border-border border px-3 py-3 w-full truncate rounded-md disabled:bg-slate-100"
+                              @click="is_open_dropbox = true"
+                           >
+                              <p class="truncate">
+                                 {{ branches_ids?.[e?.linked_branch || '']?.name || 'Không chọn' }}
+                              </p>
+                              <IconDown class="w-5 h-5 flex-shrink-0" />
+                           </button>
+                        </template>
+                        <template #box>
+                           <ul
+                              v-if="is_open_dropbox"
+                              class="bg-white p-2 border rounded w-full my-1 max-h-80 overflow-auto"
+                           >
+                              <li>
+                                 <button
+                                    class="text-start p-2 w-full truncate rounded-md hover:bg-slate-100"
+                                    :class="{
+                                       '!bg-blue-700 text-white': !e.linked_branch,
+                                    }"
+                                    @click="() => {
+                                       e.linked_branch = ''
+                                       changeBranchEmployeeId(`${key}`, '')
+                                    }"
+                                 >
+                                    Không chọn
+                                 </button>
+                              </li>
+                              <li v-for="branch in branches">
+                                 <button
+                                    class="text-start p-2 w-full truncate rounded-md hover:bg-slate-100"
+                                    :class="{
+                                       '!bg-blue-700 text-white': e?.linked_branch === branch._id,
+                                    }"
+                                    @click="() => {
+                                       e.linked_branch = branch._id
+                                       changeBranchEmployeeId(`${key}`, branch._id)
+                                    }"
+                                 >
+                                    {{ branch?.name }}
+                                 </button>
+                              </li>
+                           </ul>
+                        </template>
+                     </DropBox>
+                  </div>
                </div>
             </div>
             </div>
@@ -375,7 +443,7 @@
 import { get, isEmpty, set } from 'lodash'
 import { storeToRefs } from 'pinia'
 import { useCommonStore } from '@/stores'
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { nonAccentVn } from '@/service/helper/format'
 import { updateBusiness, getLinkedUser, linkUser } from '@/service/api/api'
 
@@ -421,6 +489,7 @@ const employees_to_update = ref<{
    [key: string]: {
       from_user_id?: string
       to_user_id?: string
+      to_branch_id?: string
    }
 }>({})
 
@@ -435,6 +504,23 @@ const branches_sync = computed<{ [key: string]: BusinessBranchData }>(() => {
    // trả về các chi nhánh của doanh nghiệp đang được chọn
    return businesses.value[ID]?.branchs || {}
 })
+
+watch(
+   () => businesses.value,
+   (value) => {
+      console.log(value);
+      
+      // lặp qua danh sách doanh nghiệp 
+      // gọi hàm changeBusinessId khi redirect_to giống với _id của doanh nghiệp hiện tại 
+      // chỉ gọi với phần tử match đầu tiên
+      for(const key in value) {
+         if (value[key].redirect_to === business_id.value) {
+            changeBusinessId(key)
+            return
+         }
+      }
+   }
+)
 
 /** hàm mở dropbox nhân sự */
 function openDropbox() {
@@ -518,6 +604,15 @@ function changeEmployeeId(from_user_id?: string, to_user_id?: string) {
    set(employees_to_update.value, `[${from_user_id}]`, { from_user_id, to_user_id })
 }
 
+/** hàm xử lý đổi id nhân sự */
+function changeBranchEmployeeId(from_user_id?: string, to_branch_id?: string) {
+   // đóng select
+   is_open_dropbox.value = false
+
+   // lưu lại id nhân sự đang cần được điều hướng
+   set(employees_to_update.value, `[${from_user_id}]`, { from_user_id, to_branch_id })
+}
+
 /** Lấy danh sách nhân sự của tổ chức chatbox đã chọn */
 async function getCurrentEmployees() {
    try {
@@ -576,11 +671,22 @@ function convertAvatarUrl(old_url: string): string {
 /** hàm lưu các thay đổi */
 async function save() {
    try {
+      // nếu lỗi thì dừng lại
+      if (message_error.value) return
+
       // đổi object mảng chi nhánh cần cập nhật sang array
       const BRANCHES_TO_UPDATE = Object.values(branhes_to_update.value || {})
 
       // đổi object mảng nhân sự cần cập nhật sang array
       const EMPLOYEES_TO_UPDATE = Object.values(employees_to_update.value || {})
+
+      // cập nhật BM hiện tại
+      await updateBusiness({
+         body: {
+            id: business_id.value,
+            redirect_to: business_data.value._id
+         }
+      })
 
       // lặp qua từng chi nhánh cần cập nhật để cập nhật
       for (let i = 0; i < BRANCHES_TO_UPDATE.length; i++) {
@@ -599,6 +705,7 @@ async function save() {
                to_business_id: business_data.value._id,
                from_user_id: EMPLOYEES_TO_UPDATE[i].from_user_id,
                to_user_id: EMPLOYEES_TO_UPDATE[i].to_user_id,
+               to_branch_id: EMPLOYEES_TO_UPDATE[i].to_branch_id
             }
          })
       }

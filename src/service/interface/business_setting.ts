@@ -384,6 +384,9 @@ export interface EmployeeData {
 
   /** nhân sự được liên kết */
   linked_user?: string
+
+  /** bu được liên kết */
+  linked_branch?: string
 }
 
 /** dữ liệu doanh nghiệp */
