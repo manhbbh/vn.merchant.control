@@ -328,16 +328,6 @@ export interface BranchData {
   currency?: string
   /** Điều hướng tới BU nào */
   redirect_to?: string
-  /** Danh sách nhân sự hiện tại */
-  current_employees?: {
-    [key: string]: EmployeeData
-  },
-  /** Danh sách nhân sự được điều hướng tới */
-  redirect_employees?: {
-    [key: string]: EmployeeData
-  },
-  /** Token BU sẽ được điều hướng */
-  redirect_token?: string
 }
 
 /** dữ liệu chi nhánh trong dữ liệu nhân viên */
@@ -510,4 +500,37 @@ export interface BusinessBranchData {
 
   /** Điều hướng tới BU nào */
   redirect_to?: string
+
+  /** logo */
+  logo?: string
+  
+  /** avatar bên chatbox */
+  chatbox_avatar?: string
+
+  /** id page chatbox */
+  chatbox_page_id?: string
+
+  /** nền tảng chatbox */
+  chatbox_platform?: keyof typeof CustomerSource
+
+  /** tên viết tắt */
+  short_name?: string
+}
+
+// * Nguồn khách hàng
+export enum CustomerSource {
+    // * Facebook Messenger
+    FB_MESS,
+    // * Zalo Doanh nghiệp
+    ZALO_OA,
+    // * Zalo cá nhân
+    ZALO_PERSONAL,
+    // * Trang web
+    WEBSITE,
+    // * Facebook Whatsapp
+    FB_WHATSAPP,
+    // * Facebook Instagram
+    FB_INSTAGRAM,
+    // * AI Agentic
+    AI_AGENT
 }

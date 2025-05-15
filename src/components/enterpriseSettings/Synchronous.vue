@@ -345,7 +345,7 @@
          <!-- Danh sách các chi nhánh -->
          <div v-if="!isEmpty(branches_sync) && !message_error" class="flex flex-col gap-1 w-full overflow-auto max-h-[50dvh]">
             <!-- Tiêu đề -->
-            <div class="grid grid-cols-16 w-full items-end sticky top-0">
+            <div class="grid grid-cols-16 w-full items-end sticky top-0 z-10">
                <div class="flex col-span-4 flex-col gap-1">
                   <label
                      class="text-center py-1 rounded bg-slate-200 text-sm font-medium"
@@ -378,9 +378,22 @@
             >
                <div class="grid grid-cols-16 w-full items-end">
                   <div class="flex col-span-4 flex-col">
-                     <p class="text-start py-3 px-3 border border-border bg-slate-50 shadow-sm rounded-md">
-                        {{ item?.branch_name }}
-                     </p>
+                     <div class="flex text-start gap-2 py-1.5 px-3 border border-border bg-slate-50 shadow-sm rounded-md">
+                        <LogoBranch 
+                           :src="item?.chatbox_avatar || item?.logo || ''"
+                           :name="item?.short_name || item?.branch_name || ''"
+                        />
+                        <div class="overflow-hidden">
+                           <p class="font-medium">
+                           {{ item?.short_name || item?.branch_name || '' }}
+                           </p>
+                           <div class="flex gap-1">
+                              <component v-if="item?.chatbox_page_id" class="w-3.5 h-3.5 flex-shrink-0" :is="ICONS[item?.chatbox_platform || '']"/>
+                              <img v-else class="w-3.5 h-3.5 flex-shrink-0" src="@/assets/imgs/merchant-icon.png">
+                              <p class="text-xs truncate">{{ item?.chatbox_page_id || item?.branch_id || '' }}</p>
+                           </div>
+                        </div>
+                     </div>
                   </div>
                   <div class="py-2 flex justify-center">
                      <IconNexts class="w-5 h-5 shrink-0"></IconNexts>
@@ -392,7 +405,7 @@
                      >
                         <template #trigger>
                            <button
-                              class="flex justify-between border-border border px-3 py-3 w-full truncate rounded-md disabled:bg-slate-100"
+                              class="flex justify-between border-border border px-3 py-3.5 w-full truncate rounded-md disabled:bg-slate-100"
                               @click="is_open_dropbox = true"
                            >
                               <p class="truncate">
@@ -449,18 +462,35 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { nonAccentVn } from '@/service/helper/format'
 import { updateBusiness, getLinkedUser, linkUser } from '@/service/api/api'
 
+/** Components */
+import DropBox from '@/components/DropBox.vue'
+import Zalo from '@/components/icons/platform/Zalo.vue'
+import LogoBranch from '@/components/avartar/LogoBranch.vue'
+
 /** Icon */
 import IconSyn from '@/components/icons/IconSyn.vue'
 import IconDown from '@/components/icons/IconDown.vue'
 import IconNexts from '@/components/icons/IconNexts.vue'
+import Website from '@/components/icons/platform/Website.vue'
+import Facebook from '@/components/icons/platform/Facebook.vue'
+import Whatsapp from '@/components/icons/platform/Whatsapp.vue'
+import Instagram from '@/components/icons/platform/Instagram.vue'
 import { ArrowsRightLeftIcon } from '@heroicons/vue/24/outline'
-
-/** Components */
-import DropBox from '@/components/DropBox.vue'
+import { ExclamationTriangleIcon } from '@heroicons/vue/24/solid'
 
 /** Interfaces */
 import { BusinessBranchData, EmployeeData } from '@/service/interface'
-import { ExclamationTriangleIcon } from '@heroicons/vue/24/solid'
+
+/** danh sách icon của các nền tảng */
+const ICONS: { [key: string]: any } = {
+   'FB_MESS': Facebook,
+   'ZALO_PERSONAL': Zalo,
+   'ZALO_OA': Zalo,
+   'WEBSITE': Website,
+   'FB_WHATSAPP': Whatsapp,
+   'FB_INSTAGRAM': Instagram,
+   'AI_AGENT': Website,
+}
 
 /** store */
 const commonStore = useCommonStore()

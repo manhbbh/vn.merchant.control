@@ -186,7 +186,7 @@ import { ArrowRightStartOnRectangleIcon } from '@heroicons/vue/24/outline'
 /**ảnh */
 
 // * interface
-import { BranchData, BusinessBranchData, BusinessData, CalculationMethod, CompanyData } from '@/service/interface'
+import { BranchData, BusinessBranchData, CalculationMethod, CompanyData } from '@/service/interface'
 
 // * hook
 const {
