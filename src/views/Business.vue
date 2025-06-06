@@ -367,7 +367,11 @@ async function getSettings() {
 /** lấy dữ liệu doanh nghiệp */
 async function getBusinesses() {
   try {
-    const RES = await getBusiness({})
+    const RES = await getBusiness({
+      body: {
+        user_setting_bm: false
+      }
+    })
     /** dữ liệu các doanh nghiệp dạng obj */
     let business_obj: { [key: string]: CompanyData } = {}
 

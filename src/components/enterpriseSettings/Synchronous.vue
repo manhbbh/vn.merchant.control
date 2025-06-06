@@ -51,13 +51,14 @@
                      >
                         <li v-for="item in Object.values(businesses)">
                            <button
-                              class="text-start p-2 w-full truncate rounded-md hover:bg-slate-100"
+                              class="text-start p-2 w-full truncate flex justify-between items-center rounded-md hover:bg-slate-100"
                               :class="{
                                  '!bg-blue-700 text-white': business_id === item._id,
                               }"
                               @click="changeBusinessId(item._id, business_data?._id)"
                            >
                               {{ item?.short_name || item?.name }}
+                              <CheckCircleIcon class="size-5 text-green-500" v-if="business_data?._id === item.redirect_to" />
                            </button>
                         </li>
                      </ul>
@@ -476,7 +477,7 @@ import Facebook from '@/components/icons/platform/Facebook.vue'
 import Whatsapp from '@/components/icons/platform/Whatsapp.vue'
 import Instagram from '@/components/icons/platform/Instagram.vue'
 import { ArrowsRightLeftIcon } from '@heroicons/vue/24/outline'
-import { ExclamationTriangleIcon } from '@heroicons/vue/24/solid'
+import { ExclamationTriangleIcon, CheckCircleIcon } from '@heroicons/vue/24/solid'
 
 /** Interfaces */
 import { BusinessBranchData, EmployeeData } from '@/service/interface'
