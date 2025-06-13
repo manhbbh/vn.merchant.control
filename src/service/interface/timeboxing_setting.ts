@@ -18,6 +18,8 @@ export interface EmployeeSetting {
   passive_percent?: number
   /**  */
   paying_when_rejected?: boolean
+   /**Làm xoay ca*/ 
+  work_in_shifts?: boolean
 }
 
 /** thiết lập timeboxing */

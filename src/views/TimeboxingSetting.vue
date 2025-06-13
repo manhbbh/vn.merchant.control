@@ -113,6 +113,9 @@ import {
 } from '@/service/api/api'
 import { useTimeboxingStore } from '@/stores/timeboxing'
 import { storeToRefs } from 'pinia'
+import {
+  EmployeeSetting,
+} from '@/service/interface'
 
 // * interface
 interface Menu {
@@ -172,8 +175,11 @@ async function getSettings() {
       body: {},
     })
     RES?.forEach((item: any) => {
-      if(item?.type === 'EMPLOYEE'){
-        employee_setting.value = item?.data?.employees
+       if (item?.type === 'EMPLOYEE' && item?.data?.employees) {
+        employee_setting.value = item.data.employees.map((emp: EmployeeSetting) => ({
+          ...emp,
+          work_in_shifts: emp.work_in_shifts ?? false,
+        }))
       }
     })
   } catch (e) {
@@ -315,7 +321,7 @@ async function handleSave(){
           employees: employee_setting.value?.map(item => {
             return {
               ...item,
-              salary_p2: Number(item?.salary_p2 || 0)
+              salary_p2: Number(item?.salary_p2 || 0),
             }
           })
         }

@@ -1,30 +1,19 @@
 <template>
-  <div
-    class="py-3 px-2 sm:px-4 border border-gray-200 rounded-lg flex text-black items-start gap-2 sm:gap-3"
-  >
+  <div class="py-3 px-2 sm:px-4 border border-gray-200 rounded-lg flex text-black items-start gap-2 sm:gap-3">
     <!-- icon -->
     <IconEmployee class="w-5 h-5 flex-shrink-0"></IconEmployee>
     <!--content  -->
     <div class="flex-col flex-1 gap-3 w-full overflow-hidden">
       <div class="flex items-center mb-3 justify-between">
         <h4 class="flex justify-start text-sm font-medium">Nhân sự</h4>
-        <button
-          class="bg-black text-white py-2 px-4 rounded-md"
-          @click="handleOpenForm()"
-        >
+        <button class="bg-black text-white py-2 px-4 rounded-md" @click="handleOpenForm()">
           Thêm
         </button>
       </div>
       <!-- phần các ô input  -->
-      <div
-        class="w-full max-h-[50dvh] lg:max-h-[60dvh] overflow-y-auto overflow-x-hidden"
-      >
-        <table
-          class="min-w-full table-fixed border-none bg-white rounded-lg z-10"
-        >
-          <thead
-            class="bg-slate-200 h-7 text-xs font-semibold sticky top-0 text-customDarkBlue flex-shrink-0 z-10"
-          >
+      <div class="w-full max-h-[50dvh] lg:max-h-[60dvh] overflow-y-auto overflow-x-hidden">
+        <table class="min-w-full table-fixed border-none bg-white rounded-lg z-10">
+          <thead class="bg-slate-200 h-7 text-xs font-semibold sticky top-0 text-customDarkBlue flex-shrink-0 z-10">
             <tr class="h-7 flex gap-x-4 items-center">
               <th class="w-18 text-center font-semibold">ID|Ngày</th>
               <th class="w-45 text-left font-semibold">Nhân sự</th>
@@ -34,6 +23,7 @@
               <th class="w-42 text-left font-semibold hidden md:block">
                 Lương P2
               </th>
+              <th class="w-42 text-left font-semibold hidden md:block">Làm xoay ca</th>
               <th class="w-25 sm:w-25 text-left font-semibold hidden md:block">
                 Chủ động
               </th>
@@ -46,11 +36,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr
-              v-for="(holiday, index) in employee_setting"
-              :key="index"
-              class="flex items-center gap-x-4 text-black h-15 cursor-pointer text-sm border-b border-gray-200"
-            >
+            <tr v-for="(holiday, index) in employee_setting" :key="index"
+              class="flex items-center gap-x-4 text-black h-15 cursor-pointer text-sm border-b border-gray-200">
               <!-- STT -->
               <td class="w-18 text-center items-start justify-center">
                 <p class="flex px-4 text-blue-500 justify-center font-semibold">
@@ -62,10 +49,8 @@
               <!--  -->
               <td @click="showModal(holiday)" class="w-45 text-left py-2 text-customGray">
                 <div class="flex w-full items-center gap-1 h-5">
-                  <Avatar
-                    :src="getInfo(holiday.employee_id, 'avatar')"
-                    :text="getInfo(holiday.employee_id, 'name') || ''"
-                  />
+                  <Avatar :src="getInfo(holiday.employee_id, 'avatar')"
+                    :text="getInfo(holiday.employee_id, 'name') || ''" />
                   <!--  -->
                   <div class="flex gap-1 items-center justify-between">
                     <p class="text-sm">
@@ -75,32 +60,22 @@
                   </div>
                 </div>
                 <!--  -->
-                <div
-                  class="flex gap-1 ml-5 h-2.5"
-                  v-if="holiday.working_time_id"
-                >
-                  <p
-                    v-for="(time, index) in form_of_work?.[
-                      holiday.working_time_id
-                    ]?.working_time"
-                    :class="{
+                <div class="flex gap-1 ml-5 h-2.5" v-if="holiday.working_time_id">
+                  <p v-for="(time, index) in form_of_work?.[
+                    holiday.working_time_id
+                  ]?.working_time" :class="{
                       'bg-green-500':
                         Number(time?.working_hours || 0) >= 5 && time?.active,
                       'bg-orange-500':
                         Number(time?.working_hours || 0) < 5 && time?.active,
                       'bg-slate-500': !time?.active,
-                    }"
-                    class="w-2.5 text-ss text-white flex items-center justify-center h-2.5 rounded-full"
-                    v-tooltip="
-                      !time?.active
+                    }" class="w-2.5 text-ss text-white flex items-center justify-center h-2.5 rounded-full" v-tooltip="!time?.active
                         ? 'Nghỉ'
                         : Number(time?.working_hours || 0) >= 5
-                        ? 'Toàn thời gian'
-                        : 'Bán thời gian'
-                    "
-                  >
-                    {{ index < 6 ? index + 2 : 'C' }}
-                  </p>
+                          ? 'Toàn thời gian'
+                          : 'Bán thời gian'
+                      ">
+                    {{ index < 6 ? index + 2 : 'C' }} </p>
                 </div>
               </td>
 
@@ -112,53 +87,39 @@
 
               <!-- Lương P1 -->
               <td class="w-42 text-left hidden md:block">
-                <Cleave
-                  v-model="holiday.salary_p2"
-                  :options="cleave_options"
-                  class="w-full px-3 py-2 outline-none border rounded-md placeholder:text-slate-500"
-                />
+                <Cleave v-model="holiday.salary_p2" :options="cleave_options"
+                  class="w-full px-3 py-2 outline-none border rounded-md placeholder:text-slate-500" />
+              </td>
+              <td class="p-2 text-customGray hidden md:table-cell">
+                <Toggle v-model="holiday.work_in_shifts" />
               </td>
               <!-- chủ động -->
               <td class="w-25 text-left hidden md:block">
-                <div
-                  class="flex items-center border border-gray-300 h-9 py-2 rounded-md"
-                >
-                  <input
-                    @input="(e:Event) => {
-                      const VALUE = Number(holiday.proactive_percent || 0)
-                      if(VALUE > 100 ) holiday.proactive_percent = 100
-                      if(VALUE < 0 ) holiday.proactive_percent = 0
-                    }"
-                    @change="
+                <div class="flex items-center border border-gray-300 h-9 py-2 rounded-md">
+                  <input @input="(e: Event) => {
+                    const VALUE = Number(holiday.proactive_percent || 0)
+                    if (VALUE > 100) holiday.proactive_percent = 100
+                    if (VALUE < 0) holiday.proactive_percent = 0
+                  }" @change="
                       () => {
                         holiday.passive_percent =
                           100 - Number(holiday.proactive_percent || 0)
                       }
-                    "
-                    type="text"
-                    class="outline-none text-customDark pl-3 w-full text-sm"
-                    v-model="holiday.proactive_percent"
-                  />
+                    " type="text" class="outline-none text-customDark pl-3 w-full text-sm"
+                    v-model="holiday.proactive_percent" />
                   <div
-                    class="border-l border-gray-300 text-muted flex-shrink-0 flex items-center justify-center w-9 h-9"
-                  >
+                    class="border-l border-gray-300 text-muted flex-shrink-0 flex items-center justify-center w-9 h-9">
                     %
                   </div>
                 </div>
               </td>
               <!-- bị đọng -->
               <td class="w-25 text-left hidden md:block">
-                <div
-                  class="flex bg-slate-100 items-center border border-gray-300 h-9 py-2 rounded-md"
-                >
-                  <input
-                    type="text"
-                    class="outline-none text-customDark pl-3 bg-slate-100 w-full text-sm"
-                    v-model="holiday.passive_percent"
-                  />
+                <div class="flex bg-slate-100 items-center border border-gray-300 h-9 py-2 rounded-md">
+                  <input type="text" class="outline-none text-customDark pl-3 bg-slate-100 w-full text-sm"
+                    v-model="holiday.passive_percent" />
                   <div
-                    class="border-l border-gray-300 text-muted flex-shrink-0 flex items-center justify-center w-9 h-9"
-                  >
+                    class="border-l border-gray-300 text-muted flex-shrink-0 flex items-center justify-center w-9 h-9">
                     %
                   </div>
                 </div>
@@ -187,58 +148,41 @@
         </table>
       </div>
       <!--  -->
-      <div
-        class="overflow-hidden text-start py-4 flex lg:grid flex-col grid-cols-3 gap-2 lg:gap-4 w-full flex-wrap"
-        v-if="is_show_form"
-      >
+      <div class="overflow-hidden text-start py-4 flex lg:grid flex-col grid-cols-3 gap-2 lg:gap-4 w-full flex-wrap"
+        v-if="is_show_form">
         <div class="flex gap-2 lg:gap-4 items-center w-full">
           <label class="font-medium min-w-32">Nhân sự</label>
-          <SelectEmployee
-            class="w-full"
-            v-model="employee_form.employee_id"
-            :list_employees_added="list_employees_added"
-          />
+          <SelectEmployee class="w-full" v-model="employee_form.employee_id"
+            :list_employees_added="list_employees_added" />
         </div>
         <div class="flex gap-2 lg:gap-4 items-center w-full">
           <label class="font-medium min-w-32">Hình thức làm việc</label>
-          <SelectTimeWorking
-            class="w-full"
-            v-model="employee_form.working_time_id"
-          />
+          <SelectTimeWorking class="w-full" v-model="employee_form.working_time_id" />
         </div>
         <div class="flex gap-2 lg:gap-4 items-center w-full">
           <label class="font-medium min-w-32">Lương P2</label>
-          <cleave
-            v-model="employee_form.salary_p2"
-            :options="cleave_options"
-            placeholder="Nhập lương P2"
-            class="w-full px-3 py-2 outline-none border rounded-md placeholder:text-slate-500"
-          />
+          <cleave v-model="employee_form.salary_p2" :options="cleave_options" placeholder="Nhập lương P2"
+            class="w-full px-3 py-2 outline-none border rounded-md placeholder:text-slate-500" />
+        </div>
+
+        <div class="flex gap-2 lg:gap-4 items-center w-full">
+          <label class="font-medium min-w-32">Làm xoay ca</label>
+          <Toggle v-model="employee_form.work_in_shifts" />
         </div>
 
         <div class="flex gap-2 lg:gap-4 items-center w-full">
           <label class="font-medium min-w-32">Chủ động</label>
-          <input
-            class="w-full px-3 py-2 outline-none border rounded-md placeholder:text-slate-500"
-            v-model="employee_form.proactive_percent"
-            type="number"
-            placeholder="Nhập thời gian chủ động"
-          />
+          <input class="w-full px-3 py-2 outline-none border rounded-md placeholder:text-slate-500"
+            v-model="employee_form.proactive_percent" type="number" placeholder="Nhập thời gian chủ động" />
         </div>
 
-        <button
-          class="lg:w-fit bg-green-500 text-white rounded-md py-2 px-4 hover:shadow-md"
-          @click="addEmployee()"
-        >
+        <button class="lg:w-fit bg-green-500 text-white rounded-md py-2 px-4 hover:shadow-md" @click="addEmployee()">
           Thêm nhân sự
         </button>
       </div>
     </div>
     <!-- Modal xem chi tiết -->
-    <ModalDetailEmployeeSetting
-      v-model="open"
-      :employee_selected="employee_selected"
-    />
+    <ModalDetailEmployeeSetting v-model="open" :employee_selected="employee_selected" />
   </div>
 </template>
 
@@ -246,21 +190,21 @@
 import { useTimeboxingStore } from '@/stores/timeboxing'
 
 // * libraries
-import { computed, ref } from 'vue'
 import { format } from 'date-fns'
 import { storeToRefs } from 'pinia'
+import { computed, ref } from 'vue'
 import Cleave from 'vue-cleave-component'
 
 // * components
 import Avatar from '@/components/avartar/Avatar.vue'
+import ModalDetailEmployeeSetting from '@/components/componentSeup/ModalDetailEmployeeSetting.vue'
 import SelectEmployee from '@/components/select/SelectEmployee.vue'
 import SelectTimeWorking from '@/components/select/SelectTimeWorking.vue'
-import ModalDetailEmployeeSetting from '@/components/componentSeup/ModalDetailEmployeeSetting.vue'
+import Toggle from '@/components/Toggle.vue'
 
 /**ICon*/
 import IconEmployee from '@/components/icons/iconMenu/IconEmployee.vue'
 import IconTicks from '@/components/icons/IconTicks.vue'
-import IconArrow from '@/components/icons/IconArrow.vue'
 
 // * interfaces
 import { EmployeeSetting } from '@/service/interface'
