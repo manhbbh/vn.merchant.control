@@ -298,7 +298,6 @@ async function uploadFile(files: FileList) {
         body: form_data,
         headers: {
           'Content-Type': 'multipart/form-data',
-          'token-business': commonStore.branches[0].access_token,
         },
       })
 

@@ -273,6 +273,15 @@ function selectFile() {
   INPUT.click()
 }
 
+/** hàm lấy token business */
+function getTokenBusiness() {
+  /** lặp qua từng BU 1 nếu BU nào có token thì trả về và dừng luôn */
+  for (let index = 0; index < commonStore.branches.length; index++) {
+    const BRANCH = commonStore.branches[index];
+    if(BRANCH.access_token) return BRANCH.access_token
+  }
+}
+
 /** Upload file */
 async function uploadFile(files: FileList) {
   try {
@@ -291,7 +300,7 @@ async function uploadFile(files: FileList) {
         body: form_data,
         headers: {
           'Content-Type': 'multipart/form-data',
-          'token-business': commonStore.branches[0].access_token,
+          'token-business': getTokenBusiness(),
         },
       })
 
