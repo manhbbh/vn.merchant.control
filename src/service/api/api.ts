@@ -29,8 +29,11 @@ async function apiMerchantRequest({
   access_token,
 }: InputRequestApi) {
   try {
+    /** Kiểm tra xem có phải api get business không để lấy url merchant khác nhau */
+    const is_api_get_business = end_point === 'business/get_business';
+
     const RES = await requestAxios({
-      uri: `${$env.host.merchant}/${end_point}`,
+      uri: `${is_api_get_business ? $env.host.merchant_get_business : $env.host.merchant}/${end_point}`,
       method: 'POST',
       headers: {
         'token-user': getTokenUser(),

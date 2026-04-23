@@ -372,8 +372,8 @@
                :key="index"
                class="border-slate-100 w-full"
                :class="{
-                  'border-b , pb-3': index !== branches.length - 1,
-                  'pt-3': index !== 0,
+                  'border-b , pb-3': Number(index) !== branches?.length - 1,
+                  'pt-3': Number(index)!== 0,
                }"
                v-show="!item.archive"
             >
@@ -634,16 +634,23 @@ function changeEmployeeId(from_user_id?: string, to_user_id?: string) {
    is_open_dropbox.value = false
 
    // lưu lại id nhân sự đang cần được điều hướng
-   set(employees_to_update.value, `[${from_user_id}]`, { from_user_id, to_user_id })
+   set(employees_to_update.value, `[${from_user_id}]`, {
+      ...get(employees_to_update.value, `[${from_user_id}]`, {}),
+      from_user_id,
+      to_user_id,
+   })
 }
 
 /** hàm xử lý đổi id nhân sự */
 function changeBranchEmployeeId(from_user_id?: string, to_branch_id?: string) {
    // đóng select
    is_open_dropbox.value = false
-
    // lưu lại id nhân sự đang cần được điều hướng
-   set(employees_to_update.value, `[${from_user_id}]`, { from_user_id, to_branch_id })
+   set(employees_to_update.value, `[${from_user_id}]`, {
+      ...get(employees_to_update.value, `[${from_user_id}]`, {}),
+      from_user_id,
+      to_branch_id,
+   })
 }
 
 /** Lấy danh sách nhân sự của tổ chức chatbox đã chọn */

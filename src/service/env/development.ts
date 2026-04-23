@@ -11,6 +11,7 @@ const ENV: Env = {
   host: {
     test: 'http://localhost:1355',
     merchant: 'https://api.merchant.vn/v1',
+    merchant_get_business: 'https://api-v2.merchant.vn',
     product: 'https://api-product.merchant.vn',
     timeboxing: 'https://api-timeboxing.merchant.vn',
   },

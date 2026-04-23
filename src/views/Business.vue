@@ -366,43 +366,25 @@ async function getSettings() {
 
 /** lấy dữ liệu doanh nghiệp */
 async function getBusinesses() {
-  try {
-    const RES = await getBusiness({
-      body: {
-        user_setting_bm: false
-      }
-    })
-    /** dữ liệu các doanh nghiệp dạng obj */
-    let business_obj: { [key: string]: CompanyData } = {}
+   try {
+      const res = (await getBusiness({
+         body: {
+            user_setting_bm: false,
+         },
+      })) as CompanyData[]
 
-    /** lặp qua tất cả các branch */
-    RES.data.branchs?.forEach((item: BusinessBranchData) => {
-      /** id doanh nghiệp */
-      if(!item?.business?._id) return
+      const businessObj = res.reduce<Record<string, CompanyData>>((acc, item) => {
+         if (item?._id) {
+            acc[item._id] = item
+         }
 
-      // nếu chưa có dữ liệu của doanh nghiệp đó thì lưu lại và thêm chi nhánh đó vào luôn
-      if (!business_obj[item.business._id]) {
-        business_obj[item.business._id] = {
-          ...item.business,
-          branchs: {
-            [item.branch_id]: item,
-          },
-        }
-      } 
-      // nếu đã có rồi thì push thêm vào mảng chi nhánh của doanh nghiệp đó
-      else {
-        business_obj[item.business._id].branchs = {
-          ...business_obj[item.business._id].branchs || {},
-          [item.branch_id]: item,
-        }
-      }
-    })
+         return acc
+      }, {})
 
-    // lưu lại store
-    businesses.value = business_obj
-  } catch (e) {
-    $toast.error(e)
-  }
+      businesses.value = businessObj
+   } catch (error) {
+      $toast.error(error)
+   }
 }
 
 /** lấy dữ liệu từ url */
