@@ -110,6 +110,8 @@ export function useGetData() {
   /** lưu thiết lập ngày nghỉ lễ */
   async function savesSettingHolidays() {
     try {
+      if (!holidays.value?.setting_data) return
+        
       await businessSaveSetting({
         body: {
           setting_type: 'holiday',
@@ -125,6 +127,8 @@ export function useGetData() {
   /** lưu thiết lập hình thức làm việc */
   async function savesSettingFormOfWork() {
     try {
+      if (!form_of_work.value?.setting_data) return
+
       await businessSaveSetting({
         body: {
           setting_type: 'form_of_work',
