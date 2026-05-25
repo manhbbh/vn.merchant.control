@@ -539,20 +539,24 @@ const branches_sync = computed<{ [key: string]: BusinessBranchData }>(() => {
 })
 
 watch(
-   () => businesses.value,
-   (value) => {
-      console.log(value);
-      
-      // lặp qua danh sách doanh nghiệp 
-      // gọi hàm changeBusinessId khi redirect_to giống với _id của doanh nghiệp hiện tại 
-      // chỉ gọi với phần tử match đầu tiên
-      for(const key in value) {
-         if (value[key].redirect_to === business_data.value._id) {
-            changeBusinessId(key)
-            return
-         }
-      }
-   }
+   () => [
+      business_data.value?._id,
+      Object.values(businesses.value)
+         .map(item => `${item?._id || ''}:${item?.redirect_to || ''}`)
+         .join('|'),
+   ],
+   () => {
+      const CURRENT_BUSINESS_ID = business_data.value?._id
+
+      if (!CURRENT_BUSINESS_ID) return
+
+      const matchedBusiness = Object.values(businesses.value).find(item => item?.redirect_to === CURRENT_BUSINESS_ID)
+
+      if (!matchedBusiness?._id || matchedBusiness._id === business_id.value) return
+
+      changeBusinessId(matchedBusiness._id)
+   },
+   { immediate: true },
 )
 
 /** hàm mở dropbox nhân sự */
