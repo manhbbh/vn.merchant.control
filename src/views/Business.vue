@@ -374,8 +374,23 @@ async function getBusinesses() {
       })) as CompanyData[]
 
       const businessObj = res.reduce<Record<string, CompanyData>>((acc, item) => {
-         if (item?._id) {
-            acc[item._id] = item
+         if (!item?._id) return acc
+
+         const branchs = Array.isArray(item?.branches)
+            ? item.branches.reduce<Record<string, BusinessBranchData>>((branchAcc, branch) => {
+               const branchId = branch?._id || branch?.id || branch?.branch_id
+
+               if (branchId) {
+                  branchAcc[branchId] = branch
+               }
+
+               return branchAcc
+            }, {})
+            : item?.branches || {}
+
+         acc[item._id] = {
+            ...item,
+            branchs
          }
 
          return acc
