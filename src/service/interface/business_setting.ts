@@ -440,7 +440,11 @@ export interface CompanyData {
   /** danh sách các chi nhánh */
   branchs?: {
     [key: string]: BusinessBranchData
-  }
+  },
+
+  branches?: {
+    [key: string]: BusinessBranchData
+  },
 }
 
 /**
