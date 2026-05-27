@@ -24,7 +24,7 @@
 
     <!-- chi nhánh đang hoạt đông -->
     <td
-      class="text-left px-3 py-2 text-customGray hidden md:table-cell"
+      class="text-left px-3 py-2 text-customGray"
       v-if="is_show_branch"
     >
       <div class="flex gap-2 w-[360px] flex-wrap">
@@ -38,7 +38,7 @@
     </td>
 
     <!-- ngày tạo -->
-    <td class="text-left px-3 py-2 hidden md:table-cell">
+    <td class="text-left px-3 py-2">
       <p class="text-sm" v-if="employee.createdAt">
         {{ format(employee.createdAt, 'dd/MM/yyyy') }}
       </p>
@@ -50,21 +50,21 @@
         {{
           formatDistanceToNowStrict(employee.last_time_login, { locale: vi })
         }}
-        trước
+        {{ $t('v1.common.ago') }}
       </p>
     </td>
 
     <!-- trạng thái -->
-    <td class="text-left px-3 py-2 hidden md:table-cell">
+    <td class="text-left px-3 py-2">
       <p
         class="text-sm"
         :class="employee?.active ? 'text-green-500' : 'text-red-500'"
       >
-        {{ employee?.active ? 'Đang hoạt động' : 'Không hoạt động' }}
+        {{ employee?.active ? $t('v1.common.active') : $t('v1.common.inactive_short') }}
       </p>
     </td>
     <!-- thao tác -->
-    <td class="text-left px-2 py-0.5 hidden md:table-cell">
+    <td class="text-left px-2 py-0.5">
       <button
         :class="{
           'bg-green-500': !employee?.active,
@@ -74,7 +74,7 @@
         @click="handleActive(employee)"
       >
         <p class="text-xs flex items-center font-medium">
-          {{ !employee.active ? 'Kích hoạt' : 'Tạm ngừng' }}
+          {{ !employee.active ? $t('v1.common.activate') : $t('v1.common.pause') }}
         </p>
       </button>
     </td>

@@ -1,26 +1,24 @@
 <template>
    <div class="py-3 px-2 sm:px-4 bg-white rounded-lg flex text-black items-start gap-2 sm:gap-3">
       <!-- icon -->
-      <IconSyn class="w-5 h-5 flex-shrink-0"></IconSyn>
+      <IconSyn class="w-5 h-5 flex-shrink-0 hidden md:block"></IconSyn>
       <!--content  -->
-      <div class="flex flex-col items-start flex-1 gap-2 lg:gap-3">
+      <div class="flex flex-col items-start flex-1 min-w-0 gap-2 lg:gap-3">
          <!-- <button @click="save()">Lưu</button> -->
          <div class="flex flex-col">
             <h4 class="flex justify-start text-sm font-medium">
-               Đồng bộ Trang - {{ business_data?.short_name || business_data?.name }}
+               <IconSyn class="w-5 h-5 flex-shrink-0 block md:hidden mr-2"></IconSyn>
+               {{ $t('v1.sync.page_sync', { name: businessName }) }}
             </h4>
             <p class="text-sm text-muted">
-               Kết nối Tổ chức, Chi nhánh với các Kênh bán hàng (Facebook, Zalo, Web ...) của
-               {{ business_data?.short_name || business_data?.name }}.
+               {{ $t('v1.sync.description', { name: businessName }) }}
             </p>
          </div>
          <!--  -->
-         <div class="grid grid-cols-16 w-full items-end">
-            <div class="flex col-span-4 flex-col gap-1">
-               <label
-                  class="text-center py-1 rounded bg-slate-200 text-sm font-medium"
-               >
-                  Tổ chức - Chatbox
+         <div class="grid grid-cols-1 lg:grid-cols-16 w-full items-end gap-2 lg:gap-0">
+            <div class="flex lg:col-span-4 flex-col gap-1">
+               <label class="text-center py-1 rounded bg-slate-200 text-sm font-medium">
+                  {{ $t('v1.sync.organization_chatbox') }}
                </label>
                <DropBox
                   place="bottom"
@@ -31,14 +29,14 @@
                         class="flex justify-between border-border border px-3 py-2 w-full truncate rounded-md"
                         @click="is_open_dropbox = true"
                         :class="{
-                           'text-red-500': message_error
+                           'text-red-500': message_error,
                         }"
                      >
                         <p>
-                           {{ 
+                           {{
                               businesses?.[business_id || '']?.short_name ||
-                              businesses?.[business_id || '']?.name || 
-                              'Không chọn' 
+                              businesses?.[business_id || '']?.name ||
+                              $t('v1.sync.not_selected')
                            }}
                         </p>
                         <IconDown class="w-5 h-5" />
@@ -58,7 +56,10 @@
                               @click="changeBusinessId(item._id, business_data?._id)"
                            >
                               {{ item?.short_name || item?.name }}
-                              <CheckCircleIcon class="size-5 text-green-500" v-if="business_data?._id === item.redirect_to" />
+                              <CheckCircleIcon
+                                 class="size-5 text-green-500"
+                                 v-if="business_data?._id === item.redirect_to"
+                              />
                            </button>
                         </li>
                      </ul>
@@ -66,38 +67,44 @@
                </DropBox>
             </div>
 
-            <div class="py-2 flex justify-center">
+            <div class="py-1 lg:py-2 flex justify-center rotate-90 lg:rotate-0">
                <IconNexts class="w-5 h-5 shrink-0"></IconNexts>
             </div>
 
-            <div class="flex col-span-4 flex-col gap-1">
+            <div class="flex lg:col-span-4 flex-col gap-1">
                <label
                   class="text-center py-1 rounded bg-slate-200 text-sm font-medium"
                   for=""
                >
-                  Tổ chức - Merchant
+                  {{ $t('v1.sync.organization_merchant') }}
                </label>
                <p class="text-start py-2 px-3 border border-border bg-slate-50 shadow-sm rounded-md">
                   {{ business_data?.short_name || business_data?.name }}
                </p>
             </div>
 
-            <div v-if="message_error" class="flex gap-2 text-red-500 col-span-7 pl-4 items-center h-full">
+            <div
+               v-if="message_error"
+               class="flex gap-2 text-red-500 lg:col-span-7 lg:pl-4 items-center h-full"
+            >
                <ExclamationTriangleIcon class="w-5 h-5 flex-shrink-0" />
                <p class="text-xs text-wrap">{{ message_error }}</p>
             </div>
          </div>
 
          <!-- Danh sách nhân sự -->
-         <div v-if="!isEmpty(selected_bm_employees) && !message_error" class="flex flex-col gap-1 w-full overflow-auto max-h-[50dvh]">
+         <div
+            v-if="!isEmpty(selected_bm_employees) && !message_error"
+            class="flex flex-col gap-1 w-full overflow-auto max-h-[50dvh]"
+         >
             <!-- Tiêu đề -->
-            <div class="grid grid-cols-16 w-full items-end sticky top-0">
+            <div class="grid grid-cols-16 min-w-[900px] w-full items-end sticky top-0 z-20 bg-white py-1">
                <div class="flex col-span-4 flex-col gap-1">
                   <label
                      class="text-center py-1 rounded bg-slate-200 text-sm font-medium"
                      for=""
                   >
-                     Nhân viên
+                     {{ $t('v1.sync.employee') }}
                   </label>
                </div>
                <div class="py-2 flex justify-center"></div>
@@ -106,7 +113,7 @@
                      class="text-center py-1 rounded bg-slate-200 text-sm font-medium"
                      for=""
                   >
-                     Nhân viên
+                     {{ $t('v1.sync.employee') }}
                   </label>
                </div>
                <div class="py-2 flex justify-center"></div>
@@ -115,244 +122,244 @@
                      class="text-center py-1 rounded bg-slate-200 text-sm font-medium"
                      for=""
                   >
-                     Chọn BU Nhân viên làm việc
+                     {{ $t('v1.sync.select_employee_branch') }}
                   </label>
                </div>
             </div>
             <!-- Danh sách nhân sự -->
-            <div
-               class="flex flex-col gap-2 mt-2"
-            >
-            <div
-               v-for="e, key in selected_bm_employees"
-               class="border-slate-100 w-full border-b pb-3"
-            >
+            <div class="flex flex-col gap-2 mt-2 min-w-[900px]">
                <div
-                  
-                  class="grid grid-cols-16 w-full items-end"
+                  v-for="(e, key) in selected_bm_employees"
+                  class="border-slate-100 w-full border-b pb-3"
                >
-               
-                  <!-- Thông tin nhân sự -->
-                  <div class="col-span-4 flex items-center gap-3 px-3 py-1 rounded-md border bg-slate-100">
-                     <object 
-                        v-if="e?.avatar && convertAvatarUrl(e?.avatar)" 
-                        :data="convertAvatarUrl(e?.avatar)" 
-                        type="image/png"
-                        class="w-9 h-9 rounded-full"
-                     >
+                  <div class="grid grid-cols-16 w-full items-end">
+                     <!-- Thông tin nhân sự -->
+                     <div class="col-span-4 flex items-center gap-3 px-3 py-1 rounded-md border bg-slate-100">
+                        <object
+                           v-if="e?.avatar && convertAvatarUrl(e?.avatar)"
+                           :data="convertAvatarUrl(e?.avatar)"
+                           type="image/png"
+                           class="w-9 h-9 rounded-full"
+                        >
+                           <div
+                              class="w-9 h-9 border border-slate-200 rounded-full flex items-center justify-center text-black"
+                           >
+                              {{ createShortName(e) }}
+                           </div>
+                        </object>
                         <div
+                           v-else
                            class="w-9 h-9 border border-slate-200 rounded-full flex items-center justify-center text-black"
                         >
-                           {{
-                              createShortName(e)
-                           }}
+                           {{ createShortName(e) }}
                         </div>
-                     </object>
-                     <div
-                        v-else
-                        class="w-9 h-9 border border-slate-200 rounded-full flex items-center justify-center text-black"
-                     >
-                        {{ createShortName(e) }}
+                        <p>{{ e.first_name }} {{ e.last_name }}</p>
                      </div>
-                     <p>{{ e.first_name }} {{ e.last_name }}</p>
-                  </div>
-                  <!-- Icon Redirect -->
-                  <div class="pb-3 flex justify-center">
-                     <IconNexts class="w-5 h-5 shrink-0"></IconNexts>
-                  </div>
+                     <!-- Icon Redirect -->
+                     <div class="pb-3 flex justify-center">
+                        <IconNexts class="w-5 h-5 shrink-0"></IconNexts>
+                     </div>
 
-                  <!-- Thông tin nhân sự điều hướng tới -->
-                  <div class="col-span-4 flex flex-col gap-2">
-                     <DropBox
-                        place="bottom"
-                        class="w-full"
-                     >
-                        <template #trigger>
-                           <button
-                              class="flex justify-between border-border border px-3 py-1 w-full truncate rounded-md disabled:bg-slate-100"
-                              :class="{
-                                 'py-3': !e.linked_user || !users?.[e.linked_user],
-                                 'py-1': e.linked_user && users?.[e.linked_user],
-                              }"
-                              @click="openDropbox()"
-                           >
-                              <p v-if="!e.linked_user || !users?.[e.linked_user]">
-                                 {{ 'Không chọn' }}
-                              </p>
-                              <div
-                                 v-if="e.linked_user && users?.[e.linked_user]"
-                                 class="flex items-center gap-3"
-                              >
-                                 <object
-                                    v-if="users?.[e.linked_user]?.avatar"
-                                    :data="users?.[e.linked_user]?.avatar" 
-                                    type="image/png"
-                                    class="w-9 h-9 rounded-full"
-                                 >
-                                    <div
-                                       class="w-9 h-9 border border-slate-200 rounded-full flex items-center justify-center text-black"
-                                    >
-                                       {{ createShortName(users?.[e.linked_user]) }}
-                                    </div>
-                                 </object>
-                                 <div
-                                    v-else
-                                    :class="{ '!border-black': e?.linked_user === e._id }"
-                                    class="w-9 h-9 border border-slate-200 rounded-full flex items-center justify-center text-black"
-                                 >
-                                       {{ createShortName(users?.[e.linked_user]) }}
-                                 </div>
-                                 <p>
-                                    {{ users?.[e.linked_user]?.first_name }}
-                                    {{ users?.[e.linked_user]?.last_name }}
-                                 </p>
-                              </div>
-                              <IconDown
-                                 class="w-5 h-5 flex-shrink-0"
+                     <!-- Thông tin nhân sự điều hướng tới -->
+                     <div class="col-span-4 flex flex-col gap-2">
+                        <DropBox
+                           place="bottom"
+                           class="w-full"
+                        >
+                           <template #trigger>
+                              <button
+                                 class="flex justify-between border-border border px-3 py-1 w-full truncate rounded-md disabled:bg-slate-100"
                                  :class="{
-                                    'mt-2': e.linked_user && users?.[e.linked_user],
+                                    'py-3': !e.linked_user || !users?.[e.linked_user],
+                                    'py-1': e.linked_user && users?.[e.linked_user],
                                  }"
-                              />
-                           </button>
-                        </template>
-                        <template #box>
-                           <ul
-                              v-if="is_open_dropbox"
-                              class="bg-white p-2 border rounded w-full my-1 max-h-80 overflow-auto"
-                           >
-                              <li class="w-full sticky top-0 bg-white">
-                                 <input
-                                    id="input_search"
-                                    v-model="keyword"
-                                    type="text"
-                                    class="outline-none border w-full py-2 px-3 rounded-md"
-                                 />
-                              </li>
-                              <li>
-                                 <button
-                                    class="text-start p-2 w-full truncate rounded-md hover:bg-slate-100"
-                                    @click="() => {
-                                       e.linked_user = ''
-                                       changeEmployeeId(`${key}`, '')
-                                    }"
-                                 >
-                                    Không chọn
-                                 </button>
-                              </li>
-                              <li v-for="re, user_id in users">
-                                 <button
-                                    v-show="checkName(`${re.first_name} ${re.last_name}`) && !re.archive"
-                                    class="text-start p-2 w-full truncate rounded-md hover:bg-slate-200 flex items-center gap-3"
-                                    :class="{
-                                       '!bg-gray-300 text-black': e?.linked_user === `${user_id}`,
-                                    }"
-                                    @click="() => {
-                                       e.linked_user = `${user_id}`
-                                       changeEmployeeId(`${key}`, `${user_id}`)
-                                    }"
+                                 @click="openDropbox()"
+                              >
+                                 <p v-if="!e.linked_user || !users?.[e.linked_user]">
+                                    {{ $t('v1.sync.not_selected') }}
+                                 </p>
+                                 <div
+                                    v-if="e.linked_user && users?.[e.linked_user]"
+                                    class="flex items-center gap-3"
                                  >
                                     <object
-                                       v-if="re?.avatar && convertAvatarUrl(re?.avatar)"
-                                       :data="convertAvatarUrl(re?.avatar)"
+                                       v-if="users?.[e.linked_user]?.avatar"
+                                       :data="users?.[e.linked_user]?.avatar"
                                        type="image/png"
                                        class="w-9 h-9 rounded-full"
                                     >
                                        <div
                                           class="w-9 h-9 border border-slate-200 rounded-full flex items-center justify-center text-black"
                                        >
-                                          {{
-                                             createShortName(e)
-                                          }}
+                                          {{ createShortName(users?.[e.linked_user]) }}
                                        </div>
                                     </object>
                                     <div
                                        v-else
-                                       :class="{ '!border-black': e?.linked_employee_id === `${user_id}` }"
+                                       :class="{ '!border-black': e?.linked_user === e._id }"
                                        class="w-9 h-9 border border-slate-200 rounded-full flex items-center justify-center text-black"
                                     >
-                                       {{ createShortName(re) }}
+                                       {{ createShortName(users?.[e.linked_user]) }}
                                     </div>
-                                    {{ re?.first_name }} {{ re?.last_name }}
-                                    
-                                 </button>
-                              </li>
-                           </ul>
-                        </template>
-                     </DropBox>
-                  </div>
-
-                  <div class="pb-3 flex justify-center">
-                     <IconNexts class="w-5 h-5 shrink-0"></IconNexts>
-                  </div>
-
-                  <div class="col-span-4 flex flex-col gap-2">
-                     <DropBox
-                        place="bottom"
-                        class="w-full"
-                     >
-                        <template #trigger>
-                           <button
-                              class="flex justify-between border-border border px-3 py-3 w-full truncate rounded-md disabled:bg-slate-100"
-                              @click="is_open_dropbox = true"
-                           >
-                              <p class="truncate">
-                                 {{ branches_ids?.[e?.linked_branch || '']?.name || 'Không chọn' }}
-                              </p>
-                              <IconDown class="w-5 h-5 flex-shrink-0" />
-                           </button>
-                        </template>
-                        <template #box>
-                           <ul
-                              v-if="is_open_dropbox"
-                              class="bg-white p-2 border rounded w-full my-1 max-h-80 overflow-auto"
-                           >
-                              <li>
-                                 <button
-                                    class="text-start p-2 w-full truncate rounded-md hover:bg-slate-100"
+                                    <p>
+                                       {{ users?.[e.linked_user]?.first_name }}
+                                       {{ users?.[e.linked_user]?.last_name }}
+                                    </p>
+                                 </div>
+                                 <IconDown
+                                    class="w-5 h-5 flex-shrink-0"
                                     :class="{
-                                       '!bg-blue-700 text-white': !e.linked_branch,
+                                       'mt-2': e.linked_user && users?.[e.linked_user],
                                     }"
-                                    @click="() => {
-                                       e.linked_branch = ''
-                                       changeBranchEmployeeId(`${key}`, '')
-                                    }"
-                                 >
-                                    Không chọn
-                                 </button>
-                              </li>
-                              <li v-for="branch in branches">
-                                 <button
-                                    class="text-start p-2 w-full truncate rounded-md hover:bg-slate-100"
-                                    :class="{
-                                       '!bg-blue-700 text-white': e?.linked_branch === branch._id,
-                                    }"
-                                    @click="() => {
-                                       e.linked_branch = branch._id
-                                       changeBranchEmployeeId(`${key}`, branch._id)
-                                    }"
-                                 >
-                                    {{ branch?.name }}
-                                 </button>
-                              </li>
-                           </ul>
-                        </template>
-                     </DropBox>
+                                 />
+                              </button>
+                           </template>
+                           <template #box>
+                              <ul
+                                 v-if="is_open_dropbox"
+                                 class="bg-white p-2 border rounded w-full my-1 max-h-80 overflow-auto"
+                              >
+                                 <li class="w-full sticky top-0 bg-white">
+                                    <input
+                                       id="input_search"
+                                       v-model="keyword"
+                                       type="text"
+                                       class="outline-none border w-full py-2 px-3 rounded-md"
+                                    />
+                                 </li>
+                                 <li>
+                                    <button
+                                       class="text-start p-2 w-full truncate rounded-md hover:bg-slate-100"
+                                       @click="
+                                          () => {
+                                             e.linked_user = ''
+                                             changeEmployeeId(`${key}`, '')
+                                          }
+                                       "
+                                    >
+                                       {{ $t('v1.sync.not_selected') }}
+                                    </button>
+                                 </li>
+                                 <li v-for="(re, user_id) in users">
+                                    <button
+                                       v-show="checkName(`${re.first_name} ${re.last_name}`) && !re.archive"
+                                       class="text-start p-2 w-full truncate rounded-md hover:bg-slate-200 flex items-center gap-3"
+                                       :class="{
+                                          '!bg-gray-300 text-black': e?.linked_user === `${user_id}`,
+                                       }"
+                                       @click="
+                                          () => {
+                                             e.linked_user = `${user_id}`
+                                             changeEmployeeId(`${key}`, `${user_id}`)
+                                          }
+                                       "
+                                    >
+                                       <object
+                                          v-if="re?.avatar && convertAvatarUrl(re?.avatar)"
+                                          :data="convertAvatarUrl(re?.avatar)"
+                                          type="image/png"
+                                          class="w-9 h-9 rounded-full"
+                                       >
+                                          <div
+                                             class="w-9 h-9 border border-slate-200 rounded-full flex items-center justify-center text-black"
+                                          >
+                                             {{ createShortName(e) }}
+                                          </div>
+                                       </object>
+                                       <div
+                                          v-else
+                                          :class="{ '!border-black': e?.linked_employee_id === `${user_id}` }"
+                                          class="w-9 h-9 border border-slate-200 rounded-full flex items-center justify-center text-black"
+                                       >
+                                          {{ createShortName(re) }}
+                                       </div>
+                                       {{ re?.first_name }} {{ re?.last_name }}
+                                    </button>
+                                 </li>
+                              </ul>
+                           </template>
+                        </DropBox>
+                     </div>
+
+                     <div class="pb-3 flex justify-center">
+                        <IconNexts class="w-5 h-5 shrink-0"></IconNexts>
+                     </div>
+
+                     <div class="col-span-4 flex flex-col gap-2">
+                        <DropBox
+                           place="bottom"
+                           class="w-full"
+                        >
+                           <template #trigger>
+                              <button
+                                 class="flex justify-between border-border border px-3 py-3 w-full truncate rounded-md disabled:bg-slate-100"
+                                 @click="is_open_dropbox = true"
+                              >
+                                 <p class="truncate">
+                                    {{ branches_ids?.[e?.linked_branch || '']?.name || $t('v1.sync.not_selected') }}
+                                 </p>
+                                 <IconDown class="w-5 h-5 flex-shrink-0" />
+                              </button>
+                           </template>
+                           <template #box>
+                              <ul
+                                 v-if="is_open_dropbox"
+                                 class="bg-white p-2 border rounded w-full my-1 max-h-80 overflow-auto"
+                              >
+                                 <li>
+                                    <button
+                                       class="text-start p-2 w-full truncate rounded-md hover:bg-slate-100"
+                                       :class="{
+                                          '!bg-blue-700 text-white': !e.linked_branch,
+                                       }"
+                                       @click="
+                                          () => {
+                                             e.linked_branch = ''
+                                             changeBranchEmployeeId(`${key}`, '')
+                                          }
+                                       "
+                                    >
+                                       {{ $t('v1.sync.not_selected') }}
+                                    </button>
+                                 </li>
+                                 <li v-for="branch in branches">
+                                    <button
+                                       class="text-start p-2 w-full truncate rounded-md hover:bg-slate-100"
+                                       :class="{
+                                          '!bg-blue-700 text-white': e?.linked_branch === branch._id,
+                                       }"
+                                       @click="
+                                          () => {
+                                             e.linked_branch = branch._id
+                                             changeBranchEmployeeId(`${key}`, branch._id)
+                                          }
+                                       "
+                                    >
+                                       {{ branch?.name }}
+                                    </button>
+                                 </li>
+                              </ul>
+                           </template>
+                        </DropBox>
+                     </div>
                   </div>
                </div>
-            </div>
             </div>
          </div>
 
          <!-- Danh sách các chi nhánh -->
-         <div v-if="!isEmpty(branches_sync) && !message_error" class="flex flex-col gap-1 w-full overflow-auto max-h-[50dvh]">
+         <div
+            v-if="!isEmpty(branches_sync) && !message_error"
+            class="flex flex-col gap-1 w-full overflow-auto max-h-[50dvh]"
+         >
             <!-- Tiêu đề -->
-            <div class="grid grid-cols-16 w-full items-end sticky top-0 z-10">
+            <div class="grid grid-cols-16 min-w-[900px] w-full items-end sticky top-0 z-20 bg-white py-1">
                <div class="flex col-span-4 flex-col gap-1">
                   <label
                      class="text-center py-1 rounded bg-slate-200 text-sm font-medium"
                      for=""
                   >
-                     Trang
+                     {{ $t('v1.sync.page') }}
                   </label>
                </div>
                <div class="py-2 flex justify-center"></div>
@@ -361,36 +368,48 @@
                      class="text-center py-1 rounded bg-slate-200 text-sm font-medium"
                      for=""
                   >
-                     Chi nhánh
+                     {{ $t('v1.common.branch') }}
                   </label>
                </div>
+               <div class="py-2 flex justify-center"></div>
+               <div class="flex col-span-4 flex-col gap-1"></div>
             </div>
 
             <!-- Danh sách các chi nhánh  -->
             <div
                v-for="(item, index) in branches_sync"
                :key="index"
-               class="border-slate-100 w-full"
+               class="border-slate-100 min-w-[900px] w-full"
                :class="{
                   'border-b , pb-3': Number(index) !== branches?.length - 1,
-                  'pt-3': Number(index)!== 0,
+                  'pt-3': Number(index) !== 0,
                }"
                v-show="!item.archive"
             >
                <div class="grid grid-cols-16 w-full items-end">
                   <div class="flex col-span-4 flex-col">
-                     <div class="flex text-start gap-2 py-1.5 px-3 border border-border bg-slate-50 shadow-sm rounded-md">
-                        <LogoBranch 
+                     <div
+                        class="flex text-start gap-2 py-1.5 px-3 border border-border bg-slate-50 shadow-sm rounded-md"
+                     >
+                        <LogoBranch
                            :src="item?.chatbox_avatar || item?.logo || ''"
                            :name="item?.short_name || item?.branch_name || ''"
                         />
                         <div class="overflow-hidden">
                            <p class="font-medium">
-                           {{ item?.short_name || item?.branch_name || '' }}
+                              {{ item?.short_name || item?.branch_name || '' }}
                            </p>
                            <div class="flex gap-1">
-                              <component v-if="item?.chatbox_page_id" class="w-3.5 h-3.5 flex-shrink-0" :is="ICONS[item?.chatbox_platform || '']"/>
-                              <img v-else class="w-3.5 h-3.5 flex-shrink-0" src="@/assets/imgs/merchant-icon.png">
+                              <component
+                                 v-if="item?.chatbox_page_id"
+                                 class="w-3.5 h-3.5 flex-shrink-0"
+                                 :is="ICONS[item?.chatbox_platform || '']"
+                              />
+                              <img
+                                 v-else
+                                 class="w-3.5 h-3.5 flex-shrink-0"
+                                 src="@/assets/imgs/merchant-icon.png"
+                              />
                               <p class="text-xs truncate">{{ item?.chatbox_page_id || item?.branch_id || '' }}</p>
                            </div>
                         </div>
@@ -410,7 +429,7 @@
                               @click="is_open_dropbox = true"
                            >
                               <p class="truncate">
-                                 {{ branches_ids?.[item?.redirect_to || '']?.name || 'Không chọn' }}
+                                 {{ branches_ids?.[item?.redirect_to || '']?.name || $t('v1.sync.not_selected') }}
                               </p>
                               <IconDown class="w-5 h-5 flex-shrink-0" />
                            </button>
@@ -428,10 +447,13 @@
                                     }"
                                     @click="changeBranchId(item?.branch_id, '')"
                                  >
-                                    Không chọn
+                                    {{ $t('v1.sync.not_selected') }}
                                  </button>
                               </li>
-                              <li v-for="branch in branches" v-show="!branch.archive">
+                              <li
+                                 v-for="branch in branches"
+                                 v-show="!branch.archive"
+                              >
                                  <button
                                     class="text-start p-2 w-full truncate rounded-md hover:bg-slate-100"
                                     :class="{
@@ -446,6 +468,8 @@
                         </template>
                      </DropBox>
                   </div>
+                  <div class="py-2 flex justify-center"></div>
+                  <div class="flex col-span-4 flex-col"></div>
                </div>
             </div>
          </div>
@@ -484,18 +508,20 @@ import { BusinessBranchData, EmployeeData } from '@/service/interface'
 
 /** danh sách icon của các nền tảng */
 const ICONS: { [key: string]: any } = {
-   'FB_MESS': Facebook,
-   'ZALO_PERSONAL': Zalo,
-   'ZALO_OA': Zalo,
-   'WEBSITE': Website,
-   'FB_WHATSAPP': Whatsapp,
-   'FB_INSTAGRAM': Instagram,
-   'AI_AGENT': Website,
+   FB_MESS: Facebook,
+   ZALO_PERSONAL: Zalo,
+   ZALO_OA: Zalo,
+   WEBSITE: Website,
+   FB_WHATSAPP: Whatsapp,
+   FB_INSTAGRAM: Instagram,
+   AI_AGENT: Website,
 }
 
 /** store */
 const commonStore = useCommonStore()
 const { businesses, branches, business_data, branches_ids, users } = storeToRefs(commonStore)
+
+const businessName = computed(() => business_data.value?.short_name || business_data.value?.name || '')
 
 /** ẩn hiện dropbox */
 const is_open_dropbox = ref(false)
@@ -668,10 +694,10 @@ async function getCurrentEmployees() {
 
       /** Danh sashc nhân sự của tổ chức chatbox đã chọn */
       const RES = await getLinkedUser({
-         body:{
+         body: {
             from_business_id: business_id.value,
-            to_business_id: business_data.value._id
-         }
+            to_business_id: business_data.value._id,
+         },
       })
 
       // lưu lại danh sách nhân sự của tổ chức chatbox đã chọn
@@ -696,21 +722,21 @@ function createShortName(e: EmployeeData) {
 
 /** đổi lại link avatar nhân sự */
 function convertAvatarUrl(old_url: string): string {
-   if(old_url.includes('merchant')) return old_url
+   if (old_url.includes('merchant')) return old_url
    /** regex tìm kiếm id avatar */
-   const REGEX = /\/avatar\/([a-f0-9]{32})/;
+   const REGEX = /\/avatar\/([a-f0-9]{32})/
    /** danh sách các ID được lấy ra */
-   const MATCH = old_url.match(REGEX);
+   const MATCH = old_url.match(REGEX)
 
    /** nếu có thì lưu lại ID */
    if (MATCH && MATCH[1]) {
       /** ID của nhân sự */
-      const ID = MATCH[1];
-      return `https://cdn.botbanhang.vn/media/s/${ID}/user`;
+      const ID = MATCH[1]
+      return `https://cdn.botbanhang.vn/media/s/${ID}/user`
    }
 
    // nếu không có thì trả về rỗng
-  return ''; // hoặc throw error nếu bạn muốn xử lý lỗi rõ ràng hơn
+   return '' // hoặc throw error nếu bạn muốn xử lý lỗi rõ ràng hơn
 }
 
 /** hàm lưu các thay đổi */
@@ -729,8 +755,8 @@ async function save() {
       await updateBusiness({
          body: {
             id: business_id.value,
-            redirect_to: business_data.value._id
-         }
+            redirect_to: business_data.value._id,
+         },
       })
 
       // lặp qua từng chi nhánh cần cập nhật để cập nhật
@@ -750,8 +776,8 @@ async function save() {
                to_business_id: business_data.value._id,
                from_user_id: EMPLOYEES_TO_UPDATE[i].from_user_id,
                to_user_id: EMPLOYEES_TO_UPDATE[i].to_user_id,
-               to_branch_id: EMPLOYEES_TO_UPDATE[i].to_branch_id
-            }
+               to_branch_id: EMPLOYEES_TO_UPDATE[i].to_branch_id,
+            },
          })
       }
 

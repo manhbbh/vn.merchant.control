@@ -7,7 +7,7 @@
     <!--content  -->
     <div class="flex-col flex-1 gap-3">
       <div class="flex h-5 items-center mb-3">
-        <h4 class="flex justify-start text-sm font-medium">Thiết lập chung</h4>
+        <h4 class="flex justify-start text-sm font-medium">{{ $t('v1.menu.general_setting') }}</h4>
       </div>
       <!-- phần các ô input  -->
       <div class="flex gap-2 items-start">
@@ -28,9 +28,9 @@
         </div>
         <!-- nội dung -->
         <div class="flex flex-col items-start gap-1.5">
-          <p class="h-5 text-sm font-medium text-customDark">Gửi thông báo</p>
+          <p class="h-5 text-sm font-medium text-customDark">{{ $t('v1.setting.send_notification') }}</p>
           <p class="h-5 text-sm text-muted hidden sm:flex">
-            Hệ thống tự động gửi thông báo chấm công qua Telegram.
+            {{ $t('v1.setting.send_notification_description') }}
           </p>
         </div>
       </div>

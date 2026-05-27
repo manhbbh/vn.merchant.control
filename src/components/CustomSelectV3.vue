@@ -22,7 +22,7 @@
           start_search()
         }"
         class="w-full text-start outline-none"
-        placeholder="Tìm kiếm..."
+        :placeholder="$t('v1.common.search')"
       />
       <ComboboxTrigger
         class="w-full text-start overflow-hidden"
@@ -38,7 +38,7 @@
           {{ show || getShow(selected) || getLabel(selected) }}
         </p>
         <p v-else class="truncate text-slate-500">
-          {{ placeholder }}
+          {{ placeholder || $t('v1.common.select') }}
         </p>
       </ComboboxTrigger>
       <ChevronDownIcon
@@ -183,7 +183,7 @@ const props = defineProps({
   placeholder: {
     type: String,
     required: false,
-    default: 'Chọn',
+    default: '',
   },
   /** hàm tìm kiếm */
   onSearch: {

@@ -23,7 +23,7 @@
       <button
         class="w-full lg:w-auto h-9 text-sm font-medium bg-blue-700 px-4 py-2 flex justify-center items-center rounded-lg text-white"
         @click="saveSetting()">
-        Lưu thiết lập
+        {{ $t('v1.common.save_setting') }}
       </button>
     </div>
   </div>
@@ -37,6 +37,7 @@ import { setting } from '@/service/constant/setting_default'
 
 // * libraries
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 
 /**Component*/
@@ -78,6 +79,7 @@ const synchrononus_ref = ref<typeof Synchronous | null>(null)
 
 // * toast
 const $toast = new Toast()
+const { t } = useI18n()
 
 async function saveSetting() {
   try {
@@ -99,7 +101,7 @@ async function saveSetting() {
     await synchrononus_ref.value?.save()
 
     // thông báo thành công
-    $toast.success('Lưu thiết lập thành công')
+    $toast.success(t('v1.common.save_success'))
   } catch (e) {
     $toast.error(e)
   } finally {

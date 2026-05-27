@@ -7,7 +7,7 @@
     <!--content  -->
     <div class="flex-col flex-1 gap-3">
       <div class="flex h-5 items-center mb-3">
-        <h4 class="flex justify-start text-sm font-medium">Nhân sự</h4>
+        <h4 class="flex justify-start text-sm font-medium">{{ $t('v1.table.employee') }}</h4>
       </div>
       <!-- phần các ô input  -->
       <table
@@ -17,16 +17,16 @@
           class="bg-slate-200 h-7 text-xs font-semibold sticky top-0 text-customDarkBlue flex-shrink-0 z-10"
         >
           <tr class="h-7 flex gap-x-12 items-center">
-            <th class="w-18 text-center font-semibold">ID|Ngày</th>
-            <th class="w-50 text-left font-semibold">Nhân sự</th>
+            <th class="w-18 text-center font-semibold">{{ $t('v1.table.id_date') }}</th>
+            <th class="w-50 text-left font-semibold">{{ $t('v1.table.employee') }}</th>
             <th class="w-50 text-left font-semibold hidden md:block">
-              Hình thức làm việc
+              {{ $t('v1.table.work_form') }}
             </th>
             <th class="w-42 text-left font-semibold hidden md:block">
-              Lương P1
+              {{ $t('v1.table.p1_salary') }}
             </th>
             <th class="w-50 text-left font-semibold hidden md:block">
-              Cập nhật lần cuối
+              {{ $t('v1.table.last_updated') }}
             </th>
           </tr>
         </thead>
@@ -85,7 +85,7 @@
                   class="appearance-none h-10 text-black outline-none sm:w-50 text-sm rounded-md border border-slate-300 px-7 sm:px-3 py-2"
                 >
                   <option value="sale" class="text-sm">
-                    Toàn thời gian -Sales
+                    {{ $t('v1.setting.full_time') }} - Sales
                   </option>
                   <option value="Retion">Retion</option>
                   <option value="AppOn">AppOn</option>
@@ -154,7 +154,7 @@
   >
     <div class="flex flex-col w-full">
       <header class="flex items-center justify-between h-14 px-6 py-2">
-        <h3 class="h-6 text-lg font-semibold">Nguyễn Đình Tùng</h3>
+        <h3 class="h-6 text-lg font-semibold">{{ list_employee[0]?.name_create_holiday }}</h3>
       </header>
       <!--  -->
       <main class="flex flex-col py-2 px-5 border-b border-t gap-2 border-gray-200">
@@ -163,13 +163,13 @@
             for="shortName"
             class="block text-sm font-medium text-gray-700 h-5 flex-shrink-0"
           >
-            Tiêu đề
+              {{ $t('v1.form.title') }}
           </label>
           <input
           v-model="name_branch"
             type="text"
             id="shortName"
-            placeholder="Nhập tiêu đề"
+            :placeholder="$t('v1.form.title_placeholder')"
             class="h-9 w-full border border-gray-300 bg-slate-100 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
           />
         </div>
@@ -177,7 +177,7 @@
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
             <IconPapers class="w-5 h-5 flex-shrink-0"></IconPapers>
-            <p class="text-sm font-medium">Thời gian làm việc trong ngày</p>
+            <p class="text-sm font-medium">{{ $t('v1.setting.daily_working_time') }}</p>
           </div>
           <!-- select -->
           <label class="hidden sm:inline-flex h-9 items-center cursor-pointer">
@@ -204,7 +204,7 @@
             >
               <div class="sm: flex">
                 <div class="sm:w-32 flex-none py-2 pr-3 font-medium sm:pr-0">
-                  {{ day.title }}
+                  {{ $t(day.title_key) }}
                 </div>
                 <!-- select -->
                 <label
@@ -226,8 +226,8 @@
                 v-model="day.status"
                 class="outline-none  mr-0 h-9 w-34 flex flex-none sm:hidden rounded-md border px-3 py-1.5"
               >
-                <option value="permanent">Cố định</option>
-                <option value="not_fixed">Không cố định</option>
+                <option value="permanent">{{ $t('v1.setting.fixed') }}</option>
+                <option value="not_fixed">{{ $t('v1.setting.not_fixed') }}</option>
               </select>
             </div>
             <!--  -->
@@ -238,7 +238,7 @@
               <div class="flex items-center flex-shrink-0 gap-4">
                 <!-- giờ làm -->
                 <p class="flex-shrink-0 hidden sm:flex">
-                  {{ day.active ? "Giờ làm" : "Ngày nghỉ" }}
+                  {{ day.active ? $t('v1.setting.work_hours') : $t('v1.setting.day_off') }}
                 </p>
                 <!-- cố định -->
                 <select
@@ -246,8 +246,8 @@
                   v-model="day.status"
                   class="outline-none bg-slate-100 mr-0 h-9  w-34  flex-none hidden sm:flex rounded-md border px-3 py-1.5"
                 >
-                  <option value="permanent">Cố định</option>
-                  <option value="not_fixed">Không cố định</option>
+                  <option value="permanent">{{ $t('v1.setting.fixed') }}</option>
+                  <option value="not_fixed">{{ $t('v1.setting.not_fixed') }}</option>
                 </select>
               </div>
               <!--  -->
@@ -257,7 +257,7 @@
                   v-if="day.active && day.status === 'permanent'"
                   class="text-center flex-shrink-0"
                 >
-                  từ
+                  {{ $t('v1.setting.from') }}
                 </p>
                 <!-- giờ bắt đầu -->
                 <div v-if="day.active && day.status === 'permanent'" class="">
@@ -282,7 +282,7 @@
                   v-if="day.active && day.status === 'permanent'"
                   class="text-center"
                 >
-                  Nghỉ
+                  {{ $t('v1.setting.break') }}
                 </p>
                 <!-- thời gian nghỉ trưa -->
                 <div v-if="day.active && day.status === 'permanent'" class="">
@@ -291,8 +291,8 @@
                     id="from-time"
                     class="mr-0 flex bg-slate-100 h-9 w-34 items-center rounded-md border px-3 py-1"
                   >
-                    <option value="90 phút">1 giờ 30 phút</option>
-                    <option value="0">0 giờ</option>
+                    <option value="90 phút">1 {{ $t('v1.setting.hour') }} 30 {{ $t('v1.setting.minute') }}</option>
+                    <option value="0">0 {{ $t('v1.setting.hour') }}</option>
                     <!-- Add more options as needed -->
                   </select>
                 </div>
@@ -305,7 +305,7 @@
                   v-if="day.active && day.status === 'permanent'"
                   class="text-center"
                 >
-                  đến
+                  {{ $t('v1.setting.to') }}
                 </p>
                 <!-- thời gian kết thúc -->
                 <div v-if="day.active && day.status === 'permanent'">
@@ -328,13 +328,13 @@
                   v-if="day.active && day.status === 'permanent'"
                   class="text-center flex-shrink-0"
                 >
-                  Số giờ làm
+                  {{ $t('v1.setting.working_hours') }}
                 </p>
                 <p
                   v-if="day.active && day.status === 'not_fixed'"
                   class="text-center flex-shrink-0"
                 >
-                  Chọn số giờ làm
+                  {{ $t('v1.setting.select_working_hours') }}
                 </p>
                 <!-- icon -->
                 <IconNext
@@ -349,9 +349,9 @@
                    
                     class="mr-0 bg-slate-100 flex h-9 w-34 rounded-md border px-3 py-1"
                   >
-                    <option value="full_time">8 giờ</option>
-                    <option value="part_morning">3 giờ 30 phút</option>
-                    <option value="part_afternoon">4 giờ 30 phút</option>
+                    <option value="full_time">8 {{ $t('v1.setting.hour') }}</option>
+                    <option value="part_morning">3 {{ $t('v1.setting.hour') }} 30 {{ $t('v1.setting.minute') }}</option>
+                    <option value="part_afternoon">4 {{ $t('v1.setting.hour') }} 30 {{ $t('v1.setting.minute') }}</option>
                     <!-- Add more options as needed -->
                   </select>
                 </div>
@@ -382,7 +382,7 @@
         @click="handleOk"
           class="px-4 text-sm font-medium text-customDark py-2 bg-slate-200 rounded-md"
         >
-          Đóng
+          {{ $t('v1.common.close') }}
         </button>
 
         
@@ -433,7 +433,7 @@ const list_day = ref([1, 2, 3, 4, 5, 6, 7, "C"]);
 /**biến*/
 const active = ref(true);
 /**Biến*/
-const name_branch= ref("Toàn thời gian - Sales")
+const name_branch= ref("full_time_sales")
 /**danh sách thứ*/ 
 const LIST_DAYS = [
   {
@@ -447,7 +447,7 @@ const LIST_DAYS = [
     checkout: {
       hour: 1730,
     },
-    title: "Thứ 2",
+    title_key: "v1.day.mon_short",
     work_status: "full_time",
   },
   {
@@ -461,7 +461,7 @@ const LIST_DAYS = [
     checkout: {
       hour: 1730,
     },
-    title: "Thứ 3",
+    title_key: "v1.day.tue_short",
     work_status: "part_morning",
   },
   {
@@ -475,7 +475,7 @@ const LIST_DAYS = [
     checkout: {
       hour: 1730,
     },
-    title: "Thứ 4",
+    title_key: "v1.day.wed_short",
     work_status: "full_time",
   },
   {
@@ -489,7 +489,7 @@ const LIST_DAYS = [
     checkout: {
       hour: 1730,
     },
-    title: "Thứ 5",
+    title_key: "v1.day.thu_short",
     work_status: "full_time",
   },
   {
@@ -503,7 +503,7 @@ const LIST_DAYS = [
     checkout: {
       hour: 1730,
     },
-    title: "Thứ 6",
+    title_key: "v1.day.fri_short",
     work_status: "full_time",
   },
   {
@@ -519,7 +519,7 @@ const LIST_DAYS = [
       hour: 1730,
       minute: 0,
     },
-    title: "Thứ 7",
+    title_key: "v1.day.sat_short",
     work_status: "part_morning",
   },
   {
@@ -533,7 +533,7 @@ const LIST_DAYS = [
       hour: 18,
       minute: 0,
     },
-    title: "Chủ nhật",
+    title_key: "v1.day.sunday",
     work_status: "day_off",
   },
 ];
@@ -547,6 +547,7 @@ function showModal() {
 function handleOk() {
   open.value = false;
 }
+
 </script>
 
 <style lang="scss" scoped></style>

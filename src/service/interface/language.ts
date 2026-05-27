@@ -2,6 +2,7 @@
 interface LanguageVersion {
     readonly common: object
     readonly view: object
+    readonly [index: string]: object
 }
 
 /**kiểu dữ liệu cho khai báo i18n */

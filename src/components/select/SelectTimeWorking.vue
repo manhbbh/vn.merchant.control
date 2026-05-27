@@ -5,8 +5,8 @@
         class="border rounded-md py-2 px-3 min-w-52 cursor-pointer flex gap-2 justify-between items-center"
         @click="is_show_drop_box = true"
       >
-        <p v-if="!form_of_work_id" class="text-slate-500 truncate">Chọn hình thức làm việc</p>
-        <p class="truncate" v-else>{{ form_of_work?.[form_of_work_id]?.name }}</p>
+        <p v-if="!form_of_work_id" class="text-slate-500 truncate">{{ $t('v1.setting.form_of_work') }}</p>
+        <p class="truncate" v-else>{{ translateWorkFormName(form_of_work?.[form_of_work_id]?.name) }}</p>
         <ChevronDownIcon class="w-4 h-4 flex-shrink-0" />
       </div>
     </template>
@@ -21,7 +21,7 @@
           @click="handleChoose(item)"
         >
           <p>
-            {{ form_of_work?.[item]?.name }}
+            {{ translateWorkFormName(form_of_work?.[item]?.name) }}
           </p>
           <CheckCircleIcon
             v-if="form_of_work_id === item"
@@ -39,6 +39,7 @@ import { useTimeboxingStore } from '@/stores/timeboxing'
 // * libraries
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useI18n } from 'vue-i18n'
 
 // * components
 import DropBox from '@/components/DropBox.vue'
@@ -48,6 +49,7 @@ import { CheckCircleIcon, ChevronDownIcon } from '@heroicons/vue/24/solid'
 
 // * store
 const { form_of_work } = storeToRefs(useTimeboxingStore())
+const { t } = useI18n()
 
 /** ẩn hiện dropbox */
 const is_show_drop_box = ref(false)
@@ -61,5 +63,9 @@ const form_of_work_id = defineModel<string>({
 function handleChoose(item: string) {
   form_of_work_id.value = item || ''
   is_show_drop_box.value = false
+}
+
+function translateWorkFormName(name?: string) {
+  return name === 'Toàn thời gian' ? t('v1.setting.full_time') : name
 }
 </script>

@@ -35,7 +35,7 @@
               >
                 <IconHome class="w-5 h-5"></IconHome>
               </div>
-              <h3 class="text-sm font-semibold">Doanh nghiệp</h3>
+              <h3 class="text-sm font-semibold">{{ $t('v1.view.business.business') }}</h3>
             </li>
             <li
               @click="is_business = false"
@@ -47,14 +47,14 @@
               >
                 <IconApplication class="w-5 h-5"></IconApplication>
               </div>
-              <h3 class="text-sm font-semibold">Ứng dụng</h3>
+              <h3 class="text-sm font-semibold">{{ $t('v1.view.business.application') }}</h3>
             </li>
           </ul>
           <!--  -->
           <p
             class="h-5 text-slate-500 bg-icon-info text-sm px-2 flex items-center justify-start absolute bottom-3"
           >
-            Doanh nghiệp đã xóa
+            {{ $t('v1.view.business.deleted') }}
           </p>
         </nav>
         <!-- phần phải -->

@@ -7,7 +7,7 @@
       <!--content  -->
       <div class="flex-col flex-1 gap-3">
         <div class="flex h-5 items-center mb-3">
-          <h4 class="flex justify-start text-sm font-medium">Thiết lập chung</h4>
+          <h4 class="flex justify-start text-sm font-medium">{{ $t('v1.menu.general_setting') }}</h4>
         </div>
         <!-- phần các ô input  -->
         

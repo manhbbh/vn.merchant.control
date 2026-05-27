@@ -10,18 +10,19 @@
         <!-- back và cài đặt chấm công -->
         <div class="flex gap-2.5 items-center h-7.5 justify-start">
           <IconBack class="h-5 w-5 flex-shrink-0"></IconBack>
-          <h2 class="text-lg font-medium hidden sm:flex">Cài đặt chấm công</h2>
+          <h2 class="text-lg font-medium hidden sm:flex">{{ $t('v1.view.timekeeping.title') }}</h2>
         </div>
         <!-- copy nút lưu  -->
         <div class="flex gap-7 items-center justify-start h-10">
           <div class="flex items-center gap-2.5 h-7.5">
             <IconCopy class="h-5 w-5 flex-shrink-0"></IconCopy>
-            <p class="text-lg text-slate-500 font-medium">Sao chép</p>
+            <p class="text-lg text-slate-500 font-medium">{{ $t('v1.common.copy') }}</p>
           </div>
+          <LanguageSwitcher />
           <button
             class="bg-blue-500 text-white px-4 py-2 rounded-md text-sm font-medium"
           >
-            Lưu lại
+            {{ $t('v1.common.save_again') }}
           </button>
         </div>
       </header>
@@ -59,7 +60,7 @@
                 }"
                 class="text-sm font-semibold"
               >
-                {{ menu.name_item }}
+                {{ $t(menu.name_key) }}
               </h3>
             </li>
           </ul>
@@ -82,6 +83,7 @@ import { ref } from 'vue'
 import Business from '@/components/ingredients/Business.vue'
 import Application from '@/components/ingredients/Application.vue'
 import DetailTimekeeping from '@/components/timekeeping/DetailTimekeeping.vue'
+import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
 /**Icon*/
 
 import IconBack from '@/components/icons/IconBack.vue'
@@ -101,25 +103,25 @@ const is_business = ref(true)
 const list_menu = ref([
   {
     id_menu: 1,
-    name_item: 'Thiết lập chung',
+    name_key: 'v1.menu.general_setting',
     icon: IconSettings,
     active: true,
   },
   {
     id_menu: 2,
-    name_item: 'Nhân sự',
+    name_key: 'v1.menu.employee',
     icon: IconEmployee,
     active: false,
   },
   {
     id_menu: 3,
-    name_item: 'Vân tay',
+    name_key: 'v1.menu.fingerprint',
     icon: IconFingerprint,
     active: false,
   },
   {
     id_menu: 4,
-    name_item: 'Lịch sử thiết lập',
+    name_key: 'v1.menu.history_setting',
     icon: IconHistory,
     active: false,
   },
@@ -127,7 +129,7 @@ const list_menu = ref([
 /**Hàm*/
 function redirect(selectedMenu: {
   id_menu: number
-  name_item: string
+  name_key: string
   icon: any
   active: boolean
 }) {

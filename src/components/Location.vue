@@ -1,13 +1,13 @@
 <template>
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-y-2 gap-x-3">
     <div class="flex flex-col gap-2 lg:col-span-4">
-      <p class="font-medium">Địa chỉ <span class="text-red-500">*</span></p>
+      <p class="font-medium">{{ $t('v1.location.address') }} <span class="text-red-500">*</span></p>
       <CustomSelectV3
         :getShow="() => location.address"
         :getLabel="(item: Addresses) => item?.address_name || ''"
         :is_update="is_update"
         :is_search="is_update"
-        :placeholder="'Địa chỉ'"
+        :placeholder="$t('v1.location.address')"
         :options="addresses"
         :content_class="'z-[1000]'"
         :onSearch="(address:string) =>searchAddress(address)"
@@ -31,7 +31,7 @@
     <div class="grid grid-cols-12 gap-y-2 gap-x-3 lg:col-span-8">
       <div class="flex flex-col gap-2 col-span-4">
         <p class="font-medium">
-          Tỉnh, Thành phố <span class="text-red-500">*</span>
+          {{ $t('v1.location.province') }} <span class="text-red-500">*</span>
         </p>
         <CustomSelectV3
           v-model:search="search_provice"
@@ -41,7 +41,7 @@
           :get-value="(item: ProvinceData) => item?.id || item?.code"
           :is_update="is_update"
           :is_search="is_update"
-          :placeholder="'Tỉnh, thành phố'"
+          :placeholder="$t('v1.location.province_placeholder')"
           :options="provinces"
           :filter="filterProvine"
           :content_class="'z-[1000]'"
@@ -54,14 +54,14 @@
       </div>
       <div class="flex flex-col gap-2 col-span-4">
         <p class="font-medium">
-          Quận, Huyện <span class="text-red-500">*</span>
+          {{ $t('v1.location.district') }} <span class="text-red-500">*</span>
         </p>
         <CustomSelectV3
           v-model:search="search_district"
           :getShow="() => getDistrictName()"
           :is_update="is_update"
           :is_search="is_update"
-          :placeholder="'Quận, Huyện'"
+          :placeholder="$t('v1.location.district_placeholder')"
           :options="districts"
           :get-label="(item: DistrictData) => item?.name_with_type"
           :get-value="(item: DistrictData) => item?.id || item?.code"
@@ -77,14 +77,14 @@
       </div>
       <div class="flex flex-col gap-2 col-span-4">
         <p class="font-medium">
-          Phường, xã <span class="text-red-500">*</span>
+          {{ $t('v1.location.ward') }} <span class="text-red-500">*</span>
         </p>
         <CustomSelectV3
           v-model:search="search_ward"
           :getShow="() => getWardName()"
           :is_update="is_update"
           :is_search="is_update"
-          :placeholder="'Phường, xã'"
+          :placeholder="$t('v1.location.ward_placeholder')"
           :options="wards"
           :get-label="(item: WardData) => item?.name_with_type"
           :get-value="(item: WardData) => item?.id || item?.code"

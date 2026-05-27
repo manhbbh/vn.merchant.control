@@ -1,35 +1,49 @@
 /**
- * i18n cho vue
- * 
- * cú pháp:
- * - với <template>*</template>
- * {{ $t('v1.common.ghtk') }}
- * 
- * - với <script setup>*</script>
- * import { useI18n } from 'vue-i18n'
- * const { t: $t } = useI18n()
- * return $t('v1.common.ghtk')
- * 
- * - với các file script ngoài vue component
- * import { i18n } from '@/lang'
- * const { t: $t } = i18n.global
- * return $t('v1.common.ghtk')
+ * Vue i18n.
+ *
+ * Template: {{ $t('v1.common.loading') }}
+ * Script setup: const { t } = useI18n()
+ * Other scripts: import { i18n } from '@/lang'
  */
 
 import { createI18n } from 'vue-i18n'
 import { queryString } from '@/service/helper/queryString'
 
+import en from '@/lang/en'
 import vn from '@/lang/vn'
 
-// dọc dữ liệu lang hiện tại
-export const locale = queryString('locale') || localStorage.getItem('locale') || 'vn'
+export type AppLocale = 'vn' | 'vi' | 'en'
 
-// init i18n
+const supportedLocales: AppLocale[] = ['vn', 'vi', 'en']
+
+function normalizeLocale(value?: string | null): AppLocale {
+  if (value === 'vi') return 'vi'
+  if (value === 'en') return 'en'
+  return 'vn'
+}
+
+const storedLocale = queryString('locale') || localStorage.getItem('locale') || 'vi'
+
+export const locale = normalizeLocale(storedLocale)
+
+localStorage.setItem('locale', locale)
+
 export const i18n = createI18n({
-    legacy: false,
-    locale,
-    fallbackLocale: 'vn',
-    messages: { 
-        vn, vi: vn,
-    },
+  legacy: false,
+  locale,
+  fallbackLocale: 'vn',
+  messages: {
+    en,
+    vn,
+    vi: vn,
+  },
 })
+
+export function setLocale(nextLocale: string) {
+  const normalizedLocale = normalizeLocale(nextLocale)
+
+  if (!supportedLocales.includes(normalizedLocale)) return
+
+  i18n.global.locale.value = normalizedLocale
+  localStorage.setItem('locale', normalizedLocale)
+}

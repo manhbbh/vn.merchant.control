@@ -12,7 +12,7 @@
           v-for="menu in list_menu"
           class="text-sm font-medium text-slate-600 py-1 px-2 rounded-2xl bg-slate-200 cursor-pointer"
         >
-          {{ menu.name_menu }}
+          {{ $t(menu.name_key) }}
         </li>
       </ul>
       <!-- select -->
@@ -45,12 +45,12 @@
         <!--  -->
         <div class="flex flex-col gap-0.5  w-full items-start justify-start">
           <h3 class="flex justify-start text-sm font-medium">
-            {{ app.name_app }}
+            {{ app.name_key ? $t(app.name_key) : app.name_app }}
           </h3>
           <p class="flex justify-startc text-xs text-slate-600">
-            {{ app.status_app }}
+            {{ $t(app.status_key) }}
           </p>
-          <p v-if="app.active_app" class="text-xs- bg-green-100 px-2 rounded-md text-slate-700 font-medium">Đã cài đặt</p>
+          <p v-if="app.active_app" class="text-xs- bg-green-100 px-2 rounded-md text-slate-700 font-medium">{{ $t('v1.common.installed') }}</p>
         </div>
       </li>
     </ul>
@@ -83,110 +83,110 @@ import ads from "@/assets/imgs/img_app/ads.png";
 /**Biến*/
 /**Danh sách menu*/
 const list_menu = ref([
-  { name_menu: "Toàn bộ", active_menu: true, id_menu: 1 },
-  { name_menu: "Đã cài đặt", active_menu: false, id_menu: 2 },
-  { name_menu: "🔥 Phổ biến", active_menu: false, id_menu: 3 },
-  { name_menu: "💵 Tài chính", active_menu: false, id_menu: 4 },
-  { name_menu: "🎯 Khách hàng", active_menu: false, id_menu: 5 },
-  { name_menu: "⚙️ Nội bộ", active_menu: false, id_menu: 6 },
-  { name_menu: "🎓 Đào tạo", active_menu: false, id_menu: 7 },
-  { name_menu: "📦 Khác", active_menu: false, id_menu: 8 },
+  { name_key: "v1.app.all", active_menu: true, id_menu: 1 },
+  { name_key: "v1.app.installed", active_menu: false, id_menu: 2 },
+  { name_key: "v1.app.popular", active_menu: false, id_menu: 3 },
+  { name_key: "v1.app.finance", active_menu: false, id_menu: 4 },
+  { name_key: "v1.app.customer", active_menu: false, id_menu: 5 },
+  { name_key: "v1.app.internal", active_menu: false, id_menu: 6 },
+  { name_key: "v1.app.training", active_menu: false, id_menu: 7 },
+  { name_key: "v1.app.other", active_menu: false, id_menu: 8 },
 ]);
 /**Dánh sách app*/
 const list_app = ref([
   {
     name_app: "TimeBoxing",
-    status_app: "Nội bộ",
+    status_key: "v1.app.category_internal",
     image_app: timeboxing,
     active_app: true,
   },
   {
-    name_app: "Xét duyệt",
-    status_app: "Nội bộ",
+    name_key: "v1.app.approval",
+    status_key: "v1.app.category_internal",
     image_app: approval,
     active_app: true,
   },
   {
-    name_app: "Chấm công",
-    status_app: "Nội bộ",
+    name_key: "v1.app.attendance",
+    status_key: "v1.app.category_internal",
     image_app: attendance,
     active_app: true,
   },
   {
-    name_app: "Danh bạ",
-    status_app: "Khách hàng",
+    name_key: "v1.app.contacts",
+    status_key: "v1.app.category_customer",
     image_app: contacts,
     active_app: true,
   },
   {
     name_app: "Drive",
-    status_app: "Nội bộ",
+    status_key: "v1.app.category_internal",
     image_app: drive,
     active_app: true,
   },
   {
     name_app: "CameraIP",
-    status_app: "Khác",
+    status_key: "v1.app.category_other",
     image_app: camera,
     active_app: false,
   },
   {
-    name_app: "Nhân sự",
-    status_app: "Nội bộ",
+    name_key: "v1.app.employee",
+    status_key: "v1.app.category_internal",
     image_app: employee,
     active_app: true,
   },
   {
-    name_app: "Phòng ban",
-    status_app: "Nội bộ",
+    name_key: "v1.app.department",
+    status_key: "v1.app.category_internal",
     image_app: department,
     active_app: true,
   },
   {
-    name_app: "Vai trò",
-    status_app: "Nội bộ",
+    name_key: "v1.app.role",
+    status_key: "v1.app.category_internal",
     image_app: businessPermission,
     active_app: true,
   },
   {
     name_app: "Ads",
-    status_app: "Tài chính",
+    status_key: "v1.app.category_finance",
     image_app: ads,
     active_app: false,
   },
   {
     name_app: "Florising",
-    status_app: "Nội bộ",
+    status_key: "v1.app.category_internal",
     image_app: inbox2,
     active_app: false,
   },
   {
-    name_app: "Sản phẩm",
-    status_app: "Tài chính",
+    name_key: "v1.app.product",
+    status_key: "v1.app.category_finance",
     image_app: product,
     active_app: true,
   },
   {
-    name_app: "Đơn hàng",
-    status_app: "Tài chính",
+    name_key: "v1.app.order",
+    status_key: "v1.app.category_finance",
     image_app: sell,
     active_app: true,
   },
   {
-    name_app: "Tồn kho",
-    status_app: "Tài chính",
+    name_key: "v1.app.inventory",
+    status_key: "v1.app.category_finance",
     image_app: warehouse,
     active_app: false,
   },
   {
-    name_app: "Kiểm kho",
-    status_app: "Tài chính",
+    name_key: "v1.app.stocktake",
+    status_key: "v1.app.category_finance",
     image_app: kiemkho,
     active_app: false,
   },
   {
-    name_app: "Tài chính",
-    status_app: "Tài chính",
+    name_key: "v1.app.category_finance",
+    status_key: "v1.app.category_finance",
     image_app: Cashflow,
     active_app: true,
   },
@@ -194,7 +194,7 @@ const list_app = ref([
 
 /**Hàm*/
 function selectMenu(menu: {
-  name_menu: string;
+  name_key: string;
   active_menu: boolean;
   id_menu: number;
 }) {
