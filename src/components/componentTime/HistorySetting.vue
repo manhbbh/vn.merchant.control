@@ -2,7 +2,7 @@
   <div class="flex text-sm gap-3 border rounded-lg py-3 px-4 w-full text-start">
     <IconHistory class="w-5 h-5"></IconHistory>
     <div class="w-full flex-grow flex flex-col gap-2.5">
-      <p class="font-medium">Lịch sử thiết lập</p>
+      <p class="font-medium">{{ $t('v1.menu.history_setting') }}</p>
       <div class="grid grid-cols-2 gap-x-6 gap-y-3 overflow-auto max-h-[60dvh]">
         <div
           class="flex flex-col col-span-2 lg:col-span-1 py-2 border-b"
@@ -27,14 +27,14 @@
               </div>
             </div>
             <div class="flex flex-col items-end text-slate-500 text-xs">
-              <p>Thêm mới lúc</p>
+              <p>{{ $t('v1.setting.added_at') }}</p>
               <p v-if="history.createdAt">
                 {{ format(history.createdAt, 'HH:mm:ss - dd/MM/yyyy') }}
               </p>
             </div>
           </div>
           <p class="py-1 ml-6">
-            Thay đổi {{ TYPE[history.type || ''] }}.
+            {{ $t('v1.setting.changed', { type: getHistoryType(history.type) }) }}
             <u
               class="cursor-pointer"
               @click="
@@ -43,7 +43,7 @@
                   history_data = history?.new_data || {}
                 }
               "
-              >Xem dữ liệu thay đổi</u
+              >{{ $t('v1.setting.view_changed_data') }}</u
             >
           </p>
         </div>
@@ -65,7 +65,7 @@
               class="px-3 py-2 bg-slate-100 font-medium rounded"
               @click="is_show_modal = false"
             >
-              Đóng
+              {{ $t('v1.common.close') }}
             </button>
           </footer>
         </article>
@@ -80,6 +80,7 @@ import { useTimeboxingStore } from '@/stores/timeboxing'
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { format } from 'date-fns/format'
+import { useI18n } from 'vue-i18n'
 
 // * components
 import Modal from '@/components/Modal.vue'
@@ -95,10 +96,12 @@ import { EmployeeSetting, FullEmployeeData } from '@/service/interface'
 
 /** các loại lịch sử */
 const TYPE: { [key: string]: string } = {
-  EMPLOYEE: 'Nhân sự',
-  GENERAL: 'Thiết lập chung',
-  ATTENDANCE: 'Thiết bị chấm công',
+  EMPLOYEE: 'v1.menu.employee',
+  GENERAL: 'v1.menu.general_setting',
+  ATTENDANCE: 'v1.setting.attendance_device',
 }
+
+const { t } = useI18n()
 
 /** Sử dụng state trong store */
 const { business_employees_ids, business_branches, history_timeboxing_setting } = storeToRefs(useTimeboxingStore())
@@ -121,5 +124,9 @@ function getEmployee(id?: string) {
 function getFullName(item?: FullEmployeeData) {
   if (!item) return ''
   return `${item?.first_name} ${item?.last_name}`
+}
+
+function getHistoryType(type?: string) {
+  return t(TYPE[type || ''] || type || '')
 }
 </script>

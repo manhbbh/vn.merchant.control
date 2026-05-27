@@ -19,11 +19,12 @@
             <IconCopy class="h-5 w-5 flex-shrink-0"></IconCopy>
             <p class="text-lg text-slate-500 font-medium">Sao chép</p>
           </div> -->
+          <LanguageSwitcher />
           <button
             class="bg-blue-500 text-white px-4 py-2 rounded-md text-sm font-medium"
             @click="handleSave()"
           >
-            Lưu lại
+            {{ $t('v1.common.save_again') }}
           </button>
         </div>
       </header>
@@ -62,7 +63,7 @@
                 }"
                 class="text-sm font-semibold"
               >
-                {{ menu.name_item }}
+                {{ $t(menu.name_key) }}
               </h3>
             </a>
           </ul>
@@ -83,6 +84,7 @@
 <script setup lang="ts">
 // * library
 import { onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 /** compomnet con */
 import DetailTimeSeup from '@/components/timeboxing/DetailTimeSeup.vue'
@@ -100,6 +102,7 @@ import { useCommonStore } from '@/stores'
 import { Toast } from '@/service/helper/toast'
 import { useRouter } from 'vue-router'
 import Template401 from '@/components/Template401.vue'
+import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
 import {
   getHistorySettingTimeboxing,
   getSettingTimeboxing,
@@ -120,7 +123,7 @@ import {
 // * interface
 interface Menu {
   id_menu: string
-  name_item: string
+  name_key: string
   icon: any
 }
 
@@ -128,17 +131,17 @@ interface Menu {
 const LIST_MENU: Menu[] = [
   {
     id_menu: '#general',
-    name_item: 'Thiết lập chung',
+    name_key: 'v1.menu.general_setting',
     icon: IconSettings,
   },
   {
     id_menu: '#employee',
-    name_item: 'Nhân sự',
+    name_key: 'v1.menu.employee',
     icon: IconEmployee,
   },
   {
     id_menu: '#history',
-    name_item: 'Lịch sử thiết lập',
+    name_key: 'v1.menu.history_setting',
     icon: IconHistory,
   },
 ]
@@ -150,6 +153,7 @@ const { form_of_work,employee_setting, history_timeboxing_setting } = storeToRef
 
 // * toast
 const $toast = new Toast()
+const { t } = useI18n()
 
 // * router
 const router = useRouter()
@@ -327,7 +331,7 @@ async function handleSave(){
         }
       },
     })
-    $toast.success('Lưu thiết lập thành công')
+    $toast.success(t('v1.common.save_success'))
   } catch (e) {
     $toast.error(e)
   }

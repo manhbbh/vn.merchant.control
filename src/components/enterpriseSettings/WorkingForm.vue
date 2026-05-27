@@ -8,21 +8,21 @@
     <div class="flex flex-col gap-2.5 w-full">
       <div class="flex items-start justify-between">
         <h4 class="flex justify-start text-sm font-medium">
-          Hình thức làm việc
+          {{ $t('v1.setting.form_of_work') }}
         </h4>
         <div class="hidden lg:flex items-center gap-1 lg:gap-2.5">
           <button
             class="text-sm font-medium text-slate-500 h-9 px-0 lg:px-6 lg:py-2"
             @click="reset()"
           >
-            <span v-if="!branch_data?._id">Khôi phục mặc định</span>
-            <span v-else>Khôi phục theo Doanh nghiệp</span>
+            <span v-if="!branch_data?._id">{{ $t('v1.common.restore_default') }}</span>
+            <span v-else>{{ $t('v1.common.restore_by_business') }}</span>
           </button>
           <button
             class="h-9 w-18 text-sm font-medium text-white rounded-md bg-black"
             @click="showModal()"
           >
-            Thêm
+            {{ $t('v1.common.add') }}
           </button>
         </div>
       </div>
@@ -32,18 +32,18 @@
           class="bg-slate-200 h-7 text-xs font-semibold sticky top-0 text-customDarkBlue flex-shrink-0 z-10"
         >
           <tr class="h-7">
-            <th class="px-2 w-18 text-left font-semibold">ID|Ngày</th>
-            <th class="w-30 text-left font-semibold">Tiêu đề</th>
+            <th class="px-2 w-18 text-left font-semibold">{{ $t('v1.table.id_date') }}</th>
+            <th class="w-30 text-left font-semibold">{{ $t('v1.table.title') }}</th>
             <th class="w-25 text-center font-semibold hidden lg:table-cell">
-              Số giờ làm / Tuần
+              {{ $t('v1.table.hours_per_week') }}
             </th>
             <th class="w-25 text-left font-semibold hidden lg:table-cell">
-              Thời gian
+              {{ $t('v1.table.time') }}
             </th>
             <th class="w-30 text-left font-semibold hidden lg:table-cell">
-              Người tạo
+              {{ $t('v1.common.creator') }}
             </th>
-            <th class="w-25 text-center font-semibold">Thao tác</th>
+            <th class="w-25 text-center font-semibold">{{ $t('v1.table.action') }}</th>
             <th class="w-25 text-left font-semibold hidden lg:table-cell"></th>
           </tr>
         </thead>
@@ -65,7 +65,7 @@
             <!-- Tiêu đề -->
             <td class="text-left py-2 items-center">
               <p class="inline-flex">
-                {{ form_of_work?.setting_data?.[holiday]?.name }}
+                {{ translateWorkFormName(form_of_work?.setting_data?.[holiday]?.name) }}
               </p>
             </td>
 
@@ -90,10 +90,10 @@
                   class="w-2.5 text-ss text-white flex items-center justify-center h-2.5 rounded-full"
                   v-tooltip="
                     !time?.active
-                      ? 'Nghỉ'
+                      ? $t('v1.setting.day_off')
                       : Number(time?.working_hours || 0) >= 5
-                      ? 'Toàn thời gian'
-                      : 'Bán thời gian'
+                      ? $t('v1.setting.full_time')
+                      : $t('v1.setting.part_time')
                   "
                 >
                   {{ index < 6 ? index + 2 : 'C' }}
@@ -152,13 +152,13 @@
                   "
                   class="h-5 w-14.5 text-xs font-medium text-white rounded-md bg-blue-700"
                 >
-                  Cài đặt
+                  {{ $t('v1.common.setting') }}
                 </button>
                 <div
                   class="h-5 inline-flex text-red-500 bg-red-50 font-medium text-xs rounded-md px-2 py-0.5 items-center justify-center"
                   @click="handleDelete(`${holiday}`)"
                 >
-                  Xóa
+                  {{ $t('v1.common.delete') }}
                 </div>
               </div>
             </td>
@@ -174,14 +174,14 @@
           class="min-w-60 text-sm font-medium bg-slate-500 p-2 border rounded-md"
           @click="reset()"
         >
-          <span v-if="!branch_data?._id">Khôi phục mặc định</span>
-          <span v-else>Khôi phục theo Doanh nghiệp</span>
+          <span v-if="!branch_data?._id">{{ $t('v1.common.restore_default') }}</span>
+          <span v-else>{{ $t('v1.common.restore_by_business') }}</span>
         </button>
         <button
           class="flex-1 text-sm font-medium text-white rounded-md bg-black p-2"
           @click="showModal()"
         >
-          Thêm
+          {{ $t('v1.common.add') }}
         </button>
       </div>
     </div>
@@ -198,7 +198,7 @@
   >
     <div class="flex flex-col w-full">
       <header class="flex items-center justify-between px-6 py-2">
-        <h3 class="text-base font-semibold">Hình thức làm việc</h3>
+        <h3 class="text-base font-semibold">{{ $t('v1.setting.form_of_work') }}</h3>
         <button
           @click="open = false"
           class="p-1 rounded-md hover:bg-gray-300 hover:text-black"
@@ -215,13 +215,13 @@
             for="shortName"
             class="block text-sm font-medium text-gray-700 flex-shrink-0"
           >
-            Tiêu đề
+            {{ $t('v1.form.title') }}
           </label>
           <input
             type="text"
             v-model="form_of_work_value.name"
             id="shortName"
-            placeholder="Nhập tiêu đề"
+            :placeholder="$t('v1.form.title_placeholder')"
             class="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
           />
         </div>
@@ -229,7 +229,7 @@
         <div class="flex items-center justify-between px-3 lg:px-0">
           <div class="flex items-center gap-2">
             <IconPapers class="w-5 h-5 flex-shrink-0"></IconPapers>
-            <p class="text-sm font-medium">Thời gian làm việc trong ngày</p>
+            <p class="text-sm font-medium">{{ $t('v1.setting.daily_working_time') }}</p>
           </div>
           <!-- select -->
           <!-- <Toggle /> -->
@@ -244,7 +244,7 @@
             <div class="flex lg:pb-0 pb-2 w-full items-center justify-between">
               <div class="lg: flex">
                 <div class="lg:w-32 flex-none py-2 pr-3 font-medium lg:pr-0">
-                  {{ day.title }}
+                  {{ translateDayTitle(day.title) }}
                 </div>
                 <!-- select -->
                 <Toggle
@@ -261,8 +261,8 @@
                 v-model="day.work_status"
                 class="outline-none flex flex-none lg:hidden rounded-md border px-3 py-1.5"
               >
-                <option value="full_time">Cố định</option>
-                <option value="part_time">Không cố định</option>
+                <option value="full_time">{{ $t('v1.setting.fixed') }}</option>
+                <option value="part_time">{{ $t('v1.setting.not_fixed') }}</option>
               </select>
             </div>
             <!--  -->
@@ -275,7 +275,7 @@
               >
                 <!-- giờ làm -->
                 <p class="flex-shrink-0 flex">
-                  {{ day.active ? 'Giờ làm' : 'Ngày nghỉ' }}
+                  {{ day.active ? $t('v1.setting.work_hours') : $t('v1.setting.day_off') }}
                 </p>
                 <!-- cố định -->
                 <select
@@ -283,8 +283,8 @@
                   v-model="day.work_status"
                   class="outline-none mr-0 w-34 flex-none hidden lg:flex rounded-md border px-3 py-1.5"
                 >
-                  <option value="full_time">Cố định</option>
-                  <option value="part_time">Không cố định</option>
+                  <option value="full_time">{{ $t('v1.setting.fixed') }}</option>
+                  <option value="part_time">{{ $t('v1.setting.not_fixed') }}</option>
                 </select>
               </div>
               <!--từ  -->
@@ -292,7 +292,7 @@
                 v-if="day.work_status === 'full_time' && day.active"
                 class="flex items-center flex-shrink-0 gap-2 lg:gap-4"
               >
-                <p class="text-center flex-shrink-0 min-w-8">từ</p>
+                <p class="text-center flex-shrink-0 min-w-8">{{ $t('v1.setting.from') }}</p>
                 <!-- giờ bắt đầu -->
                 <select
                   :value="`${day?.checkin?.hour
@@ -328,7 +328,7 @@
                 class="flex items-center flex-shrink-0 gap-4"
               >
                 <!--Nghỉ  -->
-                <p class="text-center">Nghỉ</p>
+                <p class="text-center">{{ $t('v1.setting.break') }}</p>
                 <!-- thời gian nghỉ trưa -->
                 <select
                   v-model="day.rest_hours"
@@ -344,7 +344,7 @@
                 v-if="day.work_status === 'full_time' && day.active"
                 class="flex items-center flex-shrink-0 gap-2 lg:gap-4"
               >
-                <p class="text-center min-w-8">đến</p>
+                <p class="text-center min-w-8">{{ $t('v1.setting.to') }}</p>
                 <!-- thời gian kết thúc -->
                 <select
                   :value="`${day?.checkout?.hour
@@ -385,13 +385,13 @@
                   v-if="day.active && day.work_status === 'full_time'"
                   class="text-center flex-shrink-0"
                 >
-                  Số giờ làm
+                  {{ $t('v1.setting.working_hours') }}
                 </p>
                 <p
                   v-if="day.active && day.work_status === 'part_time'"
                   class="text-center flex-shrink-0"
                 >
-                  Chọn số giờ làm
+                  {{ $t('v1.setting.select_working_hours') }}
                 </p>
 
                 <!-- icon -->
@@ -450,7 +450,7 @@
           @click="handleOk"
           class="px-4 text-sm font-medium text-customDark py-2 bg-slate-200 rounded-md"
         >
-          Đóng
+          {{ $t('v1.common.close') }}
         </button>
 
         <div class="flex gap-5">
@@ -458,13 +458,13 @@
             class="px-4 py-2 text-sm text-customDark font-medium bg-slate-200 rounded-md"
             @click="resetModal()"
           >
-            Khôi phục mặc định
+            {{ $t('v1.common.restore_default') }}
           </button>
           <button
             class="px-4 py-2 text-sm text-white font-medium bg-blue-700 rounded-md"
             @click="handleSave()"
           >
-            Lưu
+            {{ $t('v1.common.save') }}
           </button>
         </div>
       </footer>
@@ -484,6 +484,7 @@ import { PropType, ref } from 'vue'
 import { format } from 'date-fns'
 import { cloneDeep } from 'lodash'
 import { storeToRefs } from 'pinia'
+import { useI18n } from 'vue-i18n'
 
 // * components
 import Toggle from '@/components/Toggle.vue'
@@ -509,6 +510,7 @@ const props = defineProps({
 // * store
 const commonStore = useCommonStore()
 const { employees_user_ids, user, branch_data } = storeToRefs(commonStore)
+const { t } = useI18n()
 
 const { savesSettingFormOfWork } = useGetData()
 
@@ -578,12 +580,12 @@ function convertDecimalHoursToHoursAndMinutes(decimal_hours: number) {
 
   // nếu có giờ thì mới hiẹn
   if (HOURS > 0 || !MINUTES) {
-    result += `${HOURS} giờ `
+    result += `${HOURS} ${t('v1.setting.hour')} `
   }
 
   // nếu có phút thì mới hiêjn
   if (MINUTES > 0) {
-    result += `${MINUTES} phút`
+    result += `${MINUTES} ${t('v1.setting.minute')}`
   }
 
   // Xóa khoảng trắng ở cuối nếu có
@@ -665,7 +667,7 @@ function handleSave() {
 function handleDelete(id: string) {
   confirm(
     'warning',
-    'Xác nhận hình thức làm việc này?',
+    t('v1.confirm.delete_form_of_work'),
     '',
     (is_cancel: boolean) => {
       if (is_cancel) return
@@ -680,7 +682,7 @@ function handleDelete(id: string) {
 function resetModal() {
   confirm(
     'warning',
-    'Xác nhận khôi phục mặc định?',
+    t('v1.confirm.restore_default'),
     '',
     (is_cancel: boolean) => {
       if (is_cancel) return
@@ -695,7 +697,7 @@ function resetModal() {
 function reset() {
   confirm(
     'warning',
-    'Xác nhận khôi phục mặc định?',
+    t('v1.confirm.restore_default'),
     '',
     (is_cancel: boolean) => {
       if (is_cancel) return
@@ -706,5 +708,23 @@ function reset() {
       }
     }
   )
+}
+
+function translateDayTitle(title?: string) {
+  const keyByTitle: Record<string, string> = {
+    'Thứ hai': 'v1.day.monday',
+    'Thứ ba': 'v1.day.tuesday',
+    'Thứ tư': 'v1.day.wednesday',
+    'Thứ năm': 'v1.day.thursday',
+    'Thứ sáu': 'v1.day.friday',
+    'Thứ bảy': 'v1.day.saturday',
+    'Chủ nhật': 'v1.day.sunday',
+  }
+
+  return title && keyByTitle[title] ? t(keyByTitle[title]) : title
+}
+
+function translateWorkFormName(name?: string) {
+  return name === 'Toàn thời gian' ? t('v1.setting.full_time') : name
 }
 </script>

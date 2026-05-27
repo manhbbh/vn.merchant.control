@@ -7,7 +7,7 @@
     <!--content  -->
     <div class="flex flex-col gap-2 w-full overflow-hidden">
       <div class="flex h-5 items-center justify-between mb-3">
-        <h4 class="flex justify-start text-sm font-medium">Nhân sự công ty</h4>
+        <h4 class="flex justify-start text-sm font-medium">{{ $t('v1.table.employee') }}</h4>
         <!-- <div
           class="flex items-center gap-2 bg-slate-100 py-3 px-3 h-5 cursor-pointer rounded-md"
           v-if="branch_data?._id"
@@ -25,23 +25,23 @@
           >
             <tr class="h-7">
               <th class="px-3 text-left font-semibold">#</th>
-              <th class="px-3 text-left font-semibold">Họ và tên</th>
+              <th class="px-3 text-left font-semibold">{{ $t('v1.table.full_name') }}</th>
               <!-- <th class="px-3 text-left font-semibold">Email</th> -->
               <th
                 v-if="!branch_data?._id"
                 class="px-3 text-left font-semibold hidden md:table-cell"
               >
-                Chi nhánh đang hoạt động
+                {{ $t('v1.table.active_branch') }}
               </th>
               <th class="px-3 text-left font-semibold hidden md:table-cell">
-                Ngày tạo
+                {{ $t('v1.table.created_date') }}
               </th>
-              <th class="px-3 text-left font-semibold">Truy cập lần cuối</th>
+              <th class="px-3 text-left font-semibold">{{ $t('v1.table.last_access') }}</th>
               <th class="px-3 text-left font-semibold hidden md:table-cell">
-                Trạng thái
+                {{ $t('v1.table.status') }}
               </th>
               <th class="px-3 text-left font-semibold hidden md:table-cell">
-                Thao tác
+                {{ $t('v1.table.action') }}
               </th>
             </tr>
           </thead>
@@ -147,7 +147,7 @@
     >
       <div class="flex flex-col w-full">
         <header class="flex items-center justify-between h-10 px-6 py-2">
-          <h3 class="h-6 text-base font-semibold">Thêm nhân sự</h3>
+          <h3 class="h-6 text-base font-semibold">{{ $t('v1.common.add_employee') }}</h3>
           <button
             @click="open = false"
             class="p-1 rounded-md hover:bg-gray-300 hover:text-black"
@@ -164,7 +164,7 @@
             <input
               type="text"
               class="w-full border border-gray-300 rounded-lg px-3 py-2 outline-none"
-              placeholder="Nhập email nhân sự"
+              :placeholder="$t('v1.form.employee_email_placeholder')"
               v-model="form_add.email"
             />
           </div>
@@ -174,13 +174,13 @@
             class="px-4 text-sm font-medium text-customDark py-2 border rounded-md border-slate-300"
             @click="open = false"
           >
-            Hủy
+            {{ $t('v1.common.cancel') }}
           </button>
           <button
             class="px-4 py-2 text-sm text-white font-medium bg-primary rounded-md"
             @click="handleOk()"
           >
-            Thêm nhân sự
+            {{ $t('v1.common.add_employee') }}
           </button>
         </footer>
       </div>
@@ -202,6 +202,7 @@ import { format } from 'date-fns'
 import { storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
 import { confirm } from '@/service/helper/alert'
+import { useI18n } from 'vue-i18n'
 
 // * components
 import RowEmployee from '@/components/enterpriseSettings/RowEmployee.vue'
@@ -223,6 +224,7 @@ const { employees_ids, branch_data, users, branches_ids, is_get_data } =
 
 // * toast
 const $toast = new Toast()
+const { t } = useI18n()
 
 /** ẩn hiện modal */
 const open = ref(false)
@@ -349,7 +351,7 @@ function openModal() {
 function confirmActive(employee: Employee) {
   confirm(
     'warning',
-    'Xác nhận cập nhật trạng thái?',
+    t('v1.confirm.update_status'),
     '',
     (is_cancel: boolean) => {
       if (is_cancel) return
@@ -364,7 +366,7 @@ async function handleOk() {
     const RES = await businessAddEmployee({ body: form_add.value })
 
     if (!RES.data || !RES.data.user_id) {
-      throw 'Thêm thất bại'
+      throw t('v1.common.add_failed')
     }
 
     // thông tin của người dùng được thêm nếu đã trong doanh nghiệp
@@ -391,7 +393,7 @@ async function handleOk() {
         ],
       }
     }
-    $toast.success('Thêm nhân sự thành công')
+    $toast.success(t('v1.common.add_employee_success'))
   } catch (e) {
     $toast.error(e)
   } finally {

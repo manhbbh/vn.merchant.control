@@ -7,11 +7,10 @@
          <!-- <button @click="save()">Lưu</button> -->
          <div class="flex flex-col">
             <h4 class="flex justify-start text-sm font-medium">
-               Đồng bộ Trang - {{ business_data?.short_name || business_data?.name }}
+               {{ $t('v1.sync.page_sync', { name: businessName }) }}
             </h4>
             <p class="text-sm text-muted">
-               Kết nối Tổ chức, Chi nhánh với các Kênh bán hàng (Facebook, Zalo, Web ...) của
-               {{ business_data?.short_name || business_data?.name }}.
+               {{ $t('v1.sync.description', { name: businessName }) }}
             </p>
          </div>
          <!--  -->
@@ -20,7 +19,7 @@
                <label
                   class="text-center py-1 rounded bg-slate-200 text-sm font-medium"
                >
-                  Tổ chức - Chatbox
+                  {{ $t('v1.sync.organization_chatbox') }}
                </label>
                <DropBox
                   place="bottom"
@@ -38,7 +37,7 @@
                            {{ 
                               businesses?.[business_id || '']?.short_name ||
                               businesses?.[business_id || '']?.name || 
-                              'Không chọn' 
+                              $t('v1.sync.not_selected')
                            }}
                         </p>
                         <IconDown class="w-5 h-5" />
@@ -75,7 +74,7 @@
                   class="text-center py-1 rounded bg-slate-200 text-sm font-medium"
                   for=""
                >
-                  Tổ chức - Merchant
+                  {{ $t('v1.sync.organization_merchant') }}
                </label>
                <p class="text-start py-2 px-3 border border-border bg-slate-50 shadow-sm rounded-md">
                   {{ business_data?.short_name || business_data?.name }}
@@ -97,7 +96,7 @@
                      class="text-center py-1 rounded bg-slate-200 text-sm font-medium"
                      for=""
                   >
-                     Nhân viên
+                     {{ $t('v1.sync.employee') }}
                   </label>
                </div>
                <div class="py-2 flex justify-center"></div>
@@ -106,7 +105,7 @@
                      class="text-center py-1 rounded bg-slate-200 text-sm font-medium"
                      for=""
                   >
-                     Nhân viên
+                     {{ $t('v1.sync.employee') }}
                   </label>
                </div>
                <div class="py-2 flex justify-center"></div>
@@ -115,7 +114,7 @@
                      class="text-center py-1 rounded bg-slate-200 text-sm font-medium"
                      for=""
                   >
-                     Chọn BU Nhân viên làm việc
+                     {{ $t('v1.sync.select_employee_branch') }}
                   </label>
                </div>
             </div>
@@ -177,7 +176,7 @@
                               @click="openDropbox()"
                            >
                               <p v-if="!e.linked_user || !users?.[e.linked_user]">
-                                 {{ 'Không chọn' }}
+                                 {{ $t('v1.sync.not_selected') }}
                               </p>
                               <div
                                  v-if="e.linked_user && users?.[e.linked_user]"
@@ -236,7 +235,7 @@
                                        changeEmployeeId(`${key}`, '')
                                     }"
                                  >
-                                    Không chọn
+                                    {{ $t('v1.sync.not_selected') }}
                                  </button>
                               </li>
                               <li v-for="re, user_id in users">
@@ -296,7 +295,7 @@
                               @click="is_open_dropbox = true"
                            >
                               <p class="truncate">
-                                 {{ branches_ids?.[e?.linked_branch || '']?.name || 'Không chọn' }}
+                                 {{ branches_ids?.[e?.linked_branch || '']?.name || $t('v1.sync.not_selected') }}
                               </p>
                               <IconDown class="w-5 h-5 flex-shrink-0" />
                            </button>
@@ -317,7 +316,7 @@
                                        changeBranchEmployeeId(`${key}`, '')
                                     }"
                                  >
-                                    Không chọn
+                                    {{ $t('v1.sync.not_selected') }}
                                  </button>
                               </li>
                               <li v-for="branch in branches">
@@ -352,7 +351,7 @@
                      class="text-center py-1 rounded bg-slate-200 text-sm font-medium"
                      for=""
                   >
-                     Trang
+                     {{ $t('v1.sync.page') }}
                   </label>
                </div>
                <div class="py-2 flex justify-center"></div>
@@ -361,7 +360,7 @@
                      class="text-center py-1 rounded bg-slate-200 text-sm font-medium"
                      for=""
                   >
-                     Chi nhánh
+                     {{ $t('v1.common.branch') }}
                   </label>
                </div>
             </div>
@@ -410,7 +409,7 @@
                               @click="is_open_dropbox = true"
                            >
                               <p class="truncate">
-                                 {{ branches_ids?.[item?.redirect_to || '']?.name || 'Không chọn' }}
+                                 {{ branches_ids?.[item?.redirect_to || '']?.name || $t('v1.sync.not_selected') }}
                               </p>
                               <IconDown class="w-5 h-5 flex-shrink-0" />
                            </button>
@@ -428,7 +427,7 @@
                                     }"
                                     @click="changeBranchId(item?.branch_id, '')"
                                  >
-                                    Không chọn
+                                    {{ $t('v1.sync.not_selected') }}
                                  </button>
                               </li>
                               <li v-for="branch in branches" v-show="!branch.archive">
@@ -496,6 +495,8 @@ const ICONS: { [key: string]: any } = {
 /** store */
 const commonStore = useCommonStore()
 const { businesses, branches, business_data, branches_ids, users } = storeToRefs(commonStore)
+
+const businessName = computed(() => business_data.value?.short_name || business_data.value?.name || '')
 
 /** ẩn hiện dropbox */
 const is_open_dropbox = ref(false)

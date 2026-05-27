@@ -5,9 +5,9 @@
     <!--content  -->
     <div class="flex-col flex-1 gap-3 w-full overflow-hidden">
       <div class="flex items-center mb-3 justify-between">
-        <h4 class="flex justify-start text-sm font-medium">Nhân sự</h4>
+        <h4 class="flex justify-start text-sm font-medium">{{ $t('v1.table.employee') }}</h4>
         <button class="bg-black text-white py-2 px-4 rounded-md" @click="handleOpenForm()">
-          Thêm
+          {{ $t('v1.common.add') }}
         </button>
       </div>
       <!-- phần các ô input  -->
@@ -15,23 +15,23 @@
         <table class="min-w-full table-fixed border-none bg-white rounded-lg z-10">
           <thead class="bg-slate-200 h-7 text-xs font-semibold sticky top-0 text-customDarkBlue flex-shrink-0 z-10">
             <tr class="h-7 flex gap-x-4 items-center">
-              <th class="w-18 text-center font-semibold">ID|Ngày</th>
-              <th class="w-45 text-left font-semibold">Nhân sự</th>
+              <th class="w-18 text-center font-semibold">{{ $t('v1.table.id_date') }}</th>
+              <th class="w-45 text-left font-semibold">{{ $t('v1.table.employee') }}</th>
               <th class="w-50 text-left font-semibold hidden md:block">
-                Hình thức làm việc
+                {{ $t('v1.table.work_form') }}
               </th>
               <th class="w-42 text-left font-semibold hidden md:block">
-                Lương P2
+                {{ $t('v1.table.p2_salary') }}
               </th>
-              <th class="w-42 text-left font-semibold hidden md:block">Làm xoay ca</th>
+              <th class="w-42 text-left font-semibold hidden md:block">{{ $t('v1.table.rotating_shift') }}</th>
               <th class="w-25 sm:w-25 text-left font-semibold hidden md:block">
-                Chủ động
+                {{ $t('v1.table.proactive') }}
               </th>
               <th class="w-25 sm:w-25 text-left font-semibold hidden md:block">
-                Bị động
+                {{ $t('v1.table.passive') }}
               </th>
               <th class="w-50 text-left font-semibold hidden md:block">
-                Cập nhật lần cuối
+                {{ $t('v1.table.last_updated') }}
               </th>
             </tr>
           </thead>
@@ -70,10 +70,10 @@
                         Number(time?.working_hours || 0) < 5 && time?.active,
                       'bg-slate-500': !time?.active,
                     }" class="w-2.5 text-ss text-white flex items-center justify-center h-2.5 rounded-full" v-tooltip="!time?.active
-                        ? 'Nghỉ'
+                        ? $t('v1.setting.day_off')
                         : Number(time?.working_hours || 0) >= 5
-                          ? 'Toàn thời gian'
-                          : 'Bán thời gian'
+                          ? $t('v1.setting.full_time')
+                          : $t('v1.setting.part_time')
                       ">
                     {{ index < 6 ? index + 2 : 'C' }} </p>
                 </div>
@@ -151,33 +151,33 @@
       <div class="overflow-hidden text-start py-4 flex lg:grid flex-col grid-cols-3 gap-2 lg:gap-4 w-full flex-wrap"
         v-if="is_show_form">
         <div class="flex gap-2 lg:gap-4 items-center w-full">
-          <label class="font-medium min-w-32">Nhân sự</label>
+          <label class="font-medium min-w-32">{{ $t('v1.table.employee') }}</label>
           <SelectEmployee class="w-full" v-model="employee_form.employee_id"
             :list_employees_added="list_employees_added" />
         </div>
         <div class="flex gap-2 lg:gap-4 items-center w-full">
-          <label class="font-medium min-w-32">Hình thức làm việc</label>
+          <label class="font-medium min-w-32">{{ $t('v1.table.work_form') }}</label>
           <SelectTimeWorking class="w-full" v-model="employee_form.working_time_id" />
         </div>
         <div class="flex gap-2 lg:gap-4 items-center w-full">
-          <label class="font-medium min-w-32">Lương P2</label>
-          <cleave v-model="employee_form.salary_p2" :options="cleave_options" placeholder="Nhập lương P2"
+          <label class="font-medium min-w-32">{{ $t('v1.table.p2_salary') }}</label>
+          <cleave v-model="employee_form.salary_p2" :options="cleave_options" :placeholder="$t('v1.form.p2_salary_placeholder')"
             class="w-full px-3 py-2 outline-none border rounded-md placeholder:text-slate-500" />
         </div>
 
         <div class="flex gap-2 lg:gap-4 items-center w-full">
-          <label class="font-medium min-w-32">Làm xoay ca</label>
+          <label class="font-medium min-w-32">{{ $t('v1.table.rotating_shift') }}</label>
           <Toggle v-model="employee_form.work_in_shifts" />
         </div>
 
         <div class="flex gap-2 lg:gap-4 items-center w-full">
-          <label class="font-medium min-w-32">Chủ động</label>
+          <label class="font-medium min-w-32">{{ $t('v1.table.proactive') }}</label>
           <input class="w-full px-3 py-2 outline-none border rounded-md placeholder:text-slate-500"
-            v-model="employee_form.proactive_percent" type="number" placeholder="Nhập thời gian chủ động" />
+            v-model="employee_form.proactive_percent" type="number" :placeholder="$t('v1.form.proactive_placeholder')" />
         </div>
 
         <button class="lg:w-fit bg-green-500 text-white rounded-md py-2 px-4 hover:shadow-md" @click="addEmployee()">
-          Thêm nhân sự
+          {{ $t('v1.common.add_employee') }}
         </button>
       </div>
     </div>

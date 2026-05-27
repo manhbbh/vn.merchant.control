@@ -8,7 +8,7 @@
     <div class="flex flex-col gap-2 w-full">
       <div class="flex h-5 items-center justify-between mb-3">
         <h4 class="flex justify-start text-sm font-medium">
-          Danh sách chi nhánh
+          {{ $t('v1.menu.branch_setting') }}
         </h4>
         <div
           @click="()=>showModal()"
@@ -16,7 +16,7 @@
         >
           <!-- icon -->
           <IconAdd class="w-4 h-4"></IconAdd>
-          <p class="text-xs font-medium">Thêm chi nhánh</p>
+          <p class="text-xs font-medium">{{ $t('v1.common.add_branch') }}</p>
         </div>
       </div>
       <table class="min-w-full border-none bg-white rounded-lg z-10">
@@ -25,27 +25,27 @@
         >
           <tr class="h-7">
             <th class="w-6 text-left font-semibold text-slate-800">#</th>
-            <th class="text-left font-semibold text-slate-800">Tên viết tắt</th>
-            <th class="text-left font-semibold text-slate-800">Địa chỉ</th>
+            <th class="text-left font-semibold text-slate-800">{{ $t('v1.table.short_name') }}</th>
+            <th class="text-left font-semibold text-slate-800">{{ $t('v1.table.address') }}</th>
             <th
               class="text-left font-semibold text-slate-800 hidden md:table-cell"
             >
-              Ngày thành lập
+              {{ $t('v1.table.founded_date') }}
             </th>
             <th
               class="text-left font-semibold text-slate-800 hidden md:table-cell"
             >
-              Số nhân sự
+              {{ $t('v1.table.employee_count') }}
             </th>
             <th
               class="text-left font-semibold text-slate-800 hidden md:table-cell"
             >
-              Trạng thái
+              {{ $t('v1.table.status') }}
             </th>
             <th
               class="text-left font-semibold text-slate-800 hidden md:table-cell"
             >
-              Thao tác
+              {{ $t('v1.table.action') }}
             </th>
           </tr>
         </thead>
@@ -91,7 +91,7 @@
                 class="text-sm"
                 :class="!branch.archive ? 'text-green-500' : 'text-red-500'"
               >
-                {{ !branch.archive ? 'Đang hoạt động' : 'Không hoạt động' }}
+                {{ !branch.archive ? $t('v1.common.active') : $t('v1.common.inactive_short') }}
               </p>
             </td>
             <!-- thao tác -->
@@ -100,7 +100,7 @@
                 class="h-5 w-15 flex justify-center px-2 bg-slate-100 rounded-md py-0.5"
                 @click="detaiBranch(branch)"
               >
-                <span class="text-xs font-medium"> Cài đặt </span>
+                <span class="text-xs font-medium">{{ $t('v1.common.setting') }}</span>
               </button>
             </td>
           </tr>
@@ -119,7 +119,7 @@
   >
     <div class="flex flex-col w-full">
       <header class="flex items-center justify-between h-10 px-6 py-2">
-        <h3 class="h-6 text-base font-semibold">Thêm chi nhánh</h3>
+        <h3 class="h-6 text-base font-semibold">{{ $t('v1.common.add_branch') }}</h3>
         <button
           @click="open = false"
           class="p-1 rounded-md hover:bg-gray-300 hover:text-black"
@@ -136,13 +136,13 @@
               for="shortName"
               class="block text-sm font-medium text-gray-700 h-5.5"
             >
-              Tên viết tắt
+              {{ $t('v1.form.short_name') }}
             </label>
             <input
               type="text"
               v-model="form_add.short_name"
               id="shortName"
-              placeholder="Nhập tên chi nhánh"
+              :placeholder="$t('v1.form.branch_name_placeholder')"
               class="h-9 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
             />
           </div>
@@ -151,13 +151,13 @@
               for="shortName"
               class="block text-sm font-medium text-gray-700 h-5.5"
             >
-              Tên chi nhánh <span class="text-error"> *</span>
+              {{ $t('v1.form.branch_name') }} <span class="text-error"> *</span>
             </label>
             <input
               type="text"
               v-model="form_add.name"
               id="shortName"
-              placeholder="Nhập tên chi nhánh"
+              :placeholder="$t('v1.form.branch_name_placeholder')"
               class="h-9 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
             />
           </div>
@@ -167,11 +167,11 @@
               for="shortName"
               class="block text-sm font-medium text-gray-700 h-5.5"
             >
-              Ngày thành lập
+              {{ $t('v1.form.founded_date') }}
             </label>
             <CustomVuePicker
               v-model="form_add.establish_date"
-              placeholder="Chọn ngày"
+              :placeholder="$t('v1.form.select_date')"
               :handle-date="() => {}"
               :input_class="'!border-transparent'"
               class="border border-gray-300"
@@ -191,13 +191,13 @@
           class="px-4 text-sm font-medium text-customDark py-2 border rounded-md border-slate-300"
           @click="open = false"
         >
-          Hủy
+          {{ $t('v1.common.cancel') }}
         </button>
         <button
           class="px-4 py-2 text-sm text-white font-medium bg-primary rounded-md"
           @click="handleOk()"
         >
-          Tạo chi nhánh
+          {{ $t('v1.common.create_branch') }}
         </button>
       </footer>
     </div>
@@ -212,6 +212,7 @@ import { businessAddBranch } from '@/service/api/api'
 // * libraries
 import { computed, inject, ref } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useI18n } from 'vue-i18n'
 
 // * components
 import Location from '@/components/Location.vue'
@@ -238,6 +239,7 @@ const form_add = ref<BranchData>({})
 
 // * toast
 const $toast = new Toast()
+const { t } = useI18n()
 
 /**Biến mở đóng modal*/
 const open = ref(false)
@@ -265,7 +267,7 @@ function showModal() {
 /**Hàm xử lý thêm*/
 async function handleOk() {
   try {
-    if (!form_add.value.name) throw 'Vui lòng tên chi nhánh'
+    if (!form_add.value.name) throw t('v1.common.branch_name_required')
 
     const RES = await businessAddBranch({
       body: {
@@ -275,7 +277,7 @@ async function handleOk() {
 
     if (RES.data.branch) {
       branches.value = [...branches.value, RES.data.branch]
-      $toast.success('Tạo chi nhánh thành công')
+      $toast.success(t('v1.common.create_branch_success'))
     }
     open.value = false
   } catch (e) {

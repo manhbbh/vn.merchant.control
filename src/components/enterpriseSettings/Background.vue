@@ -7,19 +7,19 @@
     <!--content  -->
     <div class="flex flex-col flex-1 gap-2 lg:gap-3">
       <div class="flex items-start justify-between">
-        <h4 class="flex justify-start text-sm font-medium">Hình nền</h4>
+        <h4 class="flex justify-start text-sm font-medium">{{ $t('v1.setting.background') }}</h4>
         <div class="hidden lg:flex items-center gap-2.5">
           <button
             class="text-sm font-medium text-slate-500 h-9 px-2 sm:px-6 sm:py-2"
             @click="reset()"
           >
-            Khôi phục mặc định
+            {{ $t('v1.common.restore_default') }}
           </button>
           <button
             class="h-9 w-18 text-sm font-medium text-white rounded-md bg-black"
             @click="is_show_add = true"
           >
-            Thêm
+            {{ $t('v1.common.add') }}
           </button>
         </div>
       </div>
@@ -32,12 +32,12 @@
               <thead class="bg-slate-200 h-7 text-semibold rounded-2xl text-xs">
                 <tr class="rounded-lg">
                   <th class="px-2 w-8 text-left font-semibold">STT</th>
-                  <th class="text-center w-20 sm:w-25 font-semibold">Ảnh</th>
+                  <th class="text-center w-20 sm:w-25 font-semibold">{{ $t('v1.common.image') }}</th>
                   <th class="text-left w-34 font-semibold hidden md:table-cell">
-                    Người tạo
+                    {{ $t('v1.common.creator') }}
                   </th>
-                  <th class="text-center w-15 font-semibold">Hiển thị</th>
-                  <th class="text-center w-15 font-semibold">Xóa</th>
+                  <th class="text-center w-15 font-semibold">{{ $t('v1.common.display') }}</th>
+                  <th class="text-center w-15 font-semibold">{{ $t('v1.common.delete') }}</th>
                   <th
                     class="text-center w-15 font-semibold hidden md:table-cell"
                   ></th>
@@ -87,7 +87,7 @@
                       class="h-6 inline-flex text-red-500 bg-red-50 font-medium text-xs rounded-md px-2 py-0.5 items-center justify-center"
                       @click="handleDelete(index, 'pc')"
                     >
-                      Xóa
+                      {{ $t('v1.common.delete') }}
                     </div>
                   </td>
 
@@ -109,12 +109,12 @@
               >
                 <tr class="h-7">
                   <th class="px-2 w-8 text-left font-semibold">STT</th>
-                  <th class="text-center w-20 sm:w-25 font-semibold">Ảnh</th>
+                  <th class="text-center w-20 sm:w-25 font-semibold">{{ $t('v1.common.image') }}</th>
                   <th class="text-left w-34 font-semibold hidden md:table-cell">
-                    Người tạo
+                    {{ $t('v1.common.creator') }}
                   </th>
-                  <th class="text-center w-15 font-semibold">Hiển thị</th>
-                  <th class="text-center w-15 font-semibold">Xóa</th>
+                  <th class="text-center w-15 font-semibold">{{ $t('v1.common.display') }}</th>
+                  <th class="text-center w-15 font-semibold">{{ $t('v1.common.delete') }}</th>
                   <th
                     class="text-center w-15 font-semibold hidden md:table-cell"
                   ></th>
@@ -165,7 +165,7 @@
                       class="h-6 inline-flex text-red-500 bg-red-50 font-medium text-xs rounded-md px-2 py-0.5 items-center justify-center"
                       @click="handleDelete(index, 'mobile')"
                     >
-                      Xóa
+                      {{ $t('v1.common.delete') }}
                     </div>
                   </td>
                   <td class="hidden md:flex"></td>
@@ -189,7 +189,7 @@
           </div>
           <div class="flex items-center gap-4">
             <p class="text-sm font-medium flex-shrink-0 w-28 lg:w-auto">
-              Loại hình nền
+              {{ $t('v1.setting.background_type') }}
             </p>
             <select
               v-model="form_add.type"
@@ -203,12 +203,11 @@
             class="px-4 py-2 flex justify-center items-center rounded-lg bg-green-500 text-white"
             @click="handleAdd()"
           >
-            Lưu
+            {{ $t('v1.common.save') }}
           </button>
         </div>
         <p class="h-4 text-xs text-left text-slate-700 hidden sm:flex">
-          Lưu ý: Kích thước ảnh Web PC (2560 x 1440), Mobile App (440 x 956),
-          loại File (.png , .jpg). Sử dụng https://imgbb.com để upload ảnh.
+          {{ $t('v1.setting.background_upload_note') }}
         </p>
       </div>
       <div class="flex lg:hidden items-center gap-2.5 text-white">
@@ -216,13 +215,13 @@
           class="min-w-60 text-sm font-medium bg-slate-500 p-2 border rounded-md"
           @click="reset()"
         >
-          Khôi phục mặc định
+          {{ $t('v1.common.restore_default') }}
         </button>
         <button
           class="flex-1 text-sm font-medium text-white rounded-md bg-black p-2"
           @click="is_show_add = true"
         >
-          Thêm
+          {{ $t('v1.common.add') }}
         </button>
       </div>
     </div>
@@ -237,6 +236,7 @@ import { confirm } from '@/service/helper/alert'
 // * libraries
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useI18n } from 'vue-i18n'
 
 /**ICon*/
 import IconBackground from '@/components/icons/IconBackground.vue'
@@ -245,6 +245,7 @@ import Toggle from '../Toggle.vue'
 // * store
 const commonStore = useCommonStore()
 const { background, employees_user_ids, user } = storeToRefs(commonStore)
+const { t } = useI18n()
 
 /** ẩn hiệm form thêm */
 const is_show_add = ref(false)
@@ -316,7 +317,7 @@ function handleAdd() {
 
 /** xử lý xóa ngày lễ */
 function handleDelete(index: number, type: 'pc' | 'mobile') {
-  confirm('warning', 'Xác nhận xóa hình nền?', '', (is_cancel: boolean) => {
+  confirm('warning', t('v1.confirm.delete_background'), '', (is_cancel: boolean) => {
     if (is_cancel) return
 
     // nếu không có dữ liệu thì thôi
@@ -338,7 +339,7 @@ function handleDelete(index: number, type: 'pc' | 'mobile') {
 function reset() {
   confirm(
     'warning',
-    'Xác nhận khôi phục mặc định?',
+    t('v1.confirm.restore_default'),
     '',
     (is_cancel: boolean) => {
       if (is_cancel) return

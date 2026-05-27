@@ -7,11 +7,11 @@
     <!--content  -->
     <div class="flex-col flex-1 gap-3">
       <div class="flex h-9 items-center justify-between mb-3">
-        <h4 class="flex justify-start text-sm font-medium">Vân tay</h4>
+        <h4 class="flex justify-start text-sm font-medium">{{ $t('v1.menu.fingerprint') }}</h4>
         <button
           class="h-9 px-4 py-2 text-sm font-medium text-white rounded-md bg-black"
         >
-          Thêm
+          {{ $t('v1.common.add') }}
         </button>
       </div>
       <!-- phần các ô input  -->
@@ -22,15 +22,15 @@
           class="bg-slate-200 h-7 text-xs font-semibold sticky top-0 text-customDarkBlue flex-shrink-0 z-10"
         >
           <tr class="h-7 flex gap-x-12 items-center">
-            <th class="w-18 text-center font-semibold">ID|Ngày</th>
-            <th class="w-15 sm:w-25 text-left font-semibold">ID Thiết bi</th>
+            <th class="w-18 text-center font-semibold">{{ $t('v1.table.id_date') }}</th>
+            <th class="w-15 sm:w-25 text-left font-semibold">{{ $t('v1.table.device_id') }}</th>
             <th class="w-25 text-left font-semibold hidden md:block">
-              Trạng thái
+              {{ $t('v1.table.status') }}
             </th>
             <th class="w-50 text-left font-semibold hidden md:block">
-              Nhân sự
+              {{ $t('v1.table.employee') }}
             </th>
-            <th class="w-10 sm:w-25 text-left font-semibold">Xóa</th>
+            <th class="w-10 sm:w-25 text-left font-semibold">{{ $t('v1.common.delete') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -54,7 +54,7 @@
 
             <!-- trạng thái -->
             <td class="w-25 text-left hidden md:block">
-              <p class="text-green-500">{{ timekeeping.status_fing }}</p>
+              <p class="text-green-500">{{ $t(timekeeping.status_fing) }}</p>
               <!--  -->
             </td>
 
@@ -80,7 +80,7 @@
               <button
                 class="px-2 py-0.5 bg-red-50 text-red-500 rounded-md text-xs font-medium"
               >
-                Xóa
+                {{ $t('v1.common.delete') }}
               </button>
             </td>
           </tr>
@@ -96,11 +96,11 @@
             for="taxCode"
             class="block text-sm font-medium flex-shrink-0 texet-black px-1"
           >
-            ID Thiết bị
+            {{ $t('v1.table.device_id') }}
           </label>
           <input
             class="border border-gray-300 px-3 rounded-md w-39 h-9"
-            placeholder="Nhập ID thiết bị"
+            :placeholder="$t('v1.form.device_id_placeholder')"
             type="text"
           />
         </div>
@@ -110,12 +110,12 @@
             for="taxCode"
             class="block text-sm font-medium text-gray-700 px-1 h-5.5"
           >
-            Nhân sự
+            {{ $t('v1.table.employee') }}
           </label>
           <input
             type="text"
             class="outline-none text-muted border border-gray-300 h-9 w-39 p-2 rounded-md"
-            placeholder="Chọn nhân sự"
+            :placeholder="$t('v1.form.select_employee')"
           />
         </div>
 
@@ -123,7 +123,7 @@
         <button
           class="h-9 bg-green-600 text-sm font-medium text-white rounded-md px-4 py-2"
         >
-          Thêm
+          {{ $t('v1.common.add') }}
         </button>
       </div>
     </div>
@@ -148,7 +148,7 @@ const list_employee = ref([
     id_device: 'D123',
     name_create_holiday: 'Nguyễn Đình Tùng',
     avatar_employee: avarta,
-    status_fing: 'Đã kích hoạt',
+    status_fing: 'v1.setting.activated',
   },
   {
     working_form: 'sale',
@@ -156,7 +156,7 @@ const list_employee = ref([
     id_device: 'D123',
     name_create_holiday: 'Nguyễn Đình Tùng',
     avatar_employee: avarta,
-    status_fing: 'Đã kích hoạt',
+    status_fing: 'v1.setting.activated',
   },
   {
     working_form: 'sale',
@@ -164,7 +164,7 @@ const list_employee = ref([
     id_device: 'D123',
     name_create_holiday: 'Nguyễn Đình Tùng',
     avatar_employee: avarta,
-    status_fing: 'Đã kích hoạt',
+    status_fing: 'v1.setting.activated',
   },
 ])
 const list_day = ref([1, 2, 3, 4, 5, 6, 7, 'C'])

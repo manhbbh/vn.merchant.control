@@ -7,11 +7,12 @@
     <!--content  -->
     <div class="flex-col flex-1">
       <div class="flex flex-col items-start mb-3">
-        <h4 class="flex justify-start text-sm font-medium">Kỳ kinh doanh</h4>
+        <h4 class="flex justify-start text-sm font-medium">{{ $t('v1.setting.business_period') }}</h4>
         <p class="text-sm text-left text-muted">
-          <span class="font-medium">Tháng:</span> Ngày bắt đầu và kết thúc để
-          tính Lương P1, P2. <span class="font-medium">Năm:</span> Ngày bắt đầu
-          và kết thúc 1 năm kinh doanh để hiển thị dữ liệu trong báo cáo năm.
+          <span class="font-medium">{{ $t('v1.setting.business_period_month_label') }}</span>
+          {{ $t('v1.setting.business_period_description') }}
+          <span class="font-medium">{{ $t('v1.setting.business_period_year_label') }}</span>
+          {{ $t('v1.setting.business_period_year_description') }}
         </p>
       </div>
       <!-- phần các ô input  -->
@@ -21,12 +22,12 @@
           v-if="monthly_business_period.setting_data"
         >
           <h3 class="text-sm font-medium">
-            Tháng<span class="text-error"> *</span>
+            {{ $t('v1.setting.month') }}<span class="text-error"> *</span>
           </h3>
           <div
             class="flex items-center border border-gray-300 h-9 py-2 rounded-md"
           >
-            <p class="text-muted w-28">Ngày bắt đầu</p>
+            <p class="text-muted w-28">{{ $t('v1.setting.start_date') }}</p>
             <div
               class="border-l w-12 border-gray-300 flex items-center justify-center h-9"
             >
@@ -40,7 +41,7 @@
           </div>
           <div class="flex gap-4">
             <div class="flex items-center border border-gray-300 rounded-md">
-              <p class="text-muted w-28">Ngày kết thúc</p>
+              <p class="text-muted w-28">{{ $t('v1.setting.end_date') }}</p>
               <div
                 class="border-l w-12 rounded-e-md border-gray-300 flex items-center justify-center py-2"
                 :class="{
@@ -59,7 +60,7 @@
               </div>
             </div>
             <Toggle
-              :title="'Cuối tháng'"
+              :title="$t('v1.setting.end_of_month')"
               :model-value="monthly_business_period.setting_data.end === 32"
               @update:model-value="
                 (modelValue) => {
@@ -75,13 +76,13 @@
         </div>
         <div class="flex flex-col gap-1 items-start w-80">
           <h3 class="text-sm font-medium">
-            Năm<span class="text-error"> *</span>
+            {{ $t('v1.setting.year') }}<span class="text-error"> *</span>
           </h3>
           <!--  -->
           <div
             class="flex items-center border text-sm border-gray-300 h-9 py-2 rounded-md"
           >
-            <p class="text-muted w-40">Ngày/Tháng bắt đầu</p>
+            <p class="text-muted w-40">{{ $t('v1.setting.start_day_month') }}</p>
             <div
               class="border-l w-14 border-gray-300 flex items-center justify-center h-9"
             >
@@ -109,7 +110,7 @@
           <div
             class="flex items-center border text-sm border-gray-300 h-9 py-2 rounded-md"
           >
-            <p class="text-muted w-40">Ngày/Tháng kết thúc</p>
+            <p class="text-muted w-40">{{ $t('v1.setting.end_day_month') }}</p>
             <div
               class="border-l w-14 border-gray-300 flex items-center justify-center h-9"
             >

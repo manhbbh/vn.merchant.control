@@ -7,20 +7,20 @@
     <!--content  -->
     <div class="flex flex-col gap-2.5 w-full">
       <div class="flex items-start justify-between">
-        <h4 class="flex justify-start text-sm font-medium">Nghỉ lễ</h4>
+        <h4 class="flex justify-start text-sm font-medium">{{ $t('v1.setting.holiday') }}</h4>
         <div class="hidden lg:flex items-center gap-2.5">
           <button
             class="text-sm font-medium text-slate-500 h-9 px-6 py-2"
             @click="reset()"
           >
-            <span v-if="!branch_data?._id">Khôi phục mặc định</span>
-            <span v-else>Khôi phục theo Doanh nghiệp</span>
+            <span v-if="!branch_data?._id">{{ $t('v1.common.restore_default') }}</span>
+            <span v-else>{{ $t('v1.common.restore_by_business') }}</span>
           </button>
           <button
             class="h-9 w-18 text-sm font-medium text-white rounded-md bg-black"
             @click="is_show_add = true"
           >
-            Thêm
+            {{ $t('v1.common.add') }}
           </button>
         </div>
       </div>
@@ -28,7 +28,7 @@
       <div class="grid grid-cols-3">
         <div class="flex gap-3 items-center w-full">
           <label class="flex-shrink-0 text-sm font-medium" for="">
-            Tính lương nghỉ lễ
+            {{ $t('v1.setting.holiday_pay') }}
           </label>
           <div class="relative w-full flex justify-start">
             <select
@@ -38,11 +38,11 @@
               }"
               v-model="holidays.calculate_holiday_pay"
             >
-              <option class="text-black" value="undefined" hidden>-- Chọn cách tính --</option>
-              <option class="text-black" value="P1_AND_P2">Tính cả P1 và P2</option>
-              <option class="text-black" value="ONLY_P1">Tính P1</option>
-              <option class="text-black" value="ONLY_P2">Tính P2</option>
-              <option class="text-black" value="NONE">Không tính</option>
+              <option class="text-black" value="undefined" hidden>{{ $t('v1.setting.select_calculation') }}</option>
+              <option class="text-black" value="P1_AND_P2">{{ $t('v1.setting.calculate_p1_p2') }}</option>
+              <option class="text-black" value="ONLY_P1">{{ $t('v1.setting.calculate_p1') }}</option>
+              <option class="text-black" value="ONLY_P2">{{ $t('v1.setting.calculate_p2') }}</option>
+              <option class="text-black" value="NONE">{{ $t('v1.setting.no_calculation') }}</option>
             </select>
             <IconDown
               class="w-5 h-5 text-down absolute right-3 top-2"
@@ -56,13 +56,13 @@
           class="bg-slate-200 h-7 text-xs font-semibold sticky top-0 text-customDarkBlue flex-shrink-0 z-10"
         >
           <tr class="h-7">
-            <th class="w-18 px-2 text-left font-semibold">ID|Ngày</th>
-            <th class="w-50 text-left font-semibold">Tiêu đề</th>
-            <th class="w-25 text-center font-semibold">Ngày lễ</th>
+            <th class="w-18 px-2 text-left font-semibold">{{ $t('v1.table.id_date') }}</th>
+            <th class="w-50 text-left font-semibold">{{ $t('v1.table.title') }}</th>
+            <th class="w-25 text-center font-semibold">{{ $t('v1.table.holiday_date') }}</th>
             <th class="w-50 text-left font-semibold hidden md:table-cell">
-              Người tạo
+              {{ $t('v1.common.creator') }}
             </th>
-            <th class="w-25 text-center sm:text-left font-semibold">Xóa</th>
+            <th class="w-25 text-center sm:text-left font-semibold">{{ $t('v1.common.delete') }}</th>
             <th
               class="w-[170px] text-left font-semibold hidden md:table-cell"
             ></th>
@@ -86,7 +86,7 @@
             <!-- Tiêu đề -->
             <td class="text-left py-2 items-center">
               <p class="inline-flex">
-                {{ holidays?.setting_data?.[holiday]?.name }}
+                {{ translateHolidayName(holidays?.setting_data?.[holiday]?.name) }}
               </p>
             </td>
 
@@ -142,7 +142,7 @@
                 class="h-5 inline-flex text-red-500 bg-red-50 font-medium text-xs rounded-md px-2 py-0.5 items-center justify-center"
                 @click="handleDelete(holiday)"
               >
-                Xóa
+                {{ $t('v1.common.delete') }}
               </div>
             </td>
             <!-- stt-->
@@ -163,12 +163,12 @@
             for="taxCode"
             class="block text-sm font-medium flex-shrink-0 text-start px-1"
           >
-            Tiêu đề
+            {{ $t('v1.form.title') }}
           </label>
           <input
             v-model="add_form.title"
             class="border border-gray-300 px-3 rounded-md lg:w-67 py-2"
-            placeholder="Nhập tiêu đề ngày nghỉ"
+            :placeholder="$t('v1.form.holiday_title_placeholder')"
             type="text"
           />
         </div>
@@ -178,11 +178,11 @@
             for="taxCode"
             class="block text-sm font-medium text-gray-700 px-1"
           >
-            Ngày
+            {{ $t('v1.setting.start_date') }}
           </label>
           <CustomVuePicker
             v-model="add_form.date"
-            placeholder="Chọn ngày"
+            :placeholder="$t('v1.form.select_date')"
             :handle-date="() => {}"
             :input_class="'!border-transparent'"
             class="border border-gray-300 w-full lg:w-40"
@@ -194,7 +194,7 @@
           class="col-span-2 bg-green-600 text-sm font-medium text-white rounded-md px-4 py-2"
           @click="handleAdd"
         >
-          Lưu
+          {{ $t('v1.common.save') }}
         </button>
       </div>
 
@@ -203,14 +203,14 @@
           class="min-w-60 text-sm font-medium bg-slate-500 p-2 border rounded-md"
           @click="reset()"
         >
-          <span v-if="!branch_data?._id">Khôi phục mặc định</span>
-          <span v-else>Khôi phục theo Doanh nghiệp</span>
+          <span v-if="!branch_data?._id">{{ $t('v1.common.restore_default') }}</span>
+          <span v-else>{{ $t('v1.common.restore_by_business') }}</span>
         </button>
         <button
           class="flex-1 text-sm font-medium text-white rounded-md bg-black p-2"
           @click="is_show_add = true"
         >
-          Thêm
+          {{ $t('v1.common.add') }}
         </button>
       </div>
     </div>
@@ -226,6 +226,7 @@ import { confirm } from '@/service/helper/alert'
 import { PropType, ref } from 'vue'
 import { format } from 'date-fns'
 import { storeToRefs } from 'pinia'
+import { useI18n } from 'vue-i18n'
 
 // * components
 import Avatar from '@/components/avartar/Avatar.vue'
@@ -250,6 +251,7 @@ const props = defineProps({
 // * store
 const commonStore = useCommonStore()
 const { employees_user_ids, user, branch_data } = storeToRefs(commonStore)
+const { t } = useI18n()
 
 /** dữ liệu thiết lập nghỉ lễ */
 const holidays = defineModel<HolidaySetting>({ default: {} })
@@ -277,6 +279,16 @@ function getInfo(id?: string, type?: string) {
 
   // còn lại trả về ảnh đại diện
   return EMPLOYEE?.avatar
+}
+
+function translateHolidayName(name?: string) {
+  const keyByName: Record<string, string> = {
+    'Nghỉ tết dương lịch': 'v1.setting.new_year_holiday',
+    'Nghỉ lễ quốc tế lao động': 'v1.setting.labor_day_holiday',
+    'Nghỉ lễ quốc khánh': 'v1.setting.national_day_holiday',
+  }
+
+  return name && keyByName[name] ? t(keyByName[name]) : name
 }
 
 /** xử lý thêm ngày lễ */
@@ -312,7 +324,7 @@ function handleAdd() {
 
 /** xử lý xóa ngày lễ */
 function handleDelete(date: string) {
-  confirm('warning', 'Xác nhận xóa nghỉ lễ?', '', (is_cancel: boolean) => {
+  confirm('warning', t('v1.confirm.delete_holiday'), '', (is_cancel: boolean) => {
     // nếu hủy thì thôi
     if (is_cancel) return
 
@@ -325,7 +337,7 @@ function handleDelete(date: string) {
 function reset() {
   confirm(
     'warning',
-    'Xác nhận khôi phục mặc định?',
+    t('v1.confirm.restore_default'),
     '',
     (is_cancel: boolean) => {
       // nếu hủy thì thôi

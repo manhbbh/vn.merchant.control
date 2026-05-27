@@ -1,6 +1,6 @@
 <template>
   <div v-if="!branch_data?._id" class="py-3">
-    <p class="text-sm font-semibold">Vui lòng chọn Chi nhánh</p>
+    <p class="text-sm font-semibold">{{ $t('v1.common.select_branch') }}</p>
   </div>
   <!--  -->
   <div v-else class="flex-1 flex flex-col gap-2 overflow-y-auto">
@@ -35,7 +35,7 @@
       <button
         class="w-full lg:w-auto h-9 text-sm font-medium bg-blue-700 px-4 py-2 flex justify-center items-center rounded-lg text-white"
       >
-        Lưu thiết lập
+        {{ $t('v1.common.save_setting') }}
       </button>
     </div>
   </div>
@@ -48,6 +48,7 @@ import { businessUpdate } from '@/service/api/api'
 
 // * libraries
 import { storeToRefs } from 'pinia'
+import { useI18n } from 'vue-i18n'
 
 /**component */
 import Holiday from '@/components/enterpriseSettings/Holiday.vue'
@@ -84,6 +85,7 @@ const {
 
 // * toast
 const $toast = new Toast()
+const { t } = useI18n()
 
 /** lưu thông tin doanh nghiệp */
 async function saveBusinessInfo() {
@@ -113,7 +115,7 @@ async function saveSetting() {
       saveBranchSettingTimeworking(),
       saveBranchSettingAnnualLeaveYear(),
     ])
-    $toast.success('Lưu thiết lập thành công')
+    $toast.success(t('v1.common.save_success'))
   } catch (e) {
     $toast.error(e)
   }

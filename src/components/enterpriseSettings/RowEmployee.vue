@@ -50,7 +50,7 @@
         {{
           formatDistanceToNowStrict(employee.last_time_login, { locale: vi })
         }}
-        trước
+        {{ $t('v1.common.ago') }}
       </p>
     </td>
 
@@ -60,7 +60,7 @@
         class="text-sm"
         :class="employee?.active ? 'text-green-500' : 'text-red-500'"
       >
-        {{ employee?.active ? 'Đang hoạt động' : 'Không hoạt động' }}
+        {{ employee?.active ? $t('v1.common.active') : $t('v1.common.inactive_short') }}
       </p>
     </td>
     <!-- thao tác -->
@@ -74,7 +74,7 @@
         @click="handleActive(employee)"
       >
         <p class="text-xs flex items-center font-medium">
-          {{ !employee.active ? 'Kích hoạt' : 'Tạm ngừng' }}
+          {{ !employee.active ? $t('v1.common.activate') : $t('v1.common.pause') }}
         </p>
       </button>
     </td>

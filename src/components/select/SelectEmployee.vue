@@ -17,7 +17,7 @@
         "
         v-model="search"
         type="text"
-        placeholder="Chọn nhân sự"
+        :placeholder="$t('v1.form.select_employee')"
         class="outline-none border w-full rounded-md py-2 px-3 placeholder:text-slate-500"
       />
     </template>

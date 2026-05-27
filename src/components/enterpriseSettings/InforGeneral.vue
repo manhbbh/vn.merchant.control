@@ -7,7 +7,7 @@
     <!--content  -->
     <div class="flex-col flex gap-3 w-full">
       <div class="flex items-center">
-        <h4 class="flex justify-start text-sm font-medium">Thông tin chung</h4>
+        <h4 class="flex justify-start text-sm font-medium">{{ $t('v1.form.common_info') }}</h4>
       </div>
       <!-- Logo, tên, mã số thuế, ngày thành lập  -->
       <div class="flex flex-col lg:flex-row gap-2 w-full">
@@ -29,13 +29,13 @@
               for="shortName"
               class="block text-sm font-medium text-gray-700"
             >
-              Tên viết tắt
+              {{ $t('v1.form.short_name') }}
             </label>
             <input
               v-model="business_data.short_name"
               type="text"
               id="shortName"
-              placeholder="Nhập tên viết tắt"
+              :placeholder="$t('v1.form.short_name_placeholder')"
               class="w-full border border-gray-300 rounded-md px-3 py-2 outline-none"
             />
           </div>
@@ -45,13 +45,13 @@
               for="fullName"
               class="block text-sm font-medium text-gray-700"
             >
-              Tên đầy đủ Doanh nghiệp
+              {{ $t('v1.form.full_business_name') }}
             </label>
             <input
               v-model="business_data.name"
               type="text"
               id="fullName"
-              placeholder="Nhập tên đầy đủ"
+              :placeholder="$t('v1.form.full_name_placeholder')"
               class="w-full border border-gray-300 rounded-md px-3 py-2 outline-none"
             />
           </div>
@@ -61,13 +61,13 @@
               for="taxCode"
               class="block text-sm font-medium text-gray-700"
             >
-              Mã số thuế
+              {{ $t('v1.form.tax_code') }}
             </label>
             <input
               v-model="business_data.tax_code"
               type="text"
               id="taxCode"
-              placeholder="Nhập mã số thuế"
+              :placeholder="$t('v1.form.tax_code_placeholder')"
               class="w-full border border-gray-300 rounded-md px-3 py-2 outline-none"
             />
           </div>
@@ -77,11 +77,11 @@
               for="taxCode"
               class="block text-sm font-medium text-gray-700"
             >
-              Ngày thành lập
+              {{ $t('v1.form.founded_date') }}
             </label>
             <CustomVuePicker
               v-model="business_data.establish_date"
-              placeholder="Chọn ngày"
+              :placeholder="$t('v1.form.select_date')"
               :handle-date="() => {}"
               :teleport="true"
               class="border border-gray-300"
@@ -95,54 +95,54 @@
         <!-- Địa chỉ -->
         <div class="col-span-2 lg:col-span-3 text-left flex flex-col gap-1.5">
           <label for="taxCode" class="block text-sm font-medium text-gray-700">
-            Địa chỉ
+            {{ $t('v1.form.address') }}
           </label>
           <input
             v-model="business_data.address"
             type="text"
             id="taxCode"
-            placeholder="Nhập địa chỉ Doanh nghiệp"
+            :placeholder="$t('v1.form.business_address_placeholder')"
             class="w-full border border-gray-300 rounded-md px-3 py-2 outline-none"
           />
         </div>
         <!-- Tiền tệ -->
         <div class="col-span-2 lg:col-span-2 text-left flex flex-col gap-1.5">
           <label class="block text-sm font-medium text-gray-700">
-            Tiền tệ
+            {{ $t('v1.form.currency') }}
           </label>
           <select
             v-model="business_data.currency"
             class="w-full border border-gray-300 rounded-md px-3 py-2 outline-none"
           >
-            <option selected hidden value="undefined">Chọn tiền tệ</option>
-            <option selected hidden value="null">Chọn tiền tệ</option>
-            <option selected hidden value="">Chọn tiền tệ</option>
+            <option selected hidden value="undefined">{{ $t('v1.form.select_currency') }}</option>
+            <option selected hidden value="null">{{ $t('v1.form.select_currency') }}</option>
+            <option selected hidden value="">{{ $t('v1.form.select_currency') }}</option>
             <option v-for="(currency, index) in CURRENCIES" :value="index">
-              {{ currency }}
+              {{ $t(`v1.currency.${index}`) }}
             </option>
           </select>
         </div>
         <!-- Quốc gia -->
         <div class="col-span-2 lg:col-span-2 text-left flex flex-col gap-1.5">
           <label class="block text-sm font-medium text-gray-700">
-            Quốc gia
+            {{ $t('v1.form.country') }}
           </label>
           <select
             v-model="business_data.country_code"
             class="w-full border border-gray-300 rounded-md px-3 py-2 outline-none"
           >
-            <option selected hidden value="undefined">Chọn quốc gia</option>
-            <option selected hidden value="null">Chọn quốc gia</option>
-            <option selected hidden value="">Chọn quốc gia</option>
+            <option selected hidden value="undefined">{{ $t('v1.form.select_country') }}</option>
+            <option selected hidden value="null">{{ $t('v1.form.select_country') }}</option>
+            <option selected hidden value="">{{ $t('v1.form.select_country') }}</option>
             <option v-for="(country, index) in COUNTRIES" :value="index">
-              {{ country }}
+              {{ $t(`v1.country.${index}`) }}
             </option>
           </select>
         </div>
         <!-- Trạng thái-->
         <div class="col-span-2 text-left flex flex-col gap-1.5">
           <label for="taxCode" class="block text-sm font-medium text-gray-700">
-            Trạng thái
+            {{ $t('v1.form.status') }}
           </label>
           <div
             class="flex items-center text-green-600 gap-2"
@@ -153,18 +153,18 @@
           >
             <template v-if="!business_data.archive">
               <IconTick class="h-5 w-5"></IconTick>
-              <p class="text-sm">Đang hoạt động</p>
+              <p class="text-sm">{{ $t('v1.common.active') }}</p>
             </template>
             <template v-else>
               <IconPause class="h-5 w-5"></IconPause>
-              <p class="text-sm">Tạm dừng hoạt động</p>
+              <p class="text-sm">{{ $t('v1.common.inactive') }}</p>
             </template>
           </div>
         </div>
         <!-- Thao tác-->
         <div class="col-span-2 text-left flex flex-col gap-1.5">
           <label for="taxCode" class="block text-sm font-medium text-gray-700">
-            Thao tác
+            {{ $t('v1.form.action') }}
           </label>
           <button
             class="flex items-center p-1 lg:px-2.5 lg:py-2 gap-1 lg:gap-2 border rounded-md hover:brightness-95"
@@ -176,7 +176,7 @@
             @click="
               confirm(
                 'warning',
-                'Xác nhận thay đổi trạng thái?',
+                t('v1.confirm.change_status'),
                 '',
                 (is_cancel: boolean) => {
                   if (is_cancel) return
@@ -188,11 +188,11 @@
           >
             <template v-if="business_data.archive">
               <IconTick class="h-5 w-5"></IconTick>
-              <p class="text-sm">Kích hoạt</p>
+              <p class="text-sm">{{ $t('v1.common.activate') }}</p>
             </template>
             <template v-else>
               <IconPause class="h-5 w-5"></IconPause>
-              <p class="text-sm">Tạm dừng hoạt động</p>
+              <p class="text-sm">{{ $t('v1.common.inactive') }}</p>
             </template>
           </button>
         </div>
@@ -212,6 +212,7 @@ import { businessUpdate, uploadImage } from '@/service/api/api'
 // * libraries
 import { get } from 'lodash'
 import { storeToRefs } from 'pinia'
+import { useI18n } from 'vue-i18n'
 
 // * components
 import CustomVuePicker from '@/components/CustomVuePicker.vue'
@@ -228,6 +229,7 @@ const { business_data } = storeToRefs(commonStore)
 
 // * toast
 const $toast = new Toast()
+const { t } = useI18n()
 
 /** lưu thông tin doanh nghiệp */
 async function saveBusinessInfo() {

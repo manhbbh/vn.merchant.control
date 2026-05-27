@@ -22,12 +22,15 @@
         </a>
         <!-- avatar -->
         <div class="relative text-start group">
-          <Avatar
-            class="h-9 w-9 cursor-pointer"
-            :text_class="'text-lg font-semibold'"
-            :src="employees_user_ids[user?._id || '']?.avatar"
-            :text="`${user?.first_name || ''} ${user?.last_name || ''}`"
-          />
+          <div class="flex items-center gap-2">
+            <!-- <LanguageSwitcher /> -->
+            <Avatar
+              class="h-9 w-9 cursor-pointer"
+              :text_class="'text-lg font-semibold'"
+              :src="employees_user_ids[user?._id || '']?.avatar"
+              :text="`${user?.first_name || ''} ${user?.last_name || ''}`"
+            />
+          </div>
           <div
             class="hidden group-hover:block hover:block absolute top-9 py-1 -right-4 z-50"
           >
@@ -50,7 +53,7 @@
                     href="https://merchant.vn/profile"
                   >
                     <UserCircleIcon class="w-5 h-5" />
-                    <span class="ms-3">Tài khoản</span>
+                    <span class="ms-3">{{ $t('v1.common.account') }}</span>
                   </a>
                 </li>
                 <li>
@@ -60,7 +63,7 @@
                   >
                     <ArrowRightStartOnRectangleIcon class="w-5 h-5" />
                     <span class="flex-1 ms-3 whitespace-nowrap">
-                      Đăng xuất
+                      {{ $t('v1.common.logout') }}
                     </span>
                   </a>
                 </li>
@@ -89,7 +92,7 @@
               >
                 <IconBusiness class="w-5 h-5"></IconBusiness>
               </div>
-              <h3 class="text-sm font-semibold">Cài đặt Doanh nghiệp</h3>
+              <h3 class="text-sm font-semibold">{{ $t('v1.menu.business_setting') }}</h3>
             </li>
             <li
               @click="selectedBrach"
@@ -101,7 +104,7 @@
               >
                 <IconHome class="w-5 h-5"></IconHome>
               </div>
-              <h3 class="text-sm font-semibold">Cài đặt Chi nhánh</h3>
+              <h3 class="text-sm font-semibold">{{ $t('v1.menu.branch_setting') }}</h3>
             </li>
           </ul>
           <!-- danh sách chi nhánh  -->
@@ -133,8 +136,8 @@
                 >
                   {{
                     control.type === 'headquarter'
-                      ? 'Trụ sở chính'
-                      : 'Chi nhánh'
+                      ? $t('v1.common.headquarter')
+                      : $t('v1.common.branch')
                   }}
                 </p>
               </div>
@@ -172,6 +175,7 @@ import { onMounted, provide, ref, watch } from 'vue'
 /**compomnet con*/
 import Avatar from '@/components/avartar/Avatar.vue'
 import Template401 from '@/components/Template401.vue'
+// import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
 import FormatAvartar from '@/components/avartar/FormatAvartar.vue'
 import BranchSetting from '@/components/business/BranchSetting.vue'
 import BusinessSetting from '@/components/business/BusinessSetting.vue'

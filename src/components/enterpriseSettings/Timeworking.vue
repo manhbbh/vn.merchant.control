@@ -15,21 +15,20 @@
           <h4
             class="flex text-customDark h-5 mb-2.5 justify-start text-sm font-medium"
           >
-            Thời gian làm việc chung
+            {{ $t('v1.setting.working_time_general') }}
           </h4>
           <p
             class="flex justify-start text-start text-sm text-gray-500 lg:truncate"
           >
-            Khi tạo thêm Chi nhánh thì mặc định kế thừa cấu hình này. Ngoài ra,
-            có thể thiết lập tùy biến theo từng Chi nhánh.
+            {{ $t('v1.setting.working_time_general_description') }}
           </p>
         </div>
         <button
           class="hidden lg:block font-medium text-slate-500 px-3"
           @click="reset()"
         >
-          <span v-if="!branch_data?._id">Khôi phục mặc định</span>
-          <span v-else>Khôi phục theo Doanh nghiệp</span>
+          <span v-if="!branch_data?._id">{{ $t('v1.common.restore_default') }}</span>
+          <span v-else>{{ $t('v1.common.restore_by_business') }}</span>
         </button>
       </div>
       <!-- Múi giờ -->
@@ -39,7 +38,7 @@
         <div class="flex">
           <IconWorld class="h-5 w-5"></IconWorld>
           <h4 class="flex sm:hidden h-5 pl-2 justify-start text-sm font-medium">
-            Múi giờ
+            {{ $t('v1.setting.time_zone') }}
           </h4>
         </div>
         <!--  -->
@@ -48,13 +47,12 @@
         >
           <div class="flex-col mb-3">
             <h4 class="sm:flex hidden h-5 justify-start text-sm font-medium">
-              Múi giờ
+              {{ $t('v1.setting.time_zone') }}
             </h4>
             <p
               class="flex h-5 line-clamp-1 justify-start text-sm text-gray-500"
             >
-              Thiết lập múi giờ theo khu vực kinh doanh, giúp báo cáo thống kê
-              chính xác.
+              {{ $t('v1.setting.time_zone_description') }}
             </p>
           </div>
           <!-- select -->
@@ -81,11 +79,10 @@
         <div class="flex max-w-full flex-1 items-center justify-between">
           <div class="flex-col mb-3">
             <h4 class="flex h-5 justify-start text-sm font-medium">
-              Thời gian làm việc trong ngày
+              {{ $t('v1.setting.daily_working_time') }}
             </h4>
             <p class="hidden h-5 justify-start text-sm text-gray-500 sm:flex">
-              Thiết lập thời gian làm việc giúp thống kê, tính tiền lương P1, P2
-              chính xác.
+              {{ $t('v1.setting.daily_working_time_description') }}
             </p>
           </div>
           <!-- select -->
@@ -106,7 +103,7 @@
         <div class="h-9 flex sm:pb-0 pb-4 w-full items-center justify-between">
           <div class="sm: flex">
             <div class="sm:w-32 flex-none py-2 pr-3 font-medium sm:pr-0">
-              {{ day.title }}
+              {{ translateDayTitle(day.title) }}
             </div>
             <!-- select -->
             <Toggle v-model="day.active" class="sm:hidden" />
@@ -117,7 +114,7 @@
           class="h-9 flex sm:gap-5 w-full justify-between items-center sm:justify-end"
         >
           <!-- từ -->
-          <p v-if="day.active" class="text-center md:px-4">từ</p>
+          <p v-if="day.active" class="text-center md:px-4">{{ $t('v1.setting.from') }}</p>
 
           <div v-if="day.active && day.checkin">
             <select
@@ -149,7 +146,7 @@
             </select>
           </div>
           <!-- đến -->
-          <p v-if="day.active" class="text-center md:px-4">đến</p>
+          <p v-if="day.active" class="text-center md:px-4">{{ $t('v1.setting.to') }}</p>
 
           <div v-if="day.active && day.checkout">
             <select
@@ -192,8 +189,8 @@
         class="min-w-60 lg:hidden text-white text-sm font-medium bg-slate-500 p-2 border rounded-md"
         @click="reset()"
       >
-        <span v-if="!branch_data?._id">Khôi phục mặc định</span>
-        <span v-else>Khôi phục theo Doanh nghiệp</span>
+        <span v-if="!branch_data?._id">{{ $t('v1.common.restore_default') }}</span>
+        <span v-else>{{ $t('v1.common.restore_by_business') }}</span>
       </button>
     </div>
     <!--  -->
@@ -209,6 +206,7 @@ import { confirm } from '@/service/helper/alert'
 // * library
 import { PropType } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useI18n } from 'vue-i18n'
 
 // * component
 import Toggle from '@/components/Toggle.vue'
@@ -232,6 +230,7 @@ const props = defineProps({
 
 // * store
 const { branch_data } = storeToRefs(useCommonStore())
+const { t } = useI18n()
 
 /** dữ liệu thiết lập thời gian làm việc */
 const working_time = defineModel<WorkingTimeSetting>({
@@ -242,12 +241,26 @@ const working_time = defineModel<WorkingTimeSetting>({
 function reset() {
   confirm(
     'warning',
-    'Xác nhận khôi phục mặc định?',
+    t('v1.confirm.restore_default'),
     '',
     (is_cancel: boolean) => {
       if (is_cancel) return
       working_time.value.setting_data = copy(props.setting_working_time)
     }
   )
+}
+
+function translateDayTitle(title?: string) {
+  const keyByTitle: Record<string, string> = {
+    'Thứ hai': 'v1.day.monday',
+    'Thứ ba': 'v1.day.tuesday',
+    'Thứ tư': 'v1.day.wednesday',
+    'Thứ năm': 'v1.day.thursday',
+    'Thứ sáu': 'v1.day.friday',
+    'Thứ bảy': 'v1.day.saturday',
+    'Chủ nhật': 'v1.day.sunday',
+  }
+
+  return title && keyByTitle[title] ? t(keyByTitle[title]) : title
 }
 </script>

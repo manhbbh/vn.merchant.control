@@ -7,7 +7,7 @@
     <!--  -->
     <div class="flex flex-col gap-2.5 w-full">
       <div class="flex items-start justify-between">
-        <h4 class="flex justify-start font-medium">Phép năm</h4>
+        <h4 class="flex justify-start font-medium">{{ $t('v1.setting.annual_leave') }}</h4>
       </div>
       <div class="grid grid-cols-9 gap-3">
         <div
@@ -15,7 +15,7 @@
         >
           <div class="col-span-3 lg:col-span-1 flex items-center gap-2 w-full">
             <label class="flex-shrink-0 font-medium w-30 text-start lg:w-auto">
-              Ngày phép năm
+              {{ $t('v1.setting.annual_leave_days') }}
             </label>
             <input
               v-if="annual_leave_year.setting_data"
@@ -28,7 +28,7 @@
           <div class="col-span-3 lg:col-span-2">
             <div class="flex gap-2 items-center w-full">
               <label class="flex-shrink-0 font-medium w-30 text-start lg:w-auto">
-                Tính lương
+                {{ $t('v1.setting.salary') }}
               </label>
               <div class="relative w-full flex justify-start">
                 <select
@@ -39,14 +39,14 @@
                   v-model="annual_leave_year.calculate_holiday_pay"
                 >
                   <option class="text-black" value="undefined" hidden>
-                    -- Chọn cách tính --
+                    {{ $t('v1.setting.select_calculation') }}
                   </option>
                   <option class="text-black" value="P1_AND_P2">
-                    Tính cả P1 và P2
+                    {{ $t('v1.setting.calculate_p1_p2') }}
                   </option>
-                  <option class="text-black" value="ONLY_P1">Tính P1</option>
-                  <option class="text-black" value="ONLY_P2">Tính P2</option>
-                  <option class="text-black" value="NONE">Không tính</option>
+                  <option class="text-black" value="ONLY_P1">{{ $t('v1.setting.calculate_p1') }}</option>
+                  <option class="text-black" value="ONLY_P2">{{ $t('v1.setting.calculate_p2') }}</option>
+                  <option class="text-black" value="NONE">{{ $t('v1.setting.no_calculation') }}</option>
                 </select>
                 <IconDown
                   class="w-5 h-5 text-down absolute right-3 top-2"
@@ -71,13 +71,12 @@
 
             <!--  -->
             <p class="w-full font-medium text-wrap text-left">
-              Nếu còn phép thì ngày 30/12 sẽ tự động xóa hết phép.
+              {{ $t('v1.setting.annual_leave_auto_clear_note') }}
             </p>
           </label>
 
           <p class="pl-16 text-left text-muted">
-            Mặc định, nếu hết năm mà còn ngày phép thì cộng dồn sang Quý 1 năm
-            sau.
+            {{ $t('v1.setting.annual_leave_rollover_note') }}
           </p>
         </div>
       </div>
@@ -85,15 +84,13 @@
         <div class="flex text-muted gap-2 items-center">
           <span class="w-1 h-1 bg-muted rounded-full"></span>
           <p>
-            Ngày phép chỉ áp dụng với nhân viên có trạng thái Làm việc chính
-            thức.
+            {{ $t('v1.setting.annual_leave_employee_note') }}
           </p>
         </div>
         <div class="flex text-muted gap-2 items-center">
           <span class="w-1 bg-muted h-1 rounded-full"></span>
           <p class="text-start">
-            Ngày phép sẽ được cộng dồn hàng tháng. Mặc định mỗi 1 tháng sẽ được
-            +1 ngày phép.
+            {{ $t('v1.setting.annual_leave_monthly_note') }}
           </p>
         </div>
       </div>

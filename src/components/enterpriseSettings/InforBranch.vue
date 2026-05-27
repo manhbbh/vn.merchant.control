@@ -7,7 +7,7 @@
     <!--content  -->
     <div class="flex-col flex-1 flex gap-3">
       <div class="flex items-center">
-        <h4 class="flex justify-start text-sm font-medium">Thông tin chung</h4>
+        <h4 class="flex justify-start text-sm font-medium">{{ $t('v1.form.common_info') }}</h4>
       </div>
       <div class="flex flex-col lg:flex-row gap-2 w-full">
         <div class="flex-shrink-0 flex flex-col gap-1.5 text-start">
@@ -33,13 +33,13 @@
               for="shortName"
               class="block text-sm font-medium text-gray-700 h-5.5"
             >
-              Tên viết tắt
+              {{ $t('v1.form.short_name') }}
             </label>
             <input
               v-model="branch_data.short_name"
               type="text"
               id="shortName"
-              placeholder="Nhập tên viết tắt"
+              :placeholder="$t('v1.form.short_name_placeholder')"
               class="h-9 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
             />
           </div>
@@ -49,13 +49,13 @@
               for="shortName"
               class="block text-sm font-medium text-gray-700 h-5.5"
             >
-              Tên đầy đủ
+              {{ $t('v1.form.full_business_name') }}
             </label>
             <input
               v-model="branch_data.name"
               type="text"
               id="shortName"
-              placeholder="Nhập tên đầy đủ"
+              :placeholder="$t('v1.form.full_name_placeholder')"
               class="h-9 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
             />
           </div>
@@ -65,13 +65,13 @@
               for="taxCode"
               class="block text-sm font-medium text-gray-700 h-5.5"
             >
-              Địa chỉ
+              {{ $t('v1.form.address') }}
             </label>
             <input
               type="text"
               id="taxCode"
               v-model="branch_data.address"
-              placeholder="Nhập địa chỉ"
+              :placeholder="$t('v1.form.business_address_placeholder')"
               class="h-9 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
             />
           </div>
@@ -83,34 +83,34 @@
         <!-- Tiền tệ -->
         <div class="col-span-2 lg:col-span-2 text-left flex flex-col gap-1.5">
           <label class="block text-sm font-medium text-gray-700">
-            Tiền tệ
+            {{ $t('v1.form.currency') }}
           </label>
           <select
             v-model="branch_data.currency"
             class="w-full border border-gray-300 rounded-md px-3 py-2 outline-none"
           >
-            <option selected hidden value="undefined">Chọn tiền tệ</option>
-            <option selected hidden value="null">Chọn tiền tệ</option>
-            <option selected hidden value="">Chọn tiền tệ</option>
+            <option selected hidden value="undefined">{{ $t('v1.form.select_currency') }}</option>
+            <option selected hidden value="null">{{ $t('v1.form.select_currency') }}</option>
+            <option selected hidden value="">{{ $t('v1.form.select_currency') }}</option>
             <option v-for="(currency, index) in CURRENCIES" :value="index">
-              {{ currency }}
+              {{ $t(`v1.currency.${index}`) }}
             </option>
           </select>
         </div>
         <!-- Quốc gia -->
         <div class="col-span-2 lg:col-span-2 text-left flex flex-col gap-1.5">
           <label class="block text-sm font-medium text-gray-700">
-            Quốc gia
+            {{ $t('v1.form.country') }}
           </label>
           <select
             v-model="branch_data.country_code"
             class="w-full border border-gray-300 rounded-md px-3 py-2 outline-none"
           >
-            <option selected hidden value="undefined">Chọn quốc gia</option>
-            <option selected hidden value="null">Chọn quốc gia</option>
-            <option selected hidden value="">Chọn quốc gia</option>
+            <option selected hidden value="undefined">{{ $t('v1.form.select_country') }}</option>
+            <option selected hidden value="null">{{ $t('v1.form.select_country') }}</option>
+            <option selected hidden value="">{{ $t('v1.form.select_country') }}</option>
             <option v-for="(country, index) in COUNTRIES" :value="index">
-              {{ country }}
+              {{ $t(`v1.country.${index}`) }}
             </option>
           </select>
         </div>
@@ -120,11 +120,11 @@
             for="taxCode"
             class="block text-sm font-medium text-gray-700"
           >
-            Ngày thành lập
+            {{ $t('v1.form.founded_date') }}
           </label>
           <CustomVuePicker
             v-model="branch_data.establish_date"
-            placeholder="Chọn ngày"
+            :placeholder="$t('v1.form.select_date')"
             :handle-date="() => {}"
             :teleport="true"
             class="border border-gray-300"
@@ -137,7 +137,7 @@
             for="taxCode"
             class="block text-sm font-medium text-gray-700"
           >
-            Trạng thái
+            {{ $t('v1.form.status') }}
           </label>
           <div
             class="flex items-center text-green-600 gap-2"
@@ -148,11 +148,11 @@
           >
             <template v-if="!branch_data.archive">
               <IconTick class="h-5 w-5"></IconTick>
-              <p class="text-sm">Đang hoạt động</p>
+              <p class="text-sm">{{ $t('v1.common.active') }}</p>
             </template>
             <template v-else>
               <IconPause class="h-5 w-5"></IconPause>
-              <p class="text-sm">Tạm dừng hoạt động</p>
+              <p class="text-sm">{{ $t('v1.common.inactive') }}</p>
             </template>
           </div>
         </div>
@@ -162,7 +162,7 @@
             for="taxCode"
             class="block text-sm font-medium text-gray-700"
           >
-            Trạng thái
+            {{ $t('v1.form.action') }}
           </label>
           <button
             class="flex items-center p-1 lg:px-2 lg:py-2 gap-1 border rounded-md hover:brightness-95"
@@ -174,7 +174,7 @@
             @click="
               confirm(
                 'warning',
-                'Xác nhận thay đổi trạng thái?',
+                t('v1.confirm.change_status'),
                 '',
                 (is_cancel: boolean) => {
                   if (is_cancel) return
@@ -186,11 +186,11 @@
           >
             <template v-if="branch_data.archive">
               <IconTick class="h-5 w-5"></IconTick>
-              <p class="text-sm">Kích hoạt</p>
+              <p class="text-sm">{{ $t('v1.common.activate') }}</p>
             </template>
             <template v-else>
               <IconPause class="h-5 w-5"></IconPause>
-              <p class="text-sm">Tạm dừng hoạt động</p>
+              <p class="text-sm">{{ $t('v1.common.inactive') }}</p>
             </template>
           </button>
         </div>
@@ -210,6 +210,7 @@ import { businessUpdate, uploadImage } from '@/service/api/api'
 import { ref } from 'vue'
 import { get } from 'lodash'
 import { storeToRefs } from 'pinia'
+import { useI18n } from 'vue-i18n'
 
 // * components
 import CustomVuePicker from '@/components/CustomVuePicker.vue'
@@ -230,6 +231,7 @@ const { branch_data, branches } = storeToRefs(commonStore)
 
 // * toast
 const $toast = new Toast()
+const { t } = useI18n()
 
 /** lưu thông tin doanh nghiệp */
 async function saveBusinessInfo() {
